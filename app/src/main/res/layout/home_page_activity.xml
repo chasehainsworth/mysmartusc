@@ -21,7 +21,10 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/mysmartusc_home" />
+            android:text="@string/mysmartusc_home"
+            android:textStyle="bold"
+            android:textSize="26sp" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
