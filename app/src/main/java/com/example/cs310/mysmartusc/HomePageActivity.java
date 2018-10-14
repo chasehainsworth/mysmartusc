@@ -8,7 +8,8 @@ public class HomePageActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page_activity);
-        TextView helloTextView = (TextView) findViewById(R.id.hello);
+
+
 
     }
 }
