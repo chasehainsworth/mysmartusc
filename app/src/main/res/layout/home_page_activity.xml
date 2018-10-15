@@ -19,7 +19,7 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/homeLabel"
+            android:text="homeLabel"
             android:textStyle="bold"
             android:textSize="26sp"/>
 
@@ -27,14 +27,14 @@
             android:id="@+id/notificationsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/notificationsButton"
+            android:text="notificationsButton"
             android:layout_margin="20dp"/>
 
         <Button
             android:id="@+id/settingsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/settingsButton"
+            android:text="settingsButton"
             android:layout_margin="20dp"/>
 
     </LinearLayout>

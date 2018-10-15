@@ -3,4 +3,8 @@
     <string name="homeLabel">MySmartUSC Home</string>
     <string name="notificationsButton">Notifications</string>
     <string name="settingsButton">Settings</string>
+    <string name="emailSubject">Email Subject</string>
+    <string name="emailFrom">From</string>
+    <string name="emailBody">Email Body</string>
+    <string name="backButton">Back</string>
 </resources>
