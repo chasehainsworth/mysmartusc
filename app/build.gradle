@@ -40,4 +40,5 @@ dependencies {
         exclude group: 'org.apache.httpcomponents'
     }
     compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+    compile 'com.google.android.gms:play-services-auth:16.0.1'
 }
