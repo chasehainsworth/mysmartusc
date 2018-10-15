@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">MySmartUSC</string>
-    <string name="mysmartusc_home">MySmartUSC Home</string>
+    <string name="homeLabel">MySmartUSC Home</string>
+    <string name="notificationsButton">Notifications</string>
+    <string name="settingsButton">Settings</string>
 </resources>
