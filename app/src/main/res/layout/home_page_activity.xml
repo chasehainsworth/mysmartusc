@@ -24,12 +24,14 @@
             android:textSize="26sp"/>
 
         <Button
+            android:id="@+id/notificationsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="notificationsButton"
             android:layout_margin="20dp"/>
 
         <Button
+            android:id="@+id/settingsButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="settingsButton"
