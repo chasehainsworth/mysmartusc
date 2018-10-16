@@ -13,9 +13,9 @@ public class NotificationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notification_activity);
 
-        Button saved = (Button) findViewById(R.id.submit);
-        Button urgent = (Button) findViewById(R.id.urgent);
-        Button spam = (Button) findViewById(R.id.spam);
+        Button saved = (Button) findViewById(R.id.savedButton);
+        Button urgent = (Button) findViewById(R.id.urgentButton);
+        Button spam = (Button) findViewById(R.id.spamButton);
 
         saved.setOnClickListener(new View.OnClickListener() {
             @Override
