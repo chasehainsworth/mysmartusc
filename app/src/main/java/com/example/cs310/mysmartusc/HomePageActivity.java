@@ -1,6 +1,7 @@
 package com.example.cs310.mysmartusc;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,8 +25,8 @@ public class HomePageActivity extends Activity {
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent notificationsIntent = new Intent(HomePageActivity.this, NotificationsActivity.class);
-                //startActivity(notificationsIntent);
+                Intent notificationsIntent = new Intent(HomePageActivity.this, NotificationActivity.class);
+                startActivity(notificationsIntent);
             }
         });
 
