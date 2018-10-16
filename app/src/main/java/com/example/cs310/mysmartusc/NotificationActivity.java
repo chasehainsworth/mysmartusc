@@ -16,61 +16,31 @@ public class NotificationActivity extends Activity {
         Button saved = (Button) findViewById(R.id.submit);
         Button urgent = (Button) findViewById(R.id.urgent);
         Button spam = (Button) findViewById(R.id.spam);
-<<<<<<< HEAD
-=======
 
         saved.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent notificationsIntent = new Intent(NotificationActivity.this, SaveActivity.class);
-                startActivity(notificationsIntent);
+                Intent saveIntent = new Intent(NotificationActivity.this, SaveActivity.class);
+                startActivity(saveIntent);
             }
         });
 
         urgent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent notificationsIntent = new Intent(NotificationActivity.this, UrgentActivity.class);
-                startActivity(notificationsIntent);
+                Intent urgentIntent = new Intent(NotificationActivity.this, UrgentActivity.class);
+                startActivity(urgentIntent);
             }
         });
 
         spam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent notificationsIntent = new Intent(NotificationActivity.this, SpamActivity.class);
-                startActivity(notificationsIntent);
+                Intent spamIntent = new Intent(NotificationActivity.this, SpamActivity.class);
+                startActivity(spamIntent);
             }
         });
 
     }
->>>>>>> dfb55ddeb58ac99202c08172758e4c6b713074ba
-
-        /*
-        saved.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent notificationsIntent = new Intent(NotificationActivity.this, SavedPageActivity.class);
-                startActivity(notificationsIntent);
-            }
-        });
-
-        urgent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent notificationsIntent = new Intent(NotificationActivity.this, UrgentPageActivity.class);
-                startActivity(notificationsIntent);
-            }
-        });
-
-        spam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent notificationsIntent = new Intent(NotificationActivity.this, SpamPageActivity.class);
-                startActivity(notificationsIntent);
-            }
-        });
-*/
-    }
-
 }
+
