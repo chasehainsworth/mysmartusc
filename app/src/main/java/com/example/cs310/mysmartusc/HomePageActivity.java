@@ -33,8 +33,8 @@ public class HomePageActivity extends Activity {
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent settingsIntent = new Intent(HomePageActivity.this, SettingsActivity.class);
-                //startActivity(settingsIntent);
+                Intent settingsIntent = new Intent(HomePageActivity.this, SettingsActivity.class);
+                startActivity(settingsIntent);
             }
         });
     }

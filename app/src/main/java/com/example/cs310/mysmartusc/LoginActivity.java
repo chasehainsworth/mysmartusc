@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.AccountPicker;
 
 public class LoginActivity extends Activity {
@@ -30,7 +32,18 @@ public class LoginActivity extends Activity {
                                     final Intent data) {
         if (requestCode == 23 && resultCode == RESULT_OK) {
             String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-            System.out.println(accountName);
+            getMail();
         }
     }
+
+    private void getMail() {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(LoginActivity.this);
+
+        if(account != null){
+
+        } else {
+            System.out.println("Account is null!");
+        }
+    }
+
 }
