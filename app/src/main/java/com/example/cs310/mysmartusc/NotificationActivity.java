@@ -20,24 +20,24 @@ public class NotificationActivity extends Activity {
         saved.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent notificationsIntent = new Intent(NotificationActivity.this, SaveActivity.class);
-                startActivity(notificationsIntent);
+                Intent saveIntent = new Intent(NotificationActivity.this, SaveActivity.class);
+                startActivity(saveIntent);
             }
         });
 
         urgent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent notificationsIntent = new Intent(NotificationActivity.this, UrgentActivity.class);
-                startActivity(notificationsIntent);
+                Intent urgentIntent = new Intent(NotificationActivity.this, UrgentActivity.class);
+                startActivity(urgentIntent);
             }
         });
 
         spam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent notificationsIntent = new Intent(NotificationActivity.this, SpamActivity.class);
-                startActivity(notificationsIntent);
+                Intent spamIntent = new Intent(NotificationActivity.this, SpamActivity.class);
+                startActivity(spamIntent);
             }
         });
 
