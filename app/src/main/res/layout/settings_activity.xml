@@ -85,7 +85,6 @@
             android:text="Save Changes"
             android:layout_gravity="center"/>
 
-
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
