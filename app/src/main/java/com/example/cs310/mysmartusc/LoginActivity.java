@@ -40,9 +40,6 @@ public class LoginActivity extends Activity {
 
         String ud = data.getStringExtra(AccountManager.KEY_USERDATA);
         username.setText(ud);
-
-
-
     }
 
 }
