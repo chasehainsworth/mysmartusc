@@ -14,4 +14,16 @@ public class Email {
         this.sender = sender;
         this.body = body;
     }
+
+    public String getSubject(){
+        return this.subject;
+    }
+
+    public String getBody(){
+        return this.body;
+    }
+
+    public String getSender(){
+        return this.sender;
+    }
 }

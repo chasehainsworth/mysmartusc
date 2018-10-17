@@ -40,5 +40,6 @@ public class Filter {
     public boolean sort(Email email){
         //Determine what category the email belongs to.
 
+        return false;
     }
 }
