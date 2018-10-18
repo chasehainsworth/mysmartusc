@@ -112,6 +112,7 @@ public class GmailWrapper {
                 return header.getValue();
             }
         }
+        return null;
     }
 
     public String getBody(Message message) {
