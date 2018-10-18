@@ -78,6 +78,8 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    // User table functions:
+    // addUser(), getAllUsers(), updateUser(), getUserID(), deleteUser()
     public boolean addUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -127,5 +129,135 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_1_NAME, "ID = ?", new String[] {String.valueOf(id)});
     }
+
+
+
+    // Email table functions:
+    // addEmail(), getAllEmails(), updateEmail(), getEmailID(), deleteEmail()
+
+    public boolean addEmail(Email email, User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        Cursor c = this.getUserID(user);
+        int userID = c.getInt(0);
+        cv.put(COL2_1, email.getSender());
+        cv.put(COL2_2, email.getSubject());
+        cv.put(COL2_3, email.getBody());
+        cv.put(COL2_4, userID);
+
+        long result = db.insert(TABLE_2_NAME, null, cv);
+
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    public Cursor getAllEmails(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_2_NAME, null);
+    }
+
+    // Probably won't need a function to update email information once an Email is already
+    // in the table.
+//    public boolean updateEmail(User user, int id){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues cv = new ContentValues();
+//        cv.put(COL2_1, user.getEmail());
+//        cv.put(COL2_2, user.getPassword());
+//
+//        int update = db.update(TABLE_1_NAME, cv, COL1_0 + " = ? ", new String[] {String.valueOf(id)} );
+//
+//        if(update != 1) {
+//            return false;
+//        }
+//        else{
+//            return true;
+//        }
+//    }
+
+    public Cursor getEmailID(Email email){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String sql = "SELECT * FROM " + TABLE_2_NAME  +
+                " WHERE " + COL2_1 + " = '" + email.getSender() + "'" +
+                " AND " + COL2_2 + " = '" + email.getSubject() + "'";
+        return db.rawQuery(sql, null);
+    }
+
+    public Integer deleteEmail(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_2_NAME, "ID = ?", new String[] {String.valueOf(id)});
+    }
+
+
+
+
+    // Keyword table functions:
+    // addKeyword(), getAllKeywords(), updateKeyword(), getKeywordID(), deleteKeyword()
+
+    public boolean addKeyword(String keyword, String type, User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        Cursor c = this.getUserID(user);
+        int userID = c.getInt(0);
+        cv.put(COL3_1, keyword);
+        cv.put(COL3_2, type);
+        cv.put(COL3_3, userID);
+
+        long result = db.insert(TABLE_3_NAME, null, cv);
+
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public Cursor getAllKeywords(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_3_NAME, null);
+    }
+
+    // Again, may not need this function for the Keyword table.
+    //
+//    public boolean updateKeyword(User user, int id){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues cv = new ContentValues();
+//        cv.put(COL1_1, user.getEmail());
+//        cv.put(COL1_2, user.getPassword());
+//
+//        int update = db.update(TABLE_1_NAME, cv, COL1_0 + " = ? ", new String[] {String.valueOf(id)} );
+//
+//        if(update != 1) {
+//            return false;
+//        }
+//        else{
+//            return true;
+//        }
+//    }
+
+    public Cursor getKeywordID(User user, String keyword){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor c = this.getUserID(user);
+        int userID = c.getInt(0);
+
+        String sql = "SELECT * FROM " + TABLE_3_NAME  +
+                " WHERE " + COL3_1 + " = '" + keyword + "'" +
+                " AND " + COL3_3 + " = '" + userID + "'";
+        return db.rawQuery(sql, null);
+    }
+
+    public Integer deleteKeyword(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(TABLE_3_NAME, "ID = ?", new String[] {String.valueOf(id)});
+    }
+
+
+
 
 }
