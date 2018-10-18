@@ -7,20 +7,26 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class EmailViewerActivity extends Activity {
+    private TextView fromLabel, subjectLabel, body;
+
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.email_viewer_activity);
 
-        Button returnButton = (Button) findViewById(R.id.BackButton);
-        TextView fromLabel = (TextView) findViewById(R.id.emailFromLabel);
-        TextView subjectLabel = (TextView) findViewById(R.id.emailSubjectLabel);
+        this.fromLabel = (TextView) findViewById(R.id.emailFromLabel);
+        this.subjectLabel = (TextView) findViewById(R.id.emailSubjectLabel);
+        this.body = (TextView) findViewById(R.id.emailBody);
 
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        //The email body's key should be: emailBody
+        String emailBody = getIntent().getStringExtra("emailBody");
+        //The email's subject key should be: emailSubject
+        String emailSubject = getIntent().getStringExtra("emailSubject");
+        //The email's sender key should be: emailSender
+        String emailSender = getIntent().getStringExtra("emailSender");
 
-            }
-        });
+        this.fromLabel.setText(emailSender);
+        this.subjectLabel.setText(emailSubject);
+        this.body.setText(emailBody);
 
     }
 }
