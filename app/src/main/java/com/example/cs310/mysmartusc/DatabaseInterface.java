@@ -34,10 +34,10 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     public static final String COL3_3 = "USERID";
 
 
-
     public DatabaseInterface(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {
