@@ -18,14 +18,14 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     private static final String TABLE_1_NAME = "Users";
     public static final String COL1_0 = "ID";
     public static final String COL1_1 = "EMAIL";
-    public static final String COL1_2 = "PASSWORD";
 
     private static final String TABLE_2_NAME = "Emails";
     public static final String COL2_0 = "ID";
     public static final String COL2_1 = "SENDER";
     public static final String COL2_2 = "SUBJECT";
     public static final String COL2_3 = "BODY";
-    public static final String COL2_4 = "USERID";
+    public static final String COL2_4 = "TYPE";
+    public static final String COL2_5 = "USERID";
 
     private static final String TABLE_3_NAME = "Keywords";
     public static final String COL3_0 = "ID";
@@ -45,8 +45,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         String sql1 = "CREATE TABLE " +
                 TABLE_1_NAME + " ( " +
                 COL1_0 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL1_1 + " TEXT, " +
-                COL1_2 + " TEXT )";
+                COL1_1 + " TEXT )";
 
         String sql2 = "CREATE TABLE " +
                 TABLE_2_NAME + " ( " +
@@ -54,8 +53,9 @@ public class DatabaseInterface extends SQLiteOpenHelper {
                 COL2_1 + " TEXT, " +
                 COL2_2 + " TEXT, " +
                 COL2_3 + " TEXT, " +
-                COL2_4 + " INTEGER, " +
-                "FOREIGN KEY(" + COL2_4 + ") REFERENCES " + TABLE_1_NAME + "(" + COL1_0 + " ))";
+                COL2_4 + " TEXT, " +
+                COL2_5 + " INTEGER, " +
+                "FOREIGN KEY(" + COL2_5 + ") REFERENCES " + TABLE_1_NAME + "(" + COL1_0 + " ))";
 
 
         String sql3 = "CREATE TABLE " +
@@ -80,11 +80,10 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 
     // User table functions:
     // addUser(), getAllUsers(), updateUser(), getUserID(), deleteUser()
-    public boolean addUser(User user) {
+    public boolean addUser(String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(COL1_1, user.getEmail());
-        cv.put(COL1_2, user.getPassword());
+        cv.put(COL1_1, user);
 
         long result = db.insert(TABLE_1_NAME, null, cv);
 
@@ -101,11 +100,10 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM " + TABLE_1_NAME, null);
     }
 
-    public boolean updateUser(User user, int id){
+    public boolean updateUser(String user, int id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(COL1_1, user.getEmail());
-        cv.put(COL1_2, user.getPassword());
+        cv.put(COL1_1, user);
 
         int update = db.update(TABLE_1_NAME, cv, COL1_0 + " = ? ", new String[] {String.valueOf(id)} );
 
@@ -117,11 +115,10 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor getUserID(User user){
+    public Cursor getUserID(String user){
         SQLiteDatabase db = this.getWritableDatabase();
         String sql = "SELECT * FROM " + TABLE_1_NAME  +
-                " WHERE " + COL1_1 + " = '" + user.getEmail() + "'" +
-                " AND " + COL1_2 + " = '" + user.getPassword() + "'";
+                " WHERE " + COL1_1 + " = '" + user + "'";
         return db.rawQuery(sql, null);
     }
 
@@ -135,7 +132,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     // Email table functions:
     // addEmail(), getAllEmails(), updateEmail(), getEmailID(), deleteEmail()
 
-    public boolean addEmail(Email email, User user) {
+    public boolean addEmail(Email email, String user, String type) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -144,7 +141,8 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         cv.put(COL2_1, email.getSender());
         cv.put(COL2_2, email.getSubject());
         cv.put(COL2_3, email.getBody());
-        cv.put(COL2_4, userID);
+        cv.put(COL2_4, type);
+        cv.put(COL2_5, userID);
 
         long result = db.insert(TABLE_2_NAME, null, cv);
 
@@ -198,7 +196,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     // Keyword table functions:
     // addKeyword(), getAllKeywords(), updateKeyword(), getKeywordID(), deleteKeyword()
 
-    public boolean addKeyword(String keyword, String type, User user) {
+    public boolean addKeyword(String keyword, String type, String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -240,7 +238,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 //        }
 //    }
 
-    public Cursor getKeywordID(User user, String keyword){
+    public Cursor getKeywordID(String user, String keyword){
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor c = this.getUserID(user);
