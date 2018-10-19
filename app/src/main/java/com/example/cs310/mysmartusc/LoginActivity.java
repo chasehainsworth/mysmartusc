@@ -218,6 +218,11 @@ public class LoginActivity extends AppCompatActivity implements
         if (account != null) {
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+
+            //Now we will want to go to the main menu
+            Intent saveIntent = new Intent(LoginActivity.this, HomePageActivity.class);
+            startActivity(saveIntent);
+
         } else {
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
