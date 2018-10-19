@@ -18,6 +18,7 @@ import com.google.api.services.gmail.model.ListHistoryResponse;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePartHeader;
+import com.google.api.services.gmail.model.Profile;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -71,9 +72,10 @@ public class GmailWrapper {
                     getHeader(fullMessage, "Subject"),
                     getBody(fullMessage),
                     getHeader(fullMessage, "From"));
-            sortEmail(email);
-            if (m.getHistoryId().compareTo(mHistoryId) > 0) {
+//            sortEmail(email);
+            if (m.getHistoryId() == null || m.getHistoryId().compareTo(mHistoryId) > 0) {
                 mHistoryId = m.getHistoryId();
+                Log.w(TAG, mHistoryId.toString());
             }
         }
     }
@@ -157,16 +159,38 @@ public class GmailWrapper {
                     .setStartHistoryId(mHistoryId)
                     .execute();
             List<Message> messages = new ArrayList<>();
-            for (History h : response.getHistory()) {
-              for(HistoryMessageAdded messageAdded : h.getMessagesAdded()) {
-                  messages.add(messageAdded.getMessage());
-              }
+            mHistoryId = response.getHistoryId();
+            if (response.getHistory() != null) {
+                for (History history : response.getHistory()) {
+                    if (history != null) {
+                        for (HistoryMessageAdded messageAdded : history.getMessagesAdded()) {
+                            messages.add(messageAdded.getMessage());
+                        }
+                    }
+                }
             }
             return messages;
         } catch (IOException e) {
             Log.w(TAG, "listMessages:exception", e);
         }
         return null;
+    }
+
+    public void getStartHistoryId() {
+        try {
+            GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
+                    mContext,
+                    Collections.singleton(EMAIL_SCOPE));
+            credential.setSelectedAccount(mAccount);
+
+            Gmail mService = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+                    .setApplicationName("MySmartUSC")
+                    .build();
+            Profile profile = mService.users().getProfile(credential.getSelectedAccountName()).execute();
+            mHistoryId = profile.getHistoryId();
+        } catch (IOException e) {
+            Log.w(TAG, "listMessages:exception", e);
+        }
     }
 
     public List<Message> listMessages() {
@@ -179,7 +203,6 @@ public class GmailWrapper {
             Gmail mService = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
                     .setApplicationName("MySmartUSC")
                     .build();
-            mService.users().history().list(credential.getSelectedAccountName()).setStartHistoryId(mHistoryId).execute();
             ListMessagesResponse response = mService
                     .users()
                     .messages()
@@ -205,10 +228,16 @@ public class GmailWrapper {
                     getHeader(fullMessage, "Subject"),
                     getBody(fullMessage),
                     getHeader(fullMessage, "From"));
-            sortEmail(email);
-            if (m.getHistoryId().compareTo(mHistoryId) > 0) {
-                mHistoryId = m.getHistoryId();
-            }
+            Log.w(TAG, email.getSender());
+//            sortEmail(email);
+//            System.out.println(m.getHistoryId());
+//            if (m.getHistoryId().compareTo(mHistoryId) > 0) {
+//                mHistoryId = m.getHistoryId();
+//            }
         }
+    }
+
+    public BigInteger getmHistoryId() {
+        return mHistoryId;
     }
 }
