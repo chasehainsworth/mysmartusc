@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 
 public class DatabaseInterface extends SQLiteOpenHelper {
@@ -83,15 +84,21 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     public boolean addUser(String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(COL1_1, user);
 
-        long result = db.insert(TABLE_1_NAME, null, cv);
 
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
+        if(cv.get(user) == null){
+            cv.put(COL1_1, user);
+            Log.e("Database Activity!", "Added user: " + user);
+            long result = db.insert(TABLE_1_NAME, null, cv);
+
+            if (result == -1) {
+                return false;
+            } else {
+                return true;
+            }
         }
+
+        return true;
     }
 
 
@@ -197,6 +204,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     // addKeyword(), getAllKeywords(), updateKeyword(), getKeywordID(), deleteKeyword()
 
     public boolean addKeyword(String keyword, String type, String user) {
+        Log.e("Database Activity!", "");
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
