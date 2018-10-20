@@ -221,6 +221,8 @@ public class LoginActivity extends AppCompatActivity implements
 
             //Now we will want to go to the main menu
             Intent saveIntent = new Intent(LoginActivity.this, HomePageActivity.class);
+            Log.e("ACCOUNT!", account.getEmail());
+            saveIntent.putExtra("accountName", account.getEmail());
             startActivity(saveIntent);
 
         } else {
