@@ -18,11 +18,11 @@ public class EmailViewerActivity extends Activity {
         this.body = (TextView) findViewById(R.id.emailBody);
 
         //The email body's key should be: emailBody
-        String emailBody = getIntent().getStringExtra("emailBody");
+        String emailBody = getIntent().getStringExtra("body");
         //The email's subject key should be: emailSubject
-        String emailSubject = getIntent().getStringExtra("emailSubject");
+        String emailSubject = getIntent().getStringExtra("subject");
         //The email's sender key should be: emailSender
-        String emailSender = getIntent().getStringExtra("emailSender");
+        String emailSender = getIntent().getStringExtra("sender");
 
         this.fromLabel.setText(emailSender);
         this.subjectLabel.setText(emailSubject);
