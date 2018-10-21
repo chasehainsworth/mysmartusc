@@ -315,5 +315,6 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         return db.delete(TABLE_3_NAME, "ID = ?", new String[]{String.valueOf(id)});
     }
 
+    
 
 }
