@@ -17,9 +17,10 @@ public class SpamActivity extends Activity {
     private ArrayList<Email> emails;
     DatabaseInterface db;
 
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle spamInstanceState) {
+        super.onCreate(spamInstanceState);
         setContentView(R.layout.spam_activity);
+
 
         emails = new ArrayList<>();
         db = new DatabaseInterface(getApplicationContext());
@@ -27,10 +28,20 @@ public class SpamActivity extends Activity {
         String user = getIntent().getStringExtra("accountName");
         String type = "spam";
 
-        String email = user.split("@")[0];
-        String domain = user.split("@")[1];
+        Cursor cursor = db.getEmailByType(user, type);
 
-        // TODO: RETREIVE EMAILS FROM DATABASE USING mAccount passed from LoginActivity
+        if (cursor != null ) {
+            if  (cursor.moveToFirst()) {
+                do {
+                    String subject = cursor.getString(cursor.getColumnIndex("SUBJECT"));
+                    String body = cursor.getString(cursor.getColumnIndex("BODY"));
+                    String sender_user = cursor.getString(cursor.getColumnIndex("SENDER_USER"));
+                    String sender_domain = cursor.getString(cursor.getColumnIndex("SENDER_USER"));
+                    emails.add(new Email(subject, body, sender_user + "@" + sender_domain));
+                }while (cursor.moveToNext());
+            }
+        }
+        cursor.close();
 
         ArrayList<String> emailHeaders = new ArrayList<>();
 

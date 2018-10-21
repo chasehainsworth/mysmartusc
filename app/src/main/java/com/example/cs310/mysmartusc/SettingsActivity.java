@@ -3,6 +3,7 @@ package com.example.cs310.mysmartusc;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,29 +40,37 @@ public class SettingsActivity extends Activity {
                 String sKeywords[] = spamKeywords.getText().toString().split(",");
                 String savKeywords[] = savedKeywords.getText().toString().split(",");
 
-                if(uKeywords.length > 0){
+                if(uKeywords[0].length()>0){
                     //Adding the urgent keywords. If they fail display a message.
                     if(!addKeywordsToDatabase("urgent", uKeywords)){
                         toast.makeText(SettingsActivity.this, "Failed adding urgent keywords!", Toast.LENGTH_LONG);
                         result = false;
+                    } else {
+                        toast.makeText(SettingsActivity.this, "Added urgent keywords!", Toast.LENGTH_LONG);
+                        urgentKeywords.setText("");
+
                     }
                 }
 
 
-                if(sKeywords.length > 0){
+                if(sKeywords[0].length()>0){
                     //Adding the spam keywords. IF they fail display a message
                     if(!addKeywordsToDatabase("spam", sKeywords)){
                         toast.makeText(SettingsActivity.this, "Failed adding spam keywords!", Toast.LENGTH_LONG);
                         result = false;
+                    } else {
+                        savedKeywords.setText("");
                     }
 
                 }
 
-                if(savKeywords.length > 0){
+                if(savKeywords[0].length()>0){
                     //Adding the save keywords. IF they fail display a message
                     if(!addKeywordsToDatabase("saved", savKeywords)){
                         toast.makeText(SettingsActivity.this, "Failed adding saved keywords!", Toast.LENGTH_LONG);
                         result = false;
+                    } else {
+                        savedKeywords.setText("");
                     }
                 }
 
