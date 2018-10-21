@@ -1,5 +1,6 @@
 package com.example.cs310.mysmartusc;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +25,8 @@ public class SaveActivity extends Activity {
         emails = new ArrayList<>();
         db = new DatabaseInterface(getApplicationContext());
 
-        String user = getIntent().getStringExtra("accountName");
+        Account account = (Account)getIntent().getParcelableExtra("account");
+        String user = account.name;
         String type = "saved";
 
         Cursor cursor = db.getEmailByType(user, type);

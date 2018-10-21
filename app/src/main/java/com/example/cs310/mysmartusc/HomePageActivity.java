@@ -26,7 +26,7 @@ public class HomePageActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent notificationsIntent = new Intent(HomePageActivity.this, NotificationActivity.class);
-                notificationsIntent.putExtra("accountName", getIntent().getStringExtra("accountName"));
+                notificationsIntent.putExtra("account", getIntent().getParcelableExtra("account"));
                 startActivity(notificationsIntent);
             }
         });
@@ -35,7 +35,7 @@ public class HomePageActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent settingsIntent = new Intent(HomePageActivity.this, SettingsActivity.class);
-                settingsIntent.putExtra("accountName", getIntent().getStringExtra("accountName"));
+                settingsIntent.putExtra("account", getIntent().getParcelableExtra("account"));
                 startActivity(settingsIntent);
             }
         });

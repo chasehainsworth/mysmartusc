@@ -21,7 +21,7 @@ public class NotificationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent saveIntent = new Intent(NotificationActivity.this, SaveActivity.class);
-                saveIntent.putExtra("accountName", getIntent().getStringExtra("accountName"));
+                saveIntent.putExtra("account", getIntent().getParcelableExtra("account"));
                 startActivity(saveIntent);
             }
         });
@@ -30,7 +30,7 @@ public class NotificationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent urgentIntent = new Intent(NotificationActivity.this, UrgentActivity.class);
-                urgentIntent.putExtra("accountName", getIntent().getStringExtra("accountName"));
+                urgentIntent.putExtra("account", getIntent().getParcelableExtra("account"));
                 startActivity(urgentIntent);
             }
         });
@@ -39,7 +39,7 @@ public class NotificationActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent spamIntent = new Intent(NotificationActivity.this, SpamActivity.class);
-                spamIntent.putExtra("accountName", getIntent().getStringExtra("accountName"));
+                spamIntent.putExtra("account", getIntent().getParcelableExtra("account"));
                 startActivity(spamIntent);
             }
         });

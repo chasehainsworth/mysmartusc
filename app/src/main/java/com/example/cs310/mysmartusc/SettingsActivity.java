@@ -1,7 +1,9 @@
 package com.example.cs310.mysmartusc;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,12 +18,14 @@ public class SettingsActivity extends Activity {
     private EditText spamKeywords;
     private Button submit;
     private String accountName;
+    private Account mAccount;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+        mAccount = (Account)getIntent().getParcelableExtra("account");
 
-        accountName = getIntent().getStringExtra("accountName");
+        accountName = mAccount.name;
 
         urgentKeywords = (EditText) findViewById(R.id.urgentKeywords);
         savedKeywords = (EditText) findViewById(R.id.savedKeywords);
@@ -94,6 +98,9 @@ public class SettingsActivity extends Activity {
                 return false;
             }
         }
+        Intent serviceIntent = new Intent(this, GmailWrapperService.class);
+        serviceIntent.putExtra(GmailWrapperService.ACCOUNT_PARAM, mAccount);
+        startService(serviceIntent);
         return true;
     }
 }

@@ -99,22 +99,26 @@ public class GmailWrapper {
             return;
         }
         // If only one filter is triggered
-        else if ( (urgentResult^spamResult^savedResult) && !(urgentResult&&spamResult&&savedResult) ) {
+        //else if ( (urgentResult^spamResult^savedResult) && !(urgentResult&&spamResult&&savedResult) ) {
+        else {
             if(urgentResult) {
+                Log.w(TAG, email.getSubject() + " marked as urgent!");
                 mDatabaseInterface.addEmail(email, mAccount.name, "urgent");
             }
             else if(spamResult) {
+                Log.w(TAG, email.getSubject() + " marked as spam!");
                 mDatabaseInterface.addEmail(email, mAccount.name, "spam");
             }
             else {
+                Log.w(TAG, email.getSubject() + " marked as saved!");
                 mDatabaseInterface.addEmail(email, mAccount.name, "saved");
             }
         }
 
-        // If two+ filters triggered
-        else {
-            Log.e(TAG, "Email fit into 2+ categories");
-        }
+//        // If two+ filters triggered
+//        else {
+//            Log.e(TAG, "Email fit into 2+ categories");
+//        }
     }
     public String getHeader(Message message, String name) {
         for (MessagePartHeader header : message.getPayload().getHeaders()) {
@@ -237,7 +241,7 @@ public class GmailWrapper {
                     getBody(fullMessage),
                     getHeader(fullMessage, "From"));
             Log.w(TAG, email.getSender());
-//            sortEmail(email);
+            sortEmail(email);
 //            System.out.println(m.getHistoryId());
 //            if (m.getHistoryId().compareTo(mHistoryId) > 0) {
 //                mHistoryId = m.getHistoryId();

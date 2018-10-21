@@ -2,10 +2,13 @@ package com.example.cs310.mysmartusc;
 
 import android.accounts.Account;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -71,6 +74,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     private GoogleSignInClient mGoogleSignInClient;
 
+    private GmailWrapperService mBoundService;
     private Account mAccount;
     private Gmail mService;
     private ProgressDialog mProgressDialog;
@@ -112,7 +116,9 @@ public class LoginActivity extends AppCompatActivity implements
         // Check if the user is already signed in and all required scopes are granted
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (GoogleSignIn.hasPermissions(account, new Scope(EMAIL_SCOPE))) {
+            mAccount = account.getAccount();
             updateUI(account);
+            continueToHomepage();
         } else {
             updateUI(null);
         }
@@ -144,6 +150,14 @@ public class LoginActivity extends AppCompatActivity implements
 //        }
     }
 
+    private void continueToHomepage()
+    {
+        //Now we will want to go to the main menu
+        Intent saveIntent = new Intent(LoginActivity.this, HomePageActivity.class);
+        saveIntent.putExtra("account", mAccount);
+        startActivity(saveIntent);
+    }
+
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -171,14 +185,37 @@ public class LoginActivity extends AppCompatActivity implements
             // Store the account from the result
             mAccount = account.getAccount();
             Log.w(TAG, mAccount.name);
+
             Intent serviceIntent = new Intent(this, GmailWrapperService.class);
             serviceIntent.putExtra(GmailWrapperService.ACCOUNT_PARAM, mAccount);
             startService(serviceIntent);
 
+            //Add the user to the database
+            DatabaseInterface db = new DatabaseInterface(this);
+            db.addUser(account.getEmail());
 
+            continueToHomepage();
+
+//            ServiceConnection connection = new ServiceConnection() {
+//                @Override
+//                public void onServiceConnected(ComponentName name, IBinder service) {
+//                    mBoundService = ((GmailWrapperService.LocalBinder)service).getService();
+//                    Intent saveIntent = new Intent(LoginActivity.this, HomePageActivity.class);
+//                    saveIntent.putExtra("accountName", mAccount.name);
+//                    saveIntent.putExtra
+//                    startActivity(saveIntent);
+//                }
+//
+//                @Override
+//                public void onServiceDisconnected(ComponentName name) {
+//                    mBoundService = null;
+//                }
+//            };
+//            bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE);
+//            while(mBoundService == null) {}
+//            mBoundService.reloadKeywords();
         } catch (ApiException e) {
             Log.w(TAG, "handleSignInResult:error", e);
-
             // Clear the local account
             mAccount = null;
 
@@ -220,14 +257,7 @@ public class LoginActivity extends AppCompatActivity implements
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
 
-            //Add the user to the database
-            DatabaseInterface db = new DatabaseInterface(this);
-            db.addUser(account.getEmail());
 
-            //Now we will want to go to the main menu
-            Intent saveIntent = new Intent(LoginActivity.this, HomePageActivity.class);
-            saveIntent.putExtra("accountName", account.getEmail());
-            startActivity(saveIntent);
 
         } else {
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
