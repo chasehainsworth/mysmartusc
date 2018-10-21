@@ -20,15 +20,17 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 
     private static final String TABLE_1_NAME = "Users";
     public static final String COL1_0 = "ID";
-    public static final String COL1_1 = "EMAIL";
+    public static final String COL1_1 = "EMAIL_USER";
+    public static final String COL1_2 = "EMAIL_DOMAIN";
 
     private static final String TABLE_2_NAME = "Emails";
     public static final String COL2_0 = "ID";
-    public static final String COL2_1 = "SENDER";
+    public static final String COL2_1 = "SENDER_USER";
     public static final String COL2_2 = "SUBJECT";
     public static final String COL2_3 = "BODY";
     public static final String COL2_4 = "TYPE";
     public static final String COL2_5 = "USERID";
+    public static final String COL2_6 = "SENDER_DOMAIN";
 
     private static final String TABLE_3_NAME = "Keywords";
     public static final String COL3_0 = "ID";
@@ -49,7 +51,8 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         String sql1 = "CREATE TABLE " +
                 TABLE_1_NAME + " ( " +
                 COL1_0 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL1_1 + " TEXT )";
+                COL1_1 + " TEXT, " +
+                COL1_2 + " TEXT)";
 
         String sql2 = "CREATE TABLE " +
                 TABLE_2_NAME + " ( " +
@@ -59,6 +62,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
                 COL2_3 + " TEXT, " +
                 COL2_4 + " TEXT, " +
                 COL2_5 + " INTEGER, " +
+                COL2_6 + " INTEGER, " +
                 "FOREIGN KEY(" + COL2_5 + ") REFERENCES " + TABLE_1_NAME + "(" + COL1_0 + " ))";
 
 
@@ -87,14 +91,18 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 
     // User table functions:
     // addUser(), getAllUsers(), updateUser(), getUserID(), deleteUser()
-    public boolean addUser(String user) {
+    public boolean addUser(String email) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         Cursor getUser = db.rawQuery("SELECT * FROM " + TABLE_1_NAME + " WHERE EMAIL = '" + user + "'", null);
         if (getUser != null && getUser.getCount() == 0) {
+            String user = email.split("@")[0];
+            String domain = email.split("@")[1];
+
             cv.put(COL1_1, user);
-            Log.e("Database Activity!", "Added user: " + user);
+            cv.put(COL1_2, domain);
+            Log.e("Database Activity!", "Added user: " + user + " with domain: " + domain);
             long result = db.insert(TABLE_1_NAME, null, cv);
 
             if (result == -1) {
@@ -113,10 +121,15 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM " + TABLE_1_NAME, null);
     }
 
-    public boolean updateUser(String user, int id) {
+    public boolean updateUser(String email, int id){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
+
+        String user = email.split("@")[0];
+        String domain = email.split("@")[1];
+
         cv.put(COL1_1, user);
+        cv.put(COL1_2, domain);
 
         int update = db.update(TABLE_1_NAME, cv, COL1_0 + " = ? ", new String[]{String.valueOf(id)});
 
@@ -127,10 +140,15 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor getUserID(String user) {
+    public Cursor getUserID(String email){
         SQLiteDatabase db = this.getWritableDatabase();
-        String sql = "SELECT * FROM " + TABLE_1_NAME +
-                " WHERE " + COL1_1 + " = '" + user + "'";
+
+        String user = email.split("@")[0];
+        String domain = email.split("@")[1];
+
+        String sql = "SELECT * FROM " + TABLE_1_NAME  +
+                " WHERE " + COL1_1 + " = '" + user + "'" +
+                " AND " + COL1_2 + " = '" + domain + "'";
         return db.rawQuery(sql, null);
     }
 
@@ -149,11 +167,16 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 
         Cursor c = this.getUserID(user);
         int userID = c.getInt(0);
-        cv.put(COL2_1, email.getSender());
+
+        String sender_user = email.getSender().split("@")[0];
+        String sender_domain = email.getSender().split("@")[1];
+
+        cv.put(COL2_1, sender_user);
         cv.put(COL2_2, email.getSubject());
         cv.put(COL2_3, email.getBody());
         cv.put(COL2_4, type);
         cv.put(COL2_5, userID);
+        cv.put(COL2_6, sender_domain);
 
         long result = db.insert(TABLE_2_NAME, null, cv);
 
@@ -170,9 +193,15 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM " + TABLE_2_NAME, null);
     }
 
-    public Cursor getEmailByType(String user, String type) {
+    public Cursor getEmailByType(String email, String type)
+    {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE TYPE = " + type + "AND USERID = " + user, null);
+
+        String sender_user = email.split("@")[0];
+        String sender_domain = email.split("@")[1];
+
+        return db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE TYPE = " + type +
+                " AND COL2_1 = " + sender_user + " AND COL2_6 = " + sender_domain, null);
     }
 
     // Probably won't need a function to update email information once an Email is already
@@ -195,8 +224,13 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 
     public Cursor getEmailID(Email email) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String sql = "SELECT * FROM " + TABLE_2_NAME +
-                " WHERE " + COL2_1 + " = '" + email.getSender() + "'" +
+
+        String sender_user = email.getSender().split("@")[0];
+        String sender_domain = email.getSender().split("@")[1];
+
+        String sql = "SELECT * FROM " + TABLE_2_NAME  +
+                " WHERE " + COL2_1 + " = '" + sender_user + "'" +
+                " AND " + COL2_6 + " = '" + sender_domain + "'" +
                 " AND " + COL2_2 + " = '" + email.getSubject() + "'";
         return db.rawQuery(sql, null);
     }
