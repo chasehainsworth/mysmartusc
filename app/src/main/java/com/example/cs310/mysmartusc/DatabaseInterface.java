@@ -62,12 +62,14 @@ public class DatabaseInterface extends SQLiteOpenHelper {
                 "FOREIGN KEY(" + COL2_5 + ") REFERENCES " + TABLE_1_NAME + "(" + COL1_0 + " ))";
 
 
+
         String sql3 = "CREATE TABLE " +
                 TABLE_3_NAME + " ( " +
                 COL3_0 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL3_1 + " TEXT, " +
                 COL3_2 + " TEXT, " +
                 COL3_3 + " INTEGER, " +
+                COL3_4 + " TEXT, " +
                 "FOREIGN KEY(" + COL3_3 + ") REFERENCES " + TABLE_1_NAME + "(" + COL1_0 + " ))";
 
         db.execSQL(sql1);
@@ -231,7 +233,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     public Cursor getKeywordsByType(String type, String category) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_3_NAME + " WHERE " + COL3_2
-                + " = " + type + " AND " + COL3_4 + " = " + category, null);
+                + " = " + "\"" + type + "\"" + " AND " + COL3_4 + " = " + "\"" + category + "\"" , null);
     }
 
     public Cursor getAllKeywords() {
