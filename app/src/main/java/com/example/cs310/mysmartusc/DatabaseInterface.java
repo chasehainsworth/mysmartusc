@@ -65,8 +65,6 @@ public class DatabaseInterface extends SQLiteOpenHelper {
                 COL2_6 + " INTEGER, " +
                 "FOREIGN KEY(" + COL2_5 + ") REFERENCES " + TABLE_1_NAME + "(" + COL1_0 + " ))";
 
-
-
         String sql3 = "CREATE TABLE " +
                 TABLE_3_NAME + " ( " +
                 COL3_0 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -99,8 +97,8 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         String domain = email.split("@")[1];
 
         Cursor getUser = db.rawQuery("SELECT * FROM " + TABLE_1_NAME +
-                " WHERE EMAIL_USER = '" + user + "'" +
-                " AND EMAIL_DOMAIN = '" + domain + "'", null);
+                " WHERE " + COL1_1 + " = '" + user + "'" +
+                " AND " + COL1_2 + " = '" + domain + "'", null);
 
         if (getUser != null && getUser.getCount() == 0) {
 
@@ -205,8 +203,8 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         String sender_user = email.split("@")[0];
         String sender_domain = email.split("@")[1];
 
-        return db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE TYPE = " + type +
-                " AND COL2_1 = " + sender_user + " AND COL2_6 = " + sender_domain, null);
+        return db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE " + COL2_4 + " = '" + type + "'" +
+                " AND " + COL2_1 + " = '" + sender_user + "'" + " AND " + COL2_6 + " = '" + sender_domain + "'", null);
     }
 
     // Probably won't need a function to update email information once an Email is already
