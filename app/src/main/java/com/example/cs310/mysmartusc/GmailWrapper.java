@@ -61,6 +61,12 @@ public class GmailWrapper {
         mSavedFilter = new Filter("saved", mDatabaseInterface);
     }
 
+    public void reloadKeywords() {
+        mUrgentFilter = new Filter("urgent", mDatabaseInterface);
+        mSpamFilter = new Filter("spam", mDatabaseInterface);
+        mSavedFilter = new Filter("saved", mDatabaseInterface);
+    }
+
     // Used when there is no prior HistoryId
     public void fullSync() {
         if (mAccount == null) {

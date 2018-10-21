@@ -26,6 +26,7 @@ public class HomePageActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent notificationsIntent = new Intent(HomePageActivity.this, NotificationActivity.class);
+                notificationsIntent.putExtra("accountName", getIntent().getStringExtra("accountName"));
                 startActivity(notificationsIntent);
             }
         });
