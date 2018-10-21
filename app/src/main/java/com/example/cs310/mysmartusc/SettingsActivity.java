@@ -39,24 +39,32 @@ public class SettingsActivity extends Activity {
                 String sKeywords[] = spamKeywords.getText().toString().split(",");
                 String savKeywords[] = savedKeywords.getText().toString().split(",");
 
-
-                //Adding the urgent keywords. If they fail display a message.
-                if(!addKeywordsToDatabase("urgent", uKeywords)){
-                    toast.makeText(SettingsActivity.this, "Failed adding urgent keywords!", Toast.LENGTH_LONG);
-                    result = false;
+                if(uKeywords.length > 0){
+                    //Adding the urgent keywords. If they fail display a message.
+                    if(!addKeywordsToDatabase("urgent", uKeywords)){
+                        toast.makeText(SettingsActivity.this, "Failed adding urgent keywords!", Toast.LENGTH_LONG);
+                        result = false;
+                    }
                 }
 
-                //Adding the spam keywords. IF they fail display a message
-                if(!addKeywordsToDatabase("spam", sKeywords)){
-                    toast.makeText(SettingsActivity.this, "Failed adding spam keywords!", Toast.LENGTH_LONG);
-                    result = false;
+
+                if(sKeywords.length > 0){
+                    //Adding the spam keywords. IF they fail display a message
+                    if(!addKeywordsToDatabase("spam", sKeywords)){
+                        toast.makeText(SettingsActivity.this, "Failed adding spam keywords!", Toast.LENGTH_LONG);
+                        result = false;
+                    }
+
                 }
 
-                //Adding the save keywords. IF they fail display a message
-                if(!addKeywordsToDatabase("saved", savKeywords)){
-                    toast.makeText(SettingsActivity.this, "Failed adding saved keywords!", Toast.LENGTH_LONG);
-                    result = false;
+                if(savKeywords.length > 0){
+                    //Adding the save keywords. IF they fail display a message
+                    if(!addKeywordsToDatabase("saved", savKeywords)){
+                        toast.makeText(SettingsActivity.this, "Failed adding saved keywords!", Toast.LENGTH_LONG);
+                        result = false;
+                    }
                 }
+
 
                 //All the keywords have been added
                 if(result){

@@ -129,7 +129,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 
     public Cursor getUserID(String user) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String sql = "SELECT * FROM " + TABLE_1_NAME +
+        String sql = "SELECT ID FROM " + TABLE_1_NAME +
                 " WHERE " + COL1_1 + " = '" + user + "'";
         return db.rawQuery(sql, null);
     }
@@ -216,10 +216,12 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
 
         Cursor c = this.getUserID(user);
-        String userID = c.getString(2);
+        c.moveToFirst();
+        String id = c.getString(0);
+
         cv.put(COL3_1, keyword);
         cv.put(COL3_2, type);
-        cv.put(COL3_3, userID);
+        cv.put(COL3_3, id);
 
         long result = db.insert(TABLE_3_NAME, null, cv);
 
