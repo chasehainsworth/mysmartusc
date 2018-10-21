@@ -41,7 +41,6 @@ public class SettingsActivity extends Activity {
                 String savKeywords[] = savedKeywords.getText().toString().split(",");
 
                 if(uKeywords[0].length()>0){
-                    Log.e("Urgent", "Length good");
                     //Adding the urgent keywords. If they fail display a message.
                     if(!addKeywordsToDatabase("urgent", uKeywords)){
                         toast.makeText(SettingsActivity.this, "Failed adding urgent keywords!", Toast.LENGTH_LONG);
@@ -51,7 +50,6 @@ public class SettingsActivity extends Activity {
 
 
                 if(sKeywords[0].length()>0){
-                    Log.e("Spam", "Length good");
                     //Adding the spam keywords. IF they fail display a message
                     if(!addKeywordsToDatabase("spam", sKeywords)){
                         toast.makeText(SettingsActivity.this, "Failed adding spam keywords!", Toast.LENGTH_LONG);
@@ -61,7 +59,6 @@ public class SettingsActivity extends Activity {
                 }
 
                 if(savKeywords[0].length()>0){
-                    Log.e("Save", "Length good");
                     //Adding the save keywords. IF they fail display a message
                     if(!addKeywordsToDatabase("saved", savKeywords)){
                         toast.makeText(SettingsActivity.this, "Failed adding saved keywords!", Toast.LENGTH_LONG);
