@@ -95,19 +95,19 @@ public class GmailWrapper {
         // If only one filter is triggered
         else if ( (urgentResult^spamResult^savedResult) && !(urgentResult&&spamResult&&savedResult) ) {
             if(urgentResult) {
-
+                mDatabaseInterface.addEmail(email, mAccount.name, "urgent");
             }
             else if(spamResult) {
-
+                mDatabaseInterface.addEmail(email, mAccount.name, "spam");
             }
             else {
-
+                mDatabaseInterface.addEmail(email, mAccount.name, "saved");
             }
         }
 
         // If two+ filters triggered
         else {
-
+            Log.e(TAG, "Email fit into 2+ categories");
         }
     }
     public String getHeader(Message message, String name) {

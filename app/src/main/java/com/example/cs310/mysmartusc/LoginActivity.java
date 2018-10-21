@@ -170,6 +170,7 @@ public class LoginActivity extends AppCompatActivity implements
 
             // Store the account from the result
             mAccount = account.getAccount();
+            Log.w(TAG, mAccount.name);
             Intent serviceIntent = new Intent(this, GmailWrapperService.class);
             serviceIntent.putExtra(GmailWrapperService.ACCOUNT_PARAM, mAccount);
             startService(serviceIntent);

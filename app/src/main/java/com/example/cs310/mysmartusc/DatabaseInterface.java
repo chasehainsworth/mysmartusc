@@ -70,6 +70,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 
         db.execSQL(sql1);
         db.execSQL(sql2);
+        db.execSQL(sql3);
     }
 
     @Override
