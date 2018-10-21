@@ -62,12 +62,14 @@ public class DatabaseInterface extends SQLiteOpenHelper {
                 "FOREIGN KEY(" + COL2_5 + ") REFERENCES " + TABLE_1_NAME + "(" + COL1_0 + " ))";
 
 
+
         String sql3 = "CREATE TABLE " +
                 TABLE_3_NAME + " ( " +
                 COL3_0 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL3_1 + " TEXT, " +
                 COL3_2 + " TEXT, " +
                 COL3_3 + " INTEGER, " +
+                COL3_4 + " TEXT, " +
                 "FOREIGN KEY(" + COL3_3 + ") REFERENCES " + TABLE_1_NAME + "(" + COL1_0 + " ))";
 
         db.execSQL(sql1);
@@ -89,8 +91,8 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-
-        if(cv.get(user) == null){
+        Cursor getUser = db.rawQuery("SELECT * FROM " + TABLE_1_NAME + " WHERE EMAIL = '" + user + "'", null);
+        if (getUser != null && getUser.getCount() == 0) {
             cv.put(COL1_1, user);
             Log.e("Database Activity!", "Added user: " + user);
             long result = db.insert(TABLE_1_NAME, null, cv);
@@ -106,38 +108,36 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getAllUsers(){
+    public Cursor getAllUsers() {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_1_NAME, null);
     }
 
-    public boolean updateUser(String user, int id){
+    public boolean updateUser(String user, int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COL1_1, user);
 
-        int update = db.update(TABLE_1_NAME, cv, COL1_0 + " = ? ", new String[] {String.valueOf(id)} );
+        int update = db.update(TABLE_1_NAME, cv, COL1_0 + " = ? ", new String[]{String.valueOf(id)});
 
-        if(update != 1) {
+        if (update != 1) {
             return false;
-        }
-        else{
+        } else {
             return true;
         }
     }
 
-    public Cursor getUserID(String user){
+    public Cursor getUserID(String user) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String sql = "SELECT * FROM " + TABLE_1_NAME  +
+        String sql = "SELECT * FROM " + TABLE_1_NAME +
                 " WHERE " + COL1_1 + " = '" + user + "'";
         return db.rawQuery(sql, null);
     }
 
-    public Integer deleteUser(int id){
+    public Integer deleteUser(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_1_NAME, "ID = ?", new String[] {String.valueOf(id)});
+        return db.delete(TABLE_1_NAME, "ID = ?", new String[]{String.valueOf(id)});
     }
-
 
 
     // Email table functions:
@@ -165,15 +165,14 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getAllEmails(){
+    public Cursor getAllEmails() {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_2_NAME, null);
     }
 
-    public Cursor getEmailByType(String user, String type)
-    {
+    public Cursor getEmailByType(String user, String type) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return  db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE TYPE = " + type + "AND USERID = " + user, null);
+        return db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE TYPE = " + type + "AND USERID = " + user, null);
     }
 
     // Probably won't need a function to update email information once an Email is already
@@ -194,27 +193,25 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 //        }
 //    }
 
-    public Cursor getEmailID(Email email){
+    public Cursor getEmailID(Email email) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String sql = "SELECT * FROM " + TABLE_2_NAME  +
+        String sql = "SELECT * FROM " + TABLE_2_NAME +
                 " WHERE " + COL2_1 + " = '" + email.getSender() + "'" +
                 " AND " + COL2_2 + " = '" + email.getSubject() + "'";
         return db.rawQuery(sql, null);
     }
 
-    public Integer deleteEmail(int id){
+    public Integer deleteEmail(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_2_NAME, "ID = ?", new String[] {String.valueOf(id)});
+        return db.delete(TABLE_2_NAME, "ID = ?", new String[]{String.valueOf(id)});
     }
-
-
 
 
     // Keyword table functions:
     // addKeyword(), getAllKeywords(), updateKeyword(), getKeywordID(), deleteKeyword()
 
     public boolean addKeyword(String keyword, String type, String user) {
-        Log.e("Database Activity!", "");
+        Log.e("Database Activity!", "Trying to add keyword " + keyword + ", " + type + ", " + user);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -233,14 +230,13 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         }
     }
 
-    public Cursor getKeywordsByType(String type, String category)
-    {
+    public Cursor getKeywordsByType(String type, String category) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_3_NAME + " WHERE " + COL3_2
-        + " = " + type + " AND " + COL3_4 + " = " + category, null);
+                + " = " + "\"" + type + "\"" + " AND " + COL3_4 + " = " + "\"" + category + "\"" , null);
     }
 
-    public Cursor getAllKeywords(){
+    public Cursor getAllKeywords() {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_3_NAME, null);
     }
@@ -263,24 +259,22 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 //        }
 //    }
 
-    public Cursor getKeywordID(String user, String keyword){
+    public Cursor getKeywordID(String user, String keyword) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor c = this.getUserID(user);
         int userID = c.getInt(0);
 
-        String sql = "SELECT * FROM " + TABLE_3_NAME  +
+        String sql = "SELECT * FROM " + TABLE_3_NAME +
                 " WHERE " + COL3_1 + " = '" + keyword + "'" +
                 " AND " + COL3_3 + " = '" + userID + "'";
         return db.rawQuery(sql, null);
     }
 
-    public Integer deleteKeyword(int id){
+    public Integer deleteKeyword(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_3_NAME, "ID = ?", new String[] {String.valueOf(id)});
+        return db.delete(TABLE_3_NAME, "ID = ?", new String[]{String.valueOf(id)});
     }
-
-
 
 
 }

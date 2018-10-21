@@ -34,7 +34,7 @@ public class HomePageActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent settingsIntent = new Intent(HomePageActivity.this, SettingsActivity.class);
-                settingsIntent.putExtra("accountName", getIntent().getStringArrayExtra("accountName"));
+                settingsIntent.putExtra("accountName", getIntent().getStringExtra("accountName"));
                 startActivity(settingsIntent);
             }
         });

@@ -28,36 +28,37 @@ public class Filter {
     {
         List<String> keywords = new ArrayList<>();
         Cursor cursor = mDatabaseInterface.getKeywordsByType(mType, category);
-        while(!cursor.isLast())
-        {
-            keywords.add(cursor.getString(1));
-            cursor.moveToNext();
+        if(cursor.getCount() != 0) {
+            while (!cursor.isLast()) {
+                keywords.add(cursor.getString(1));
+                cursor.moveToNext();
+            }
         }
         return keywords;
     }
 
     public void addEmailAddress(String emailAddress){
-        this.emailAddresses.add(emailAddress);
+        emailAddresses.add(emailAddress);
     }
 
     public void addBodyKeyword(String keyword){
-        this.bodyKeywords.add(keyword);
+        bodyKeywords.add(keyword);
     }
 
     public void addSubjectKeyword(String keyword){
-        this.addSubjectKeyword(keyword);
+        subjectKeywords.add(keyword);
     }
 
     public List<String> getEmailAddresses(){
-        return this.emailAddresses;
+        return emailAddresses;
     }
 
     public List<String> getBodyKeywords(){
-        return this.bodyKeywords;
+        return bodyKeywords;
     }
 
     public List<String> getSubjectKeywords(){
-        return this.subjectKeywords;
+        return subjectKeywords;
     }
 
     public boolean sort(Email email){
