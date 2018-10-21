@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.database.Cursor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,12 +15,20 @@ import java.util.Arrays;
 public class SpamActivity extends Activity {
 
     private ArrayList<Email> emails;
+    DatabaseInterface db;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.spam_activity);
 
         emails = new ArrayList<>();
+        db = new DatabaseInterface(getApplicationContext());
+
+        String user = getIntent().getStringExtra("accountName");
+        String type = "spam";
+
+        String email = user.split("@")[0];
+        String domain = user.split("@")[1];
 
         // TODO: RETREIVE EMAILS FROM DATABASE USING mAccount passed from LoginActivity
 
