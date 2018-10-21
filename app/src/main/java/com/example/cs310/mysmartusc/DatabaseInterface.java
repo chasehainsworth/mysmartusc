@@ -33,6 +33,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     public static final String COL3_1 = "TEXT";
     public static final String COL3_2 = "TYPE";
     public static final String COL3_3 = "USERID";
+    public static final String COL3_4 = "CATEGORY";
 
 
     public DatabaseInterface(Context context) {
@@ -221,6 +222,13 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         } else {
             return true;
         }
+    }
+
+    public Cursor getKeywordsByType(String type, String category)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_3_NAME + " WHERE " + COL3_2
+        + " = " + type + " AND " + COL3_4 + " = " + category, null);
     }
 
     public Cursor getAllKeywords(){

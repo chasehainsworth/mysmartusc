@@ -1,5 +1,7 @@
 package com.example.cs310.mysmartusc;
 
+import android.database.Cursor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,15 +9,33 @@ public class Filter {
     private List<String> emailAddresses;
     private List<String> bodyKeywords;
     private List<String> subjectKeywords;
+    private String mType;
+    private DatabaseInterface mDatabaseInterface;
 
     //What needs to be the match ratio to return true?
     private double keywordMatchFrequency = 0.1;
 
-    public Filter(){
-        this.emailAddresses = new ArrayList<>();
-        this.bodyKeywords = new ArrayList<>();
-        this.subjectKeywords = new ArrayList<>();
+    public Filter(String type, DatabaseInterface databaseInterface)
+    {
+        mType = type;
+        mDatabaseInterface = databaseInterface;
+        emailAddresses = loadKeywords("address");
+        bodyKeywords = loadKeywords("body");
+        subjectKeywords = loadKeywords("subject");
     }
+
+    private List<String> loadKeywords(String category)
+    {
+        List<String> keywords = new ArrayList<>();
+        Cursor cursor = mDatabaseInterface.getKeywordsByType(mType, category);
+        while(!cursor.isLast())
+        {
+            keywords.add(cursor.getString(1));
+            cursor.moveToNext();
+        }
+        return keywords;
+    }
+
     public void addEmailAddress(String emailAddress){
         this.emailAddresses.add(emailAddress);
     }

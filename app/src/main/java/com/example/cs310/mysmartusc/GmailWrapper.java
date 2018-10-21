@@ -47,12 +47,14 @@ public class GmailWrapper {
     private Filter mSpamFilter;
     private Filter mSavedFilter;
 
+    private DatabaseInterface mDatabaseInterface;
     private BigInteger mHistoryId;
 
     public GmailWrapper(Context context, Account account) {
         mContext = context;
         mAccount = account;
 
+        mDatabaseInterface = new DatabaseInterface(context);
         // filters need to be populated from database
         mUrgentFilter = new Filter();
         mSpamFilter = new Filter();
