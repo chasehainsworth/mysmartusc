@@ -56,9 +56,9 @@ public class GmailWrapper {
 
         mDatabaseInterface = new DatabaseInterface(context);
         // filters need to be populated from database
-        mUrgentFilter = new Filter();
-        mSpamFilter = new Filter();
-        mSavedFilter = new Filter();
+        mUrgentFilter = new Filter("urgent", mDatabaseInterface);
+        mSpamFilter = new Filter("spam", mDatabaseInterface);
+        mSavedFilter = new Filter("saved", mDatabaseInterface);
     }
 
     // Used when there is no prior HistoryId
