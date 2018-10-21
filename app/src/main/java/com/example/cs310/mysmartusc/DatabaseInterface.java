@@ -95,10 +95,14 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        Cursor getUser = db.rawQuery("SELECT * FROM " + TABLE_1_NAME + " WHERE EMAIL = '" + user + "'", null);
+        String user = email.split("@")[0];
+        String domain = email.split("@")[1];
+
+        Cursor getUser = db.rawQuery("SELECT * FROM " + TABLE_1_NAME +
+                " WHERE EMAIL_USER = '" + user + "'" +
+                " AND EMAIL_DOMAIN = '" + domain + "'", null);
+
         if (getUser != null && getUser.getCount() == 0) {
-            String user = email.split("@")[0];
-            String domain = email.split("@")[1];
 
             cv.put(COL1_1, user);
             cv.put(COL1_2, domain);
@@ -147,7 +151,8 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         String domain = email.split("@")[1];
 
         String sql = "SELECT ID FROM " + TABLE_1_NAME +
-                " WHERE " + COL1_1 + " = '" + user + "'";
+                " WHERE " + COL1_1 + " = '" + user + "'" +
+                " AND " + COL1_2 + " = '" + domain + "'";
 
         return db.rawQuery(sql, null);
     }
