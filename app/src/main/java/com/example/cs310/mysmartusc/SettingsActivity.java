@@ -59,7 +59,7 @@ public class SettingsActivity extends Activity {
                         toast.makeText(SettingsActivity.this, "Failed adding spam keywords!", Toast.LENGTH_LONG);
                         result = false;
                     } else {
-                        savedKeywords.setText("");
+                        spamKeywords.setText("");
                     }
 
                 }
