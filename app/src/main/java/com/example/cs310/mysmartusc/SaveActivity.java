@@ -29,7 +29,7 @@ public class SaveActivity extends Activity {
 
         Cursor cursor = db.getEmailByType(user, type);
 
-        if (cursor != null ) {
+        if (cursor != null && cursor.getCount() > 0 ) {
             if  (cursor.moveToFirst()) {
                 do {
                     String subject = cursor.getString(cursor.getColumnIndex("SUBJECT"));
