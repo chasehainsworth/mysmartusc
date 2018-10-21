@@ -28,10 +28,11 @@ public class Filter {
     {
         List<String> keywords = new ArrayList<>();
         Cursor cursor = mDatabaseInterface.getKeywordsByType(mType, category);
-        while(!cursor.isLast())
-        {
-            keywords.add(cursor.getString(1));
-            cursor.moveToNext();
+        if(cursor.getCount() != 0) {
+            while (!cursor.isLast()) {
+                keywords.add(cursor.getString(1));
+                cursor.moveToNext();
+            }
         }
         return keywords;
     }
