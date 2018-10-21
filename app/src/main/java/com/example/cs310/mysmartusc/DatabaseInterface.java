@@ -209,7 +209,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     // addKeyword(), getAllKeywords(), updateKeyword(), getKeywordID(), deleteKeyword()
 
     public boolean addKeyword(String keyword, String type, String user) {
-        Log.e("Database Activity!", "");
+        Log.e("Database Activity!", "Trying to add keyword " + keyword + ", " + type + ", " + user);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
