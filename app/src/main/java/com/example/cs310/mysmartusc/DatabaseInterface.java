@@ -214,7 +214,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
 
         Cursor c = this.getUserID(user);
-        int userID = c.getInt(0);
+        String userID = c.getString(2);
         cv.put(COL3_1, keyword);
         cv.put(COL3_2, type);
         cv.put(COL3_3, userID);
