@@ -170,6 +170,7 @@ public class LoginActivity extends AppCompatActivity implements
 
             // Store the account from the result
             mAccount = account.getAccount();
+            Log.w(TAG, mAccount.name);
             Intent serviceIntent = new Intent(this, GmailWrapperService.class);
             serviceIntent.putExtra(GmailWrapperService.ACCOUNT_PARAM, mAccount);
             startService(serviceIntent);
@@ -219,9 +220,12 @@ public class LoginActivity extends AppCompatActivity implements
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
 
+            //Add the user to the database
+            DatabaseInterface db = new DatabaseInterface(this);
+            db.addUser(account.getEmail());
+
             //Now we will want to go to the main menu
             Intent saveIntent = new Intent(LoginActivity.this, HomePageActivity.class);
-            Log.e("ACCOUNT!", account.getEmail());
             saveIntent.putExtra("accountName", account.getEmail());
             startActivity(saveIntent);
 

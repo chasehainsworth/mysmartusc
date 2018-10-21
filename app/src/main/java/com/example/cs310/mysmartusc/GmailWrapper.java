@@ -47,16 +47,18 @@ public class GmailWrapper {
     private Filter mSpamFilter;
     private Filter mSavedFilter;
 
+    private DatabaseInterface mDatabaseInterface;
     private BigInteger mHistoryId;
 
     public GmailWrapper(Context context, Account account) {
         mContext = context;
         mAccount = account;
 
+        mDatabaseInterface = new DatabaseInterface(context);
         // filters need to be populated from database
-        mUrgentFilter = new Filter();
-        mSpamFilter = new Filter();
-        mSavedFilter = new Filter();
+        mUrgentFilter = new Filter("urgent", mDatabaseInterface);
+        mSpamFilter = new Filter("spam", mDatabaseInterface);
+        mSavedFilter = new Filter("saved", mDatabaseInterface);
     }
 
     // Used when there is no prior HistoryId
@@ -93,19 +95,19 @@ public class GmailWrapper {
         // If only one filter is triggered
         else if ( (urgentResult^spamResult^savedResult) && !(urgentResult&&spamResult&&savedResult) ) {
             if(urgentResult) {
-
+                mDatabaseInterface.addEmail(email, mAccount.name, "urgent");
             }
             else if(spamResult) {
-
+                mDatabaseInterface.addEmail(email, mAccount.name, "spam");
             }
             else {
-
+                mDatabaseInterface.addEmail(email, mAccount.name, "saved");
             }
         }
 
         // If two+ filters triggered
         else {
-
+            Log.e(TAG, "Email fit into 2+ categories");
         }
     }
     public String getHeader(Message message, String name) {

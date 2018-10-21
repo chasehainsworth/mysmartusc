@@ -14,10 +14,13 @@ public class SettingsActivity extends Activity {
     private EditText savedKeywords;
     private EditText spamKeywords;
     private Button submit;
+    private String accountName;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+
+        accountName = getIntent().getStringExtra("accountName");
 
         urgentKeywords = (EditText) findViewById(R.id.urgentKeywords);
         savedKeywords = (EditText) findViewById(R.id.savedKeywords);
@@ -69,7 +72,7 @@ public class SettingsActivity extends Activity {
         for(String key : keywords) {
             //If the adding of the keyword fails then print error
             //Keyword, type, username
-            if (!di.addKeyword(key, type, null)) {
+            if (!di.addKeyword(key, type, accountName)) {
                 System.err.println("Error adding keyword to the database!");
                 return false;
             }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     public static final String COL3_1 = "TEXT";
     public static final String COL3_2 = "TYPE";
     public static final String COL3_3 = "USERID";
+    public static final String COL3_4 = "CATEGORY";
 
 
     public DatabaseInterface(Context context) {
@@ -70,6 +72,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 
         db.execSQL(sql1);
         db.execSQL(sql2);
+        db.execSQL(sql3);
     }
 
     @Override
@@ -85,15 +88,21 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     public boolean addUser(String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(COL1_1, user);
 
-        long result = db.insert(TABLE_1_NAME, null, cv);
 
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
+        if(cv.get(user) == null){
+            cv.put(COL1_1, user);
+            Log.e("Database Activity!", "Added user: " + user);
+            long result = db.insert(TABLE_1_NAME, null, cv);
+
+            if (result == -1) {
+                return false;
+            } else {
+                return true;
+            }
         }
+
+        return true;
     }
 
 
@@ -205,6 +214,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     // addKeyword(), getAllKeywords(), updateKeyword(), getKeywordID(), deleteKeyword()
 
     public boolean addKeyword(String keyword, String type, String user) {
+        Log.e("Database Activity!", "");
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -221,6 +231,13 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         } else {
             return true;
         }
+    }
+
+    public Cursor getKeywordsByType(String type, String category)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.rawQuery("SELECT * FROM " + TABLE_3_NAME + " WHERE " + COL3_2
+        + " = " + type + " AND " + COL3_4 + " = " + category, null);
     }
 
     public Cursor getAllKeywords(){
