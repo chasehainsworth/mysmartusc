@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 
 public class DatabaseInterface extends SQLiteOpenHelper {
 
@@ -157,6 +159,12 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     public Cursor getAllEmails(){
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_2_NAME, null);
+    }
+
+    public Cursor getEmailByType(String user, String type)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return  db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE TYPE = " + type + "AND USERID = " + user, null);
     }
 
     // Probably won't need a function to update email information once an Email is already
