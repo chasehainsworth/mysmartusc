@@ -45,6 +45,10 @@ public class SettingsActivity extends Activity {
                     if(!addKeywordsToDatabase("urgent", uKeywords)){
                         toast.makeText(SettingsActivity.this, "Failed adding urgent keywords!", Toast.LENGTH_LONG);
                         result = false;
+                    } else {
+                        toast.makeText(SettingsActivity.this, "Added urgent keywords!", Toast.LENGTH_LONG);
+                        urgentKeywords.setText("");
+
                     }
                 }
 
@@ -54,6 +58,8 @@ public class SettingsActivity extends Activity {
                     if(!addKeywordsToDatabase("spam", sKeywords)){
                         toast.makeText(SettingsActivity.this, "Failed adding spam keywords!", Toast.LENGTH_LONG);
                         result = false;
+                    } else {
+                        savedKeywords.setText("");
                     }
 
                 }
@@ -63,6 +69,8 @@ public class SettingsActivity extends Activity {
                     if(!addKeywordsToDatabase("saved", savKeywords)){
                         toast.makeText(SettingsActivity.this, "Failed adding saved keywords!", Toast.LENGTH_LONG);
                         result = false;
+                    } else {
+                        savedKeywords.setText("");
                     }
                 }
 
