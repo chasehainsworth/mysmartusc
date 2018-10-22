@@ -16,7 +16,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "MySmartUSC";
 
 //    In the names of the columns (e.g., COL1_0), the first number represents the table number
-//    (1 for Users, 2 for Emails) and the second number represents the column number within the table.
+//    (1 for Users, 2 for Emails, 3 for Keywords) and the second number represents the column number within the table.
 
     private static final String TABLE_1_NAME = "Users";
     public static final String COL1_0 = "ID";
