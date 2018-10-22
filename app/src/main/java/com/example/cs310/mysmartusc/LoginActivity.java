@@ -85,7 +85,6 @@ public class LoginActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
-        Log.w(TAG, "Is the GmailWrapperService running?: " + isMyServiceRunning(GmailWrapperService.class));
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
@@ -123,6 +122,7 @@ public class LoginActivity extends AppCompatActivity implements
             continueToHomepage();
             if(!isMyServiceRunning(GmailWrapperService.class)) {
                 Intent intent = new Intent(this, GmailWrapperService.class);
+                stopService(intent);
                 intent.putExtra("account", mAccount);
                 startService(intent);
             }
@@ -198,7 +198,7 @@ public class LoginActivity extends AppCompatActivity implements
             startService(serviceIntent);
 
             //Add the user to the database
-            DatabaseInterface db = new DatabaseInterface(this);
+            DatabaseInterface db = DatabaseInterface.getInstance(this);
             db.addUser(account.getEmail());
 
             continueToHomepage();

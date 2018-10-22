@@ -23,8 +23,7 @@ public class UrgentActivity extends Activity {
         setContentView(R.layout.save_activity);
 
         emails = new ArrayList<>();
-        db = new DatabaseInterface(getApplicationContext());
-
+        db = DatabaseInterface.getInstance(this);
         Account account = (Account)getIntent().getParcelableExtra("account");
         String user = account.name;
         String type = "urgent";

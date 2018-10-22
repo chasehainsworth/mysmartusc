@@ -61,7 +61,7 @@ public class GmailWrapper {
         mContext = context;
         mAccount = account;
 
-        mDatabaseInterface = new DatabaseInterface(context);
+        mDatabaseInterface = DatabaseInterface.getInstance(context);
         // filters need to be populated from database
         mUrgentFilter = new Filter("urgent", mDatabaseInterface);
         mSpamFilter = new Filter("spam", mDatabaseInterface);
@@ -80,7 +80,7 @@ public class GmailWrapper {
             Log.w(TAG, "fullSync: null account");
             return;
         }
-        List<Message> messages = listMessages();
+        List<Message> messages = listMessages(Long.valueOf("100000"));
         for (Message m : messages) {
             Message fullMessage = getMessage(m.getId());
             Email email = new Email(
@@ -139,14 +139,32 @@ public class GmailWrapper {
     }
 
     public String getBody(Message message) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(message.getPayload().getParts().get(0).getBody().getData());
-        System.out.println("THINGY: " + new String (Base64.decodeBase64(message.getPayload().getParts().get(0).getBody().getData().getBytes())));
-        return new String(Base64.decodeBase64(message.getPayload().getParts().get(0).getBody().getData().getBytes()));
+        MessagePart payload = message.getPayload();
+        if(payload.getParts() != null) {
+            for (MessagePart part : payload.getParts()) {
+                if(part.getMimeType().equals("text/plain")) {
+                    return new String(Base64.decodeBase64(part.getBody().getData()));
+                }
+                else if (part.getParts() != null) {
+                    for (MessagePart p : part.getParts()) {
+                        if (part.getMimeType().equals("text/plain")) {
+                            return new String(Base64.decodeBase64(part.getBody().getData()));
+                        }
+                    }
+                }
+            }
+        }
+        return message.getSnippet();
+
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(message.getPayload().getParts().get(0).getBody().getData());
+//        System.out.println("THINGY: " + new String (Base64.decodeBase64(message.getPayload().getParts().get(0).getBody().getData().getBytes())));
+//        return new String(Base64.decodeBase64(message.getPayload().getParts().get(0).getBody().getData().getBytes()));
     }
 
 
     public Message getMessage(String messageId) {
+        Log.w(TAG, "Getting Message ID: " + messageId);
         try {
             GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
                     mContext,
@@ -184,7 +202,6 @@ public class GmailWrapper {
                     .setStartHistoryId(mHistoryId)
                     .execute();
             List<Message> messages = new ArrayList<>();
-            mHistoryId = response.getHistoryId();
             if (response.getHistory() != null) {
                 for (History history : response.getHistory()) {
                     if (history.getMessagesAdded() != null) {
@@ -194,6 +211,7 @@ public class GmailWrapper {
                     }
                 }
             }
+            if(messages.size() > 0) mHistoryId = response.getHistoryId();
             return messages;
         } catch (IOException e) {
             Log.w(TAG, "listMessages:exception", e);
@@ -218,7 +236,7 @@ public class GmailWrapper {
         }
     }
 
-    public List<Message> listMessages() {
+    public List<Message> listMessages(Long maxResults) {
         try {
             GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
                     mContext,
@@ -232,6 +250,7 @@ public class GmailWrapper {
                     .users()
                     .messages()
                     .list(credential.getSelectedAccountName())
+                    .setMaxResults(maxResults)
                     .execute();
             return response.getMessages();
         } catch (IOException e) {
@@ -246,8 +265,8 @@ public class GmailWrapper {
             Log.w(TAG, "partialSync: null account");
             return;
         }
-        List<Message> messages = listHistory();
-
+//        List<Message> messages = listHistory();
+        List<Message> messages = listMessages(Long.valueOf("5"));
         if(messages == null)
         {
             Log.w(TAG, "partialSync: null messages");
@@ -262,11 +281,8 @@ public class GmailWrapper {
                         getBody(fullMessage),
                         getHeader(fullMessage, "From"));
                 Log.w(TAG, email.getSender());
+                Log.w(TAG, email.getBody());
                 sortEmail(email);
-//            System.out.println(m.getHistoryId());
-//            if (m.getHistoryId().compareTo(mHistoryId) > 0) {
-//                mHistoryId = m.getHistoryId();
-//            }
             }
         }
 

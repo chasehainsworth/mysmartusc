@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -23,7 +24,7 @@ public class SaveActivity extends Activity {
         setContentView(R.layout.save_activity);
 
         emails = new ArrayList<>();
-        db = new DatabaseInterface(getApplicationContext());
+        db = DatabaseInterface.getInstance(this);
 
         Account account = (Account)getIntent().getParcelableExtra("account");
         String user = account.name;

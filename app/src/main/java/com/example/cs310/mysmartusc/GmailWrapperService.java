@@ -32,6 +32,7 @@ public class GmailWrapperService extends IntentService {
     public void onDestroy() {
 //        startService(new Intent(this, GmailWrapperService.class));
         super.onDestroy();
+        Log.w(TAG, "Service destroyed!");
     }
 
     @Override
@@ -40,11 +41,12 @@ public class GmailWrapperService extends IntentService {
                 getApplicationContext(),
                 (Account)intent.getParcelableExtra(ACCOUNT_PARAM));
 //        mWrapper.fullSync();
-        mWrapper.getStartHistoryId();
+//        mWrapper.getStartHistoryId();
         try {
             while(true) {
+                Log.w(TAG, "Partial sync!");
                 mWrapper.partialSync();
-                Thread.sleep(6000);
+                Thread.sleep(60000);
             }
         } catch (InterruptedException e) {
             // Restore interrupt status.

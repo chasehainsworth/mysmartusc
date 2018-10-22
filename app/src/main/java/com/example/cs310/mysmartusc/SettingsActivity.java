@@ -66,7 +66,7 @@ public class SettingsActivity extends Activity {
 
     //Where type=urgent,saved,spam
     private boolean addKeywordsToDatabase(String type, String[] keywords, String category) {
-        DatabaseInterface di = new DatabaseInterface(this);
+        DatabaseInterface di = DatabaseInterface.getInstance(this);
         for (String key : keywords) {
             //If the adding of the keyword fails then print error
             //Keyword, type, username

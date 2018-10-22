@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 
 public class DatabaseInterface extends SQLiteOpenHelper {
 
+    private static DatabaseInterface ourInstance = null;
     private static final String TAG = "DatabaseInterface";
     private static final String DATABASE_NAME = "MySmartUSC";
 
@@ -39,8 +41,13 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     public static final String COL3_3 = "USERID";
     public static final String COL3_4 = "CATEGORY";
 
-
-    public DatabaseInterface(Context context) {
+    static DatabaseInterface getInstance(Context context) {
+        if(ourInstance == null) {
+            ourInstance = new DatabaseInterface(context);
+        }
+        return ourInstance;
+    }
+    private DatabaseInterface(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
 
