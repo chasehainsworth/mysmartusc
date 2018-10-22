@@ -11,6 +11,8 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecovera
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.History;
 import com.google.api.services.gmail.model.HistoryMessageAdded;
@@ -95,6 +97,7 @@ public class GmailWrapper {
 
 
     public void sortEmail(Email email) {
+        reloadKeywords();
         boolean urgentResult = mUrgentFilter.sort(email);
         boolean spamResult = mSpamFilter.sort(email);
         boolean savedResult = mSavedFilter.sort(email);
@@ -140,11 +143,14 @@ public class GmailWrapper {
             return StringUtils.newStringUtf8(Base64.decodeBase64(mps.get(0).getBody().getData()));
         } else {
             for (MessagePart m : mps){
-                Log.e("Part " + )
+                Log.e("Part ", m.getBody().toString());
+                return m.getBody().toString();
             }
         }
 
+        return "NOBODYFOUND";
     }
+
 
     public Message getMessage(String messageId) {
         try {

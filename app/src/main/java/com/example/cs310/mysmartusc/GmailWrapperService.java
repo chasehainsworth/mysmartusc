@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 
 import static android.content.ContentValues.TAG;
@@ -22,12 +23,14 @@ public class GmailWrapperService extends IntentService {
 
     @Override
     public void onCreate() {
+        Log.w(TAG, "On create!");
         super.onCreate();
         binder = new LocalBinder();
     }
 
     @Override
     public void onDestroy() {
+//        startService(new Intent(this, GmailWrapperService.class));
         super.onDestroy();
     }
 

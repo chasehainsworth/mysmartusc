@@ -2,6 +2,7 @@ package com.example.cs310.mysmartusc;
 
 import android.accounts.Account;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +25,7 @@ public class SettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
-        mAccount = (Account)getIntent().getParcelableExtra("account");
+        mAccount = (Account) getIntent().getParcelableExtra("account");
 
         accountName = mAccount.name;
 
@@ -35,7 +36,6 @@ public class SettingsActivity extends Activity {
         saveSubjectButton = (Button) findViewById(R.id.saveSubject);
         saveSenderButton = (Button) findViewById(R.id.saveSender);
         saveBodyButton = (Button) findViewById(R.id.saveBody);
-
 
 
         //Add keywords by list method
@@ -65,9 +65,9 @@ public class SettingsActivity extends Activity {
     }
 
     //Where type=urgent,saved,spam
-    private boolean addKeywordsToDatabase(String type, String[] keywords, String category){
+    private boolean addKeywordsToDatabase(String type, String[] keywords, String category) {
         DatabaseInterface di = new DatabaseInterface(this);
-        for(String key : keywords) {
+        for (String key : keywords) {
             //If the adding of the keyword fails then print error
             //Keyword, type, username
             if (!di.addKeyword(key, type, accountName, category)) {
@@ -75,23 +75,23 @@ public class SettingsActivity extends Activity {
                 return false;
             }
         }
-        Intent serviceIntent = new Intent(this, GmailWrapperService.class);
-        serviceIntent.putExtra(GmailWrapperService.ACCOUNT_PARAM, mAccount);
-        stopService(serviceIntent);
-        startService(serviceIntent);
+        System.out.println(isMyServiceRunning(GmailWrapperService.class));
+//        Intent serviceIntent = new Intent(this, GmailWrapperService.class);
+//        serviceIntent.putExtra(GmailWrapperService.ACCOUNT_PARAM, mAccount);
+//        stopService(serviceIntent);
+//        startService(serviceIntent);
         return true;
     }
 
-
-    private void clickButton(String category){
+    private void clickButton(String category) {
         boolean result = true;
         String uKeywords[] = urgentKeywords.getText().toString().split(",");
         String sKeywords[] = spamKeywords.getText().toString().split(",");
         String savKeywords[] = savedKeywords.getText().toString().split(",");
 
-        if(uKeywords[0].length()>0){
+        if (uKeywords[0].length() > 0) {
             //Adding the urgent keywords. If they fail display a message.
-            if(!addKeywordsToDatabase("urgent", uKeywords, category)){
+            if (!addKeywordsToDatabase("urgent", uKeywords, category)) {
                 //toast.makeText(SettingsActivity.this, "Failed adding urgent keywords!", Toast.LENGTH_LONG);
                 result = false;
             } else {
@@ -102,9 +102,9 @@ public class SettingsActivity extends Activity {
         }
 
 
-        if(sKeywords[0].length()>0){
+        if (sKeywords[0].length() > 0) {
             //Adding the spam keywords. IF they fail display a message
-            if(!addKeywordsToDatabase("spam", sKeywords, category)){
+            if (!addKeywordsToDatabase("spam", sKeywords, category)) {
                 //toast.makeText(SettingsActivity.this, "Failed adding spam keywords!", Toast.LENGTH_LONG);
                 result = false;
             } else {
@@ -113,9 +113,9 @@ public class SettingsActivity extends Activity {
 
         }
 
-        if(savKeywords[0].length()>0){
+        if (savKeywords[0].length() > 0) {
             //Adding the save keywords. IF they fail display a message
-            if(!addKeywordsToDatabase("saved", savKeywords, category)){
+            if (!addKeywordsToDatabase("saved", savKeywords, category)) {
                 //toast.makeText(SettingsActivity.this, "Failed adding saved keywords!", Toast.LENGTH_LONG);
                 result = false;
             } else {
@@ -125,9 +125,18 @@ public class SettingsActivity extends Activity {
 
 
         //All the keywords have been added
-        if(result){
+        if (result) {
             //toast.makeText(SettingsActivity.this, "Added!", Toast.LENGTH_SHORT);
         }
     }
-}
 
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
