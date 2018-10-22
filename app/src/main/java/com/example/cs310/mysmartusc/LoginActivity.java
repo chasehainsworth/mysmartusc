@@ -201,8 +201,8 @@ public class LoginActivity extends AppCompatActivity implements
 //                public void onServiceConnected(ComponentName name, IBinder service) {
 //                    mBoundService = ((GmailWrapperService.LocalBinder)service).getService();
 //                    Intent saveIntent = new Intent(LoginActivity.this, HomePageActivity.class);
-//                    saveIntent.putExtra("accountName", mAccount.name);
-//                    saveIntent.putExtra
+//                    saveIntent.putExtra("account", mAccount);
+//                    saveIntent.putExtra("service", mBoundService);
 //                    startActivity(saveIntent);
 //                }
 //
