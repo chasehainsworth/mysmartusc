@@ -50,10 +50,12 @@ public class GmailWrapperService extends IntentService {
         try {
             while(true) {
                 Log.w(TAG, "Partial sync!");
+
                 mWrapper.partialSync();
                 if(mWrapper.getIsUrgentNotification()) {
-                    mWrapper.setUrgentNotification(false);
+                    //Should launch when you get an email
                     launchNotification();
+                    mWrapper.setUrgentNotification(false);
                 }
                 Thread.sleep(30000);
             }
@@ -80,6 +82,7 @@ public class GmailWrapperService extends IntentService {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
         notificationManager.notify(new Random().nextInt(), mBuilder.build());
     }
+
     @Override
     public IBinder onBind(Intent intent) {
         return binder;

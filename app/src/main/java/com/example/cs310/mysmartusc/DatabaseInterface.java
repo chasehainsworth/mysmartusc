@@ -256,35 +256,41 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     // addKeyword(), getAllKeywords(), updateKeyword(), getKeywordID(), deleteKeyword()
 
     public boolean addKeyword(String keyword, String type, String user, String category) {
-        Log.e("Database Activity!", "Trying to add keyword " + keyword + ", " + type + ", " + user);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
         Cursor c = this.getUserID(user);
         c.moveToFirst();
         String id = c.getString(0);
+        Integer intID = Integer.parseInt(id);
 
         cv.put(COL3_1, keyword);
         cv.put(COL3_2, type);
-        cv.put(COL3_3, id);
+        cv.put(COL3_3, intID);
         cv.put(COL3_4, category);
+
+        Log.e("DatabaseInterface", "Trying to add keyword " + keyword + ": " + type + ", " + id + ", "  + category);
+
 
         long result = db.insert(TABLE_3_NAME, null, cv);
 
         if (result == -1) {
+            Log.e("DataBaseInterface", "Failed to add keyword");
             return false;
         } else {
+            Log.e("DatabaseInterface", "Success adding keyword: " + keyword);
             return true;
         }
     }
 
     public Cursor getKeywordsByType(String type, String category) {
-        Log.e("DatabaseInterface","Call to getKeywordsByType()");
         SQLiteDatabase db = this.getWritableDatabase();
+        Log.e("DatabaseInterface", "GetKeywordsByType("+type+", " + category +")");
+
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_3_NAME + " WHERE " + COL3_2
                 + " = " + "'" + type + "'" + " AND " + COL3_4 + " = " + "'" + category + "'" , null);
 
-        Log.e("DatabaseInterface", "Returned " + cursor.getCount());
+        Log.e("DatabaseInterface", "GetKeywordsByType() returned " + cursor.getCount() + " rows");
         return cursor;
     }
 

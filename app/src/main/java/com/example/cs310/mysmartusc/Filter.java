@@ -19,9 +19,9 @@ public class Filter {
     public Filter(String type, DatabaseInterface databaseInterface) {
         mType = type;
         mDatabaseInterface = databaseInterface;
-        emailAddresses = loadKeywords("address");
-        bodyKeywords = loadKeywords("body");
-        subjectKeywords = loadKeywords("subject");
+        emailAddresses = loadKeywords("Sender");
+        bodyKeywords = loadKeywords("Body");
+        subjectKeywords = loadKeywords("Subject");
     }
 
     private List<String> loadKeywords(String category) {

@@ -42,7 +42,6 @@ public class SettingsActivity extends Activity {
         saveSenderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("OnClick Save Sender", "CLICKED!");
                 clickButton("Sender");
             }
         });
