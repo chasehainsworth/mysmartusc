@@ -1,8 +1,11 @@
 package com.example.cs310.mysmartusc;
 
 import android.accounts.Account;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -11,8 +14,8 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecovera
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
-import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
+//import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
+//import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.History;
 import com.google.api.services.gmail.model.HistoryMessageAdded;
@@ -56,16 +59,18 @@ public class GmailWrapper {
 
     private DatabaseInterface mDatabaseInterface;
     private BigInteger mHistoryId;
+    private boolean mIsUrgentNotification;
 
     public GmailWrapper(Context context, Account account) {
         mContext = context;
         mAccount = account;
 
-        mDatabaseInterface = new DatabaseInterface(context);
+        mDatabaseInterface = DatabaseInterface.getInstance(context);
         // filters need to be populated from database
         mUrgentFilter = new Filter("urgent", mDatabaseInterface);
         mSpamFilter = new Filter("spam", mDatabaseInterface);
         mSavedFilter = new Filter("saved", mDatabaseInterface);
+        mIsUrgentNotification = true; // change to false
     }
 
     public void reloadKeywords() {
@@ -81,7 +86,7 @@ public class GmailWrapper {
             Log.w(TAG, "fullSync: null account");
             return;
         }
-        List<Message> messages = listMessages();
+        List<Message> messages = listMessages(Long.valueOf("100000"));
         for (Message m : messages) {
             Message fullMessage = getMessage(m.getId());
             Email email = new Email(
@@ -113,6 +118,7 @@ public class GmailWrapper {
         else {
             if(urgentResult) {
                 Log.w(TAG, email.getSubject() + " marked as urgent!");
+                mIsUrgentNotification = true;
                 mDatabaseInterface.addEmail(email, mAccount.name, "urgent");
             }
             else if(spamResult) {
@@ -140,12 +146,32 @@ public class GmailWrapper {
     }
 
     public String getBody(Message message) {
-        MessagePart part = message.getPayload();
-        return StringUtils.newString(Base64.decodeBase64(part.getBody().getData()), "");
+        MessagePart payload = message.getPayload();
+        if(payload.getParts() != null) {
+            for (MessagePart part : payload.getParts()) {
+                if(part.getMimeType().equals("text/plain")) {
+                    return new String(Base64.decodeBase64(part.getBody().getData()));
+                }
+                else if (part.getParts() != null) {
+                    for (MessagePart p : part.getParts()) {
+                        if (part.getMimeType().equals("text/plain")) {
+                            return new String(Base64.decodeBase64(part.getBody().getData()));
+                        }
+                    }
+                }
+            }
+        }
+        return message.getSnippet();
+
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(message.getPayload().getParts().get(0).getBody().getData());
+//        System.out.println("THINGY: " + new String (Base64.decodeBase64(message.getPayload().getParts().get(0).getBody().getData().getBytes())));
+//        return new String(Base64.decodeBase64(message.getPayload().getParts().get(0).getBody().getData().getBytes()));
     }
 
 
     public Message getMessage(String messageId) {
+        Log.w(TAG, "Getting Message ID: " + messageId);
         try {
             GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
                     mContext,
@@ -183,7 +209,6 @@ public class GmailWrapper {
                     .setStartHistoryId(mHistoryId)
                     .execute();
             List<Message> messages = new ArrayList<>();
-            mHistoryId = response.getHistoryId();
             if (response.getHistory() != null) {
                 for (History history : response.getHistory()) {
                     if (history.getMessagesAdded() != null) {
@@ -193,6 +218,7 @@ public class GmailWrapper {
                     }
                 }
             }
+            if(messages.size() > 0) mHistoryId = response.getHistoryId();
             return messages;
         } catch (IOException e) {
             Log.w(TAG, "listMessages:exception", e);
@@ -217,7 +243,7 @@ public class GmailWrapper {
         }
     }
 
-    public List<Message> listMessages() {
+    public List<Message> listMessages(Long maxResults) {
         try {
             GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
                     mContext,
@@ -231,6 +257,7 @@ public class GmailWrapper {
                     .users()
                     .messages()
                     .list(credential.getSelectedAccountName())
+                    .setMaxResults(maxResults)
                     .execute();
             return response.getMessages();
         } catch (IOException e) {
@@ -245,8 +272,8 @@ public class GmailWrapper {
             Log.w(TAG, "partialSync: null account");
             return;
         }
-        List<Message> messages = listHistory();
-
+//        List<Message> messages = listHistory();
+        List<Message> messages = listMessages(Long.valueOf("5"));
         if(messages == null)
         {
             Log.w(TAG, "partialSync: null messages");
@@ -261,11 +288,8 @@ public class GmailWrapper {
                         getBody(fullMessage),
                         getHeader(fullMessage, "From"));
                 Log.w(TAG, email.getSender());
+                Log.w(TAG, email.getBody());
                 sortEmail(email);
-//            System.out.println(m.getHistoryId());
-//            if (m.getHistoryId().compareTo(mHistoryId) > 0) {
-//                mHistoryId = m.getHistoryId();
-//            }
             }
         }
 
@@ -274,5 +298,13 @@ public class GmailWrapper {
 
     public BigInteger getmHistoryId() {
         return mHistoryId;
+    }
+
+    public boolean getIsUrgentNotification() {
+        return mIsUrgentNotification;
+    }
+
+    public void setUrgentNotification(boolean isUrgentNotification) {
+        mIsUrgentNotification = isUrgentNotification;
     }
 }

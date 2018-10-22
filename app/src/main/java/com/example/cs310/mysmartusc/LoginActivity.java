@@ -2,16 +2,21 @@ package com.example.cs310.mysmartusc;
 
 import android.accounts.Account;
 import android.app.ActivityManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -84,8 +89,7 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-
-        Log.w(TAG, "Is the GmailWrapperService running?: " + isMyServiceRunning(GmailWrapperService.class));
+        createNotificationChannel();
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
@@ -123,6 +127,7 @@ public class LoginActivity extends AppCompatActivity implements
             continueToHomepage();
             if(!isMyServiceRunning(GmailWrapperService.class)) {
                 Intent intent = new Intent(this, GmailWrapperService.class);
+                stopService(intent);
                 intent.putExtra("account", mAccount);
                 startService(intent);
             }
@@ -198,7 +203,7 @@ public class LoginActivity extends AppCompatActivity implements
             startService(serviceIntent);
 
             //Add the user to the database
-            DatabaseInterface db = new DatabaseInterface(this);
+            DatabaseInterface db = DatabaseInterface.getInstance(this);
             db.addUser(account.getEmail());
 
             continueToHomepage();
@@ -281,4 +286,21 @@ public class LoginActivity extends AppCompatActivity implements
         }
         return false;
     }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("10", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
 }
