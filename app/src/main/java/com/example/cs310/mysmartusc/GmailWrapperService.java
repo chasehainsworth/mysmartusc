@@ -27,6 +27,11 @@ public class GmailWrapperService extends IntentService {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     protected void onHandleIntent(Intent intent) {
         mWrapper = new GmailWrapper(
                 getApplicationContext(),
