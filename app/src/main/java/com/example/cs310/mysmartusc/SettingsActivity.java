@@ -2,6 +2,7 @@ package com.example.cs310.mysmartusc;
 
 import android.accounts.Account;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -88,9 +89,9 @@ public class SettingsActivity extends Activity {
     }
 
     //Where type=urgent,saved,spam
-    private boolean addKeywordsToDatabase(String type, String[] keywords){
+    private boolean addKeywordsToDatabase(String type, String[] keywords) {
         DatabaseInterface di = new DatabaseInterface(this);
-        for(String key : keywords) {
+        for (String key : keywords) {
             //If the adding of the keyword fails then print error
             //Keyword, type, username
             if (!di.addKeyword(key, type, accountName)) {
@@ -98,11 +99,22 @@ public class SettingsActivity extends Activity {
                 return false;
             }
         }
-        Intent serviceIntent = new Intent(this, GmailWrapperService.class);
-        serviceIntent.putExtra(GmailWrapperService.ACCOUNT_PARAM, mAccount);
-        stopService(serviceIntent);
-        startService(serviceIntent);
+        System.out.println(isMyServiceRunning(GmailWrapperService.class));
+//        Intent serviceIntent = new Intent(this, GmailWrapperService.class);
+//        serviceIntent.putExtra(GmailWrapperService.ACCOUNT_PARAM, mAccount);
+//        stopService(serviceIntent);
+//        startService(serviceIntent);
         return true;
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
