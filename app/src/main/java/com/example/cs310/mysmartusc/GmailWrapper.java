@@ -69,6 +69,7 @@ public class GmailWrapper {
     }
 
     public void reloadKeywords() {
+        Log.e("GmailWrapper", "ReloadKeywords!");
         mUrgentFilter = new Filter("urgent", mDatabaseInterface);
         mSpamFilter = new Filter("spam", mDatabaseInterface);
         mSavedFilter = new Filter("saved", mDatabaseInterface);

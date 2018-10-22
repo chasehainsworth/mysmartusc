@@ -27,13 +27,16 @@ public class Filter {
     private List<String> loadKeywords(String category) {
         List<String> keywords = new ArrayList<>();
         Cursor cursor = mDatabaseInterface.getKeywordsByType(mType, category);
-        if (cursor.getCount() != 0) {
-            while (!cursor.isLast()) {
-                Log.e("Adding keyword", cursor.getString(1));
-                keywords.add(cursor.getString(1));
-                cursor.moveToNext();
-            }
+
+        if (cursor.moveToFirst()) {
+            do {
+                String currentKeyword = cursor.getString(1);
+                Log.e("Adding keyword", currentKeyword);
+                keywords.add(currentKeyword);
+            } while (cursor.moveToNext());
         }
+        cursor.close();
+
         return keywords;
     }
 

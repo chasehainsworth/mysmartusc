@@ -272,9 +272,13 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     }
 
     public Cursor getKeywordsByType(String type, String category) {
+        Log.e("DatabaseInterface","Call to getKeywordsByType()");
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.rawQuery("SELECT * FROM " + TABLE_3_NAME + " WHERE " + COL3_2
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_3_NAME + " WHERE " + COL3_2
                 + " = " + "'" + type + "'" + " AND " + COL3_4 + " = " + "'" + category + "'" , null);
+
+        Log.e("DatabaseInterface", "Returned " + cursor.getCount());
+        return cursor;
     }
 
     public Cursor getAllKeywords() {
