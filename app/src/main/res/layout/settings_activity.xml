@@ -78,12 +78,32 @@
             android:layout_gravity="center"
             android:layout_margin="10sp" />
 
-        <Button
-            android:id="@+id/submitKeywords"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Save Changes"
-            android:layout_gravity="center"/>
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/saveSubject"
+                android:layout_width="wrap_content"
+                android:text="Save Subject"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/saveSender"
+                android:layout_width="wrap_content"
+                android:text="Save Sender"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/saveBody"
+                android:layout_width="wrap_content"
+                android:text="Save Body"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

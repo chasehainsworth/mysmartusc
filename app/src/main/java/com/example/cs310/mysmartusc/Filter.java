@@ -1,6 +1,7 @@
 package com.example.cs310.mysmartusc;
 
 import android.database.Cursor;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +16,7 @@ public class Filter {
     //What needs to be the match ratio to return true?
     private double keywordMatchFrequency = 0.1;
 
-    public Filter(String type, DatabaseInterface databaseInterface)
-    {
+    public Filter(String type, DatabaseInterface databaseInterface) {
         mType = type;
         mDatabaseInterface = databaseInterface;
         emailAddresses = loadKeywords("address");
@@ -24,12 +24,12 @@ public class Filter {
         subjectKeywords = loadKeywords("subject");
     }
 
-    private List<String> loadKeywords(String category)
-    {
+    private List<String> loadKeywords(String category) {
         List<String> keywords = new ArrayList<>();
         Cursor cursor = mDatabaseInterface.getKeywordsByType(mType, category);
-        if(cursor.getCount() != 0) {
+        if (cursor.getCount() != 0) {
             while (!cursor.isLast()) {
+                Log.e("Adding keyword", cursor.getString(1));
                 keywords.add(cursor.getString(1));
                 cursor.moveToNext();
             }
@@ -37,58 +37,69 @@ public class Filter {
         return keywords;
     }
 
-    public void addEmailAddress(String emailAddress){
+    public void addEmailAddress(String emailAddress) {
         emailAddresses.add(emailAddress);
     }
 
-    public void addBodyKeyword(String keyword){
+    public void addBodyKeyword(String keyword) {
         bodyKeywords.add(keyword);
     }
 
-    public void addSubjectKeyword(String keyword){
+    public void addSubjectKeyword(String keyword) {
         subjectKeywords.add(keyword);
     }
 
-    public List<String> getEmailAddresses(){
+    public List<String> getEmailAddresses() {
         return emailAddresses;
     }
 
-    public List<String> getBodyKeywords(){
+    public List<String> getBodyKeywords() {
         return bodyKeywords;
     }
 
-    public List<String> getSubjectKeywords(){
+    public List<String> getSubjectKeywords() {
         return subjectKeywords;
     }
 
-    public boolean sort(Email email){
+
+    public boolean sort(Email email) {
         //Determine what category the email belongs to.
 
         String currentEmailSubject = email.getSubject();
         String currentEmailSender = email.getSender();
         String currentEmailBody = email.getBody();
 
-        if(emailAddresses.contains(currentEmailSender)){
+        if (emailAddresses.contains(currentEmailSender)) {
             return true;
-        } else if (subjectKeywords.contains(currentEmailSubject)){
+        } else if (subjectKeywords.contains(currentEmailSubject)) {
+            Log.e("Filter", "Subject match");
             return true;
         } else {
+            /*
             //Keywords may still be in the body we need to tokenize...
             String words[] = currentEmailBody.split(" ");
             double wordsLength = words.length;
 
             //Figuring out how many matches there are.
             int matches = 0;
-            for (String word : words){
-                if (bodyKeywords.contains(word)){
+            for (String word : words) {
+                if (bodyKeywords.contains(word)) {
                     matches++;
                 }
             }
 
             //Finding the frequency of the matched keywords to all the
             //words in the email.
-            if(wordsLength / ((double) bodyKeywords.size()) >= 0.1){
+            if (wordsLength / ((double) bodyKeywords.size()) >= 0.1) {
                 return true;
+            }
+            */
+
+            Log.e("Body is", currentEmailBody);
+            for (String word : bodyKeywords) {
+                if (currentEmailBody.contains(word)) {
+                    return true;
+                }
             }
         }
 

@@ -240,6 +240,7 @@ public class GmailWrapper {
                     getHeader(fullMessage, "Subject"),
                     getBody(fullMessage),
                     getHeader(fullMessage, "From"));
+            Log.e("New email: ", "Subject: " + email.getSubject() + ", body: " + email.getBody() + ", from: " + email.getSender());
             Log.w(TAG, email.getSender());
             sortEmail(email);
 //            System.out.println(m.getHistoryId());

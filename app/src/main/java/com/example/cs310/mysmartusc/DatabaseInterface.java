@@ -248,7 +248,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     // Keyword table functions:
     // addKeyword(), getAllKeywords(), updateKeyword(), getKeywordID(), deleteKeyword()
 
-    public boolean addKeyword(String keyword, String type, String user) {
+    public boolean addKeyword(String keyword, String type, String user, String category) {
         Log.e("Database Activity!", "Trying to add keyword " + keyword + ", " + type + ", " + user);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -260,6 +260,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         cv.put(COL3_1, keyword);
         cv.put(COL3_2, type);
         cv.put(COL3_3, id);
+        cv.put(COL3_4, category);
 
         long result = db.insert(TABLE_3_NAME, null, cv);
 
@@ -273,7 +274,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     public Cursor getKeywordsByType(String type, String category) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.rawQuery("SELECT * FROM " + TABLE_3_NAME + " WHERE " + COL3_2
-                + " = " + "\"" + type + "\"" + " AND " + COL3_4 + " = " + "\"" + category + "\"" , null);
+                + " = " + "'" + type + "'" + " AND " + COL3_4 + " = " + "'" + category + "'" , null);
     }
 
     public Cursor getAllKeywords() {
