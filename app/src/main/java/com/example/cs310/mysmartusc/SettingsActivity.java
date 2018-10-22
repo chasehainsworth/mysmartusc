@@ -77,6 +77,7 @@ public class SettingsActivity extends Activity {
         }
         Intent serviceIntent = new Intent(this, GmailWrapperService.class);
         serviceIntent.putExtra(GmailWrapperService.ACCOUNT_PARAM, mAccount);
+        stopService(serviceIntent);
         startService(serviceIntent);
         return true;
     }

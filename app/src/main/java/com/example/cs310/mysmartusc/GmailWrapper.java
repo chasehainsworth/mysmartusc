@@ -17,6 +17,7 @@ import com.google.api.services.gmail.model.HistoryMessageAdded;
 import com.google.api.services.gmail.model.ListHistoryResponse;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
+import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
 import com.google.api.services.gmail.model.Profile;
 
@@ -27,7 +28,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
+import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
+
 import static android.content.ContentValues.TAG;
+
 
 public class GmailWrapper {
 
@@ -130,7 +135,15 @@ public class GmailWrapper {
     }
 
     public String getBody(Message message) {
-        return message.getPayload().getBody().getData();
+        List<MessagePart> mps = message.getPayload().getParts();
+        if(mps != null){
+            return StringUtils.newStringUtf8(Base64.decodeBase64(mps.get(0).getBody().getData()));
+        } else {
+            for (MessagePart m : mps){
+                Log.e("Part " + )
+            }
+        }
+
     }
 
     public Message getMessage(String messageId) {
@@ -174,7 +187,7 @@ public class GmailWrapper {
             mHistoryId = response.getHistoryId();
             if (response.getHistory() != null) {
                 for (History history : response.getHistory()) {
-                    if (history != null) {
+                    if (history.getMessagesAdded() != null) {
                         for (HistoryMessageAdded messageAdded : history.getMessagesAdded()) {
                             messages.add(messageAdded.getMessage());
                         }
@@ -234,20 +247,30 @@ public class GmailWrapper {
             return;
         }
         List<Message> messages = listHistory();
-        for (Message m : messages) {
-            Message fullMessage = getMessage(m.getId());
-            Email email = new Email(
-                    getHeader(fullMessage, "Subject"),
-                    getBody(fullMessage),
-                    getHeader(fullMessage, "From"));
-            Log.e("New email: ", "Subject: " + email.getSubject() + ", body: " + email.getBody() + ", from: " + email.getSender());
-            Log.w(TAG, email.getSender());
-            sortEmail(email);
+
+        if(messages == null)
+        {
+            Log.w(TAG, "partialSync: null messages");
+            return;
+        }
+        else
+        {
+            for (Message m : messages) {
+                Message fullMessage = getMessage(m.getId());
+                Email email = new Email(
+                        getHeader(fullMessage, "Subject"),
+                        getBody(fullMessage),
+                        getHeader(fullMessage, "From"));
+                Log.w(TAG, email.getSender());
+                sortEmail(email);
 //            System.out.println(m.getHistoryId());
 //            if (m.getHistoryId().compareTo(mHistoryId) > 0) {
 //                mHistoryId = m.getHistoryId();
 //            }
+            }
         }
+
+
     }
 
     public BigInteger getmHistoryId() {
