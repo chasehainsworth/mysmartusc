@@ -169,7 +169,8 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
 
         Cursor c = this.getUserID(user);
-        int userID = c.getInt(0);
+        c.moveToFirst();
+        String id = c.getString(0);
 
         String sender_user = email.getSender().split("@")[0];
         String sender_domain = email.getSender().split("@")[1];
@@ -178,7 +179,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         cv.put(COL2_2, email.getSubject());
         cv.put(COL2_3, email.getBody());
         cv.put(COL2_4, type);
-        cv.put(COL2_5, userID);
+        cv.put(COL2_5, id);
         cv.put(COL2_6, sender_domain);
 
         long result = db.insert(TABLE_2_NAME, null, cv);
