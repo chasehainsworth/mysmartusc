@@ -1,6 +1,7 @@
 package com.example.cs310.mysmartusc;
 
 import android.accounts.Account;
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -84,6 +85,7 @@ public class LoginActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
 
+        Log.w(TAG, "Is the GmailWrapperService running?: " + isMyServiceRunning(GmailWrapperService.class));
         // Button listeners
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
@@ -119,6 +121,11 @@ public class LoginActivity extends AppCompatActivity implements
             mAccount = account.getAccount();
             updateUI(account);
             continueToHomepage();
+            if(!isMyServiceRunning(GmailWrapperService.class)) {
+                Intent intent = new Intent(this, GmailWrapperService.class);
+                intent.putExtra("account", mAccount);
+                startService(intent);
+            }
         } else {
             updateUI(null);
         }
@@ -265,4 +272,13 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
