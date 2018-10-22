@@ -104,6 +104,7 @@ public class GmailWrapper {
 
         // If no filters are triggered
         if (!urgentResult && !spamResult && !savedResult) {
+            Log.e("No filter","NO FILTER!");
             return;
         }
         // If only one filter is triggered
@@ -138,17 +139,8 @@ public class GmailWrapper {
     }
 
     public String getBody(Message message) {
-        List<MessagePart> mps = message.getPayload().getParts();
-        if(mps != null){
-            return StringUtils.newStringUtf8(Base64.decodeBase64(mps.get(0).getBody().getData()));
-        } else {
-            for (MessagePart m : mps){
-                Log.e("Part ", m.getBody().toString());
-                return m.getBody().toString();
-            }
-        }
-
-        return "NOBODYFOUND";
+        MessagePart part = message.getPayload();
+        return StringUtils.newString(Base64.decodeBase64(part.getBody().getData()), "");
     }
 
 

@@ -37,6 +37,31 @@ public class Filter {
         return keywords;
     }
 
+    public boolean sort(Email email) {
+        //Determine what category the email belongs to.
+
+        String currentEmailSubject = email.getSubject();
+        String currentEmailSender = email.getSender();
+        String currentEmailBody = email.getBody();
+
+        if (emailAddresses.contains(currentEmailSender)) {
+            Log.e("Filter", "Sender match");
+            return true;
+        } else if (subjectKeywords.contains(currentEmailSubject)) {
+            Log.e("Filter", "Subject match");
+            return true;
+        } else {
+
+           /*
+           BODY
+            */
+
+
+        }
+
+        return false;
+    }
+
     public void addEmailAddress(String emailAddress) {
         emailAddresses.add(emailAddress);
     }
@@ -62,47 +87,5 @@ public class Filter {
     }
 
 
-    public boolean sort(Email email) {
-        //Determine what category the email belongs to.
 
-        String currentEmailSubject = email.getSubject();
-        String currentEmailSender = email.getSender();
-        String currentEmailBody = email.getBody();
-
-        if (emailAddresses.contains(currentEmailSender)) {
-            return true;
-        } else if (subjectKeywords.contains(currentEmailSubject)) {
-            Log.e("Filter", "Subject match");
-            return true;
-        } else {
-            /*
-            //Keywords may still be in the body we need to tokenize...
-            String words[] = currentEmailBody.split(" ");
-            double wordsLength = words.length;
-
-            //Figuring out how many matches there are.
-            int matches = 0;
-            for (String word : words) {
-                if (bodyKeywords.contains(word)) {
-                    matches++;
-                }
-            }
-
-            //Finding the frequency of the matched keywords to all the
-            //words in the email.
-            if (wordsLength / ((double) bodyKeywords.size()) >= 0.1) {
-                return true;
-            }
-            */
-
-            Log.e("Body is", currentEmailBody);
-            for (String word : bodyKeywords) {
-                if (currentEmailBody.contains(word)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 }
