@@ -11,8 +11,8 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecovera
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
-import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
+//import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
+//import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.History;
 import com.google.api.services.gmail.model.HistoryMessageAdded;
@@ -139,8 +139,10 @@ public class GmailWrapper {
     }
 
     public String getBody(Message message) {
-        MessagePart part = message.getPayload();
-        return StringUtils.newString(Base64.decodeBase64(part.getBody().getData()), "");
+        StringBuilder sb = new StringBuilder();
+        sb.append(message.getPayload().getParts().get(0).getBody().getData());
+        System.out.println("THINGY: " + new String (Base64.decodeBase64(message.getPayload().getParts().get(0).getBody().getData().getBytes())));
+        return new String(Base64.decodeBase64(message.getPayload().getParts().get(0).getBody().getData().getBytes()));
     }
 
 
