@@ -1,8 +1,11 @@
 package com.example.cs310.mysmartusc;
 
 import android.accounts.Account;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -56,6 +59,7 @@ public class GmailWrapper {
 
     private DatabaseInterface mDatabaseInterface;
     private BigInteger mHistoryId;
+    private boolean mIsUrgentNotification;
 
     public GmailWrapper(Context context, Account account) {
         mContext = context;
@@ -66,6 +70,7 @@ public class GmailWrapper {
         mUrgentFilter = new Filter("urgent", mDatabaseInterface);
         mSpamFilter = new Filter("spam", mDatabaseInterface);
         mSavedFilter = new Filter("saved", mDatabaseInterface);
+        mIsUrgentNotification = true; // change to false
     }
 
     public void reloadKeywords() {
@@ -112,6 +117,7 @@ public class GmailWrapper {
         else {
             if(urgentResult) {
                 Log.w(TAG, email.getSubject() + " marked as urgent!");
+                mIsUrgentNotification = true;
                 mDatabaseInterface.addEmail(email, mAccount.name, "urgent");
             }
             else if(spamResult) {
@@ -291,5 +297,13 @@ public class GmailWrapper {
 
     public BigInteger getmHistoryId() {
         return mHistoryId;
+    }
+
+    public boolean getIsUrgentNotification() {
+        return mIsUrgentNotification;
+    }
+
+    public void setUrgentNotification(boolean isUrgentNotification) {
+        mIsUrgentNotification = isUrgentNotification;
     }
 }
