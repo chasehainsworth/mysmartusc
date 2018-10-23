@@ -47,21 +47,21 @@ public class Filter {
         String currentEmailSender = email.getSender();
         String currentEmailBody = email.getBody();
 
-        if (emailAddresses.contains(currentEmailSender)) {
-            Log.e("Filter", "Sender match");
-            return true;
-        } else if (subjectKeywords.contains(currentEmailSubject)) {
-            Log.e("Filter", "Subject match");
-            return true;
-        } else {
-
-           /*
-           BODY
-            */
-
-
+        for (String address : emailAddresses) {
+            if(currentEmailSender.toLowerCase().contains(address.toLowerCase())) {
+                return true;
+            }
         }
-
+        for (String subject : subjectKeywords) {
+            if(currentEmailSender.toLowerCase().contains(subject.toLowerCase())) {
+                return true;
+            }
+        }
+        for (String body : bodyKeywords) {
+            if(currentEmailSender.toLowerCase().contains(body.toLowerCase())) {
+                return true;
+            }
+        }
         return false;
     }
 
