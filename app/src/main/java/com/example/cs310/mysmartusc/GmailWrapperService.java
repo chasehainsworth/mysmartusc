@@ -49,11 +49,8 @@ public class GmailWrapperService extends IntentService {
 //        mWrapper.getStartHistoryId();
         try {
             while(true) {
-                Log.w(TAG, "Partial sync!");
-
                 mWrapper.partialSync();
                 if(mWrapper.getIsUrgentNotification()) {
-                    //Should launch when you get an email
                     launchNotification();
                     mWrapper.setUrgentNotification(false);
                 }
@@ -65,7 +62,6 @@ public class GmailWrapperService extends IntentService {
         }
     }
     private void launchNotification() {
-        Log.w(TAG, "In launchNotification");
         Intent intent = new Intent(this, UrgentActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);

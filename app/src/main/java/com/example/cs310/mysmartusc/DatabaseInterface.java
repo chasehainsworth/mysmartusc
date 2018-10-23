@@ -181,8 +181,10 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         c.moveToFirst();
         String id = c.getString(0);
 
-        String sender_user = email.getSender().split("@")[0];
-        String sender_domain = email.getSender().split("@")[1];
+        String emailSender = email.getSender().substring(1,user.length()+1);
+
+        String sender_user = emailSender.split("@")[0];
+        String sender_domain = emailSender.split("@")[1];
 
         cv.put(COL2_1, sender_user);
         cv.put(COL2_2, email.getSubject());
@@ -303,7 +305,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 
     public Cursor getKeywordsByType(String type, String category) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Log.e("DatabaseInterface", "GetKeywordsByType("+type+", " + category +")");
+        //Log.e("DatabaseInterface", "GetKeywordsByType("+type+", " + category +")");
 
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_3_NAME + " WHERE " + COL3_2
                 + " = " + "'" + type + "'" + " AND " + COL3_4 + " = " + "'" + category + "'" , null);

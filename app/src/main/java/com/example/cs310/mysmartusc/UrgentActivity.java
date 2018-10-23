@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,7 +12,6 @@ import android.widget.ListView;
 import android.database.Cursor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class UrgentActivity extends Activity {
 
@@ -28,6 +28,8 @@ public class UrgentActivity extends Activity {
         String user = account.name;
         String type = "urgent";
 
+
+        Log.e("UrgentActivity", "getEmailByType("+user+", " + type);
         Cursor cursor = db.getEmailByType(user, type);
 
         if (cursor != null && cursor.getCount() > 0 ) {
@@ -36,9 +38,16 @@ public class UrgentActivity extends Activity {
                     String subject = cursor.getString(cursor.getColumnIndex("SUBJECT"));
                     String body = cursor.getString(cursor.getColumnIndex("BODY"));
                     String sender_user = cursor.getString(cursor.getColumnIndex("SENDER_USER"));
-                    String sender_domain = cursor.getString(cursor.getColumnIndex("SENDER_USER"));
+                    String sender_domain = cursor.getString(cursor.getColumnIndex("SENDER_DOMAIN"));
+
                     emails.add(new Email(subject, body, sender_user + "@" + sender_domain));
                 }while (cursor.moveToNext());
+            }
+        } else {
+            if(cursor == null){
+                Log.e("UrgentActivity", "The cursor to get the emails is null!");
+            } else {
+                Log.e("UrgentActivity", "There are no emails here!");
             }
         }
         cursor.close();
