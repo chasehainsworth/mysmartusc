@@ -184,7 +184,8 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         c.moveToFirst();
         String id = c.getString(0);
 
-        String emailSender = email.getSender().substring(1,user.length()+1);
+        String sender = email.getSender();
+        String emailSender = sender.substring(sender.indexOf("<")+1,sender.indexOf(">"));
 
         String sender_user = emailSender.split("@")[0];
         String sender_domain = emailSender.split("@")[1];
