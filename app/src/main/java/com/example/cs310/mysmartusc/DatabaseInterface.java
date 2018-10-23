@@ -98,6 +98,8 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 
     // User table functions:
     // addUser(), getAllUsers(), updateUser(), getUserID(), deleteUser()
+    // ---------------------------------------------------------------------------------------------------------
+
     public boolean addUser(String email) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -172,6 +174,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 
     // Email table functions:
     // addEmail(), getAllEmails(), updateEmail(), getEmailID(), deleteEmail()
+    // ---------------------------------------------------------------------------------------------------------
 
     public boolean addEmail(Email email, String user, String type) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -255,25 +258,24 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         return db.delete(TABLE_2_NAME, "ID = ?", new String[]{String.valueOf(id)});
     }
 
-    public int getMessageID(Email email) {
+    // returns true if an Email is already in the database with that ID
+    // returns false if the Email ID is new so the email can be sorted
+    public boolean checkMessageID(String id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String sender_user = email.getSender().split("@")[0];
-        String sender_domain = email.getSender().split("@")[1];
-
         String sql = "SELECT * FROM " + TABLE_2_NAME  +
-                " WHERE " + COL2_1 + " = '" + sender_user + "'" +
-                " AND " + COL2_6 + " = '" + sender_domain + "'" +
-                " AND " + COL2_2 + " = '" + email.getSubject() + "'";
-        Cursor c = db.rawQuery(sql, null);
+                " WHERE " + COL2_7 + " = '" + id + "'";
 
-        return (c.getInt(7));
+        Cursor c = db.rawQuery(sql, null);
+        int count = c.getCount();
+        return (count != 0);
     }
 
 
     // Keyword table functions:
     // addKeyword(), getAllKeywords(), updateKeyword(), getKeywordID(), deleteKeyword()
+    // ---------------------------------------------------------------------------------------------------------
 
     public boolean addKeyword(String keyword, String type, String user, String category) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -357,3 +359,4 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     
 
 }
+
