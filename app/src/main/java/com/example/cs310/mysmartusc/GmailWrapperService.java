@@ -4,22 +4,17 @@ import android.accounts.Account;
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
-import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Random;
-import java.util.UUID;
 
 import static android.content.ContentValues.TAG;
 
 public class GmailWrapperService extends IntentService {
 
     static final String ACCOUNT_PARAM = "account";
-//    private LocalBinder binder;
     private GmailWrapper mWrapper;
 
     public GmailWrapperService() {
@@ -30,12 +25,10 @@ public class GmailWrapperService extends IntentService {
     public void onCreate() {
         Log.w(TAG, "On create!");
         super.onCreate();
-//        binder = new LocalBinder();
     }
 
     @Override
     public void onDestroy() {
-//        startService(new Intent(this, GmailWrapperService.class));
         super.onDestroy();
         Log.w(TAG, "Service destroyed!");
     }
@@ -45,8 +38,6 @@ public class GmailWrapperService extends IntentService {
         mWrapper = new GmailWrapper(
                 getApplicationContext(),
                 (Account)intent.getParcelableExtra(ACCOUNT_PARAM));
-//        mWrapper.fullSync();
-//        mWrapper.getStartHistoryId();
         try {
             while(true) {
                 mWrapper.partialSync();

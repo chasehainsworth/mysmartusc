@@ -70,7 +70,7 @@ public class GmailWrapper {
         mUrgentFilter = new Filter("urgent", mDatabaseInterface);
         mSpamFilter = new Filter("spam", mDatabaseInterface);
         mSavedFilter = new Filter("saved", mDatabaseInterface);
-        mIsUrgentNotification = true; // change to false
+        mIsUrgentNotification = false;
     }
 
     public void reloadKeywords() {
@@ -78,28 +78,6 @@ public class GmailWrapper {
         mSpamFilter = new Filter("spam", mDatabaseInterface);
         mSavedFilter = new Filter("saved", mDatabaseInterface);
     }
-
-    // Used when there is no prior HistoryId
-    public void fullSync() {
-        if (mAccount == null) {
-            Log.w(TAG, "fullSync: null account");
-            return;
-        }
-        List<Message> messages = listMessages(Long.valueOf("100000"));
-        for (Message m : messages) {
-            Message fullMessage = getMessage(m.getId());
-            Email email = new Email(
-                    getHeader(fullMessage, "Subject"),
-                    getBody(fullMessage),
-                    getHeader(fullMessage, "From"));
-//            sortEmail(email);
-            if (m.getHistoryId() == null || m.getHistoryId().compareTo(mHistoryId) > 0) {
-                mHistoryId = m.getHistoryId();
-                Log.w(TAG, mHistoryId.toString());
-            }
-        }
-    }
-
 
     public void sortEmail(Email email) {
         reloadKeywords();
@@ -146,12 +124,11 @@ public class GmailWrapper {
 
     public String getBody(Message message) {
         MessagePart payload = message.getPayload();
-        if(payload.getParts() != null) {
+        if (payload.getParts() != null) {
             for (MessagePart part : payload.getParts()) {
-                if(part.getMimeType().equals("text/plain")) {
+                if (part.getMimeType().equals("text/plain")) {
                     return new String(Base64.decodeBase64(part.getBody().getData()));
-                }
-                else if (part.getParts() != null) {
+                } else if (part.getParts() != null) {
                     for (MessagePart p : part.getParts()) {
                         if (part.getMimeType().equals("text/plain")) {
                             return new String(Base64.decodeBase64(part.getBody().getData()));
@@ -161,13 +138,7 @@ public class GmailWrapper {
             }
         }
         return message.getSnippet();
-
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(message.getPayload().getParts().get(0).getBody().getData());
-//        System.out.println("THINGY: " + new String (Base64.decodeBase64(message.getPayload().getParts().get(0).getBody().getData().getBytes())));
-//        return new String(Base64.decodeBase64(message.getPayload().getParts().get(0).getBody().getData().getBytes()));
     }
-
 
     public Message getMessage(String messageId) {
         Log.w(TAG, "Getting Message ID: " + messageId);
@@ -189,57 +160,6 @@ public class GmailWrapper {
             Log.w(TAG, "getMessage:exception", e);
         }
         return null;
-    }
-
-    public List<Message> listHistory() {
-        try {
-            GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
-                    mContext,
-                    Collections.singleton(EMAIL_SCOPE));
-            credential.setSelectedAccount(mAccount);
-
-            Gmail mService = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
-                    .setApplicationName("MySmartUSC")
-                    .build();
-            ListHistoryResponse response = mService
-                    .users()
-                    .history()
-                    .list(credential.getSelectedAccountName())
-                    .setStartHistoryId(mHistoryId)
-                    .execute();
-            List<Message> messages = new ArrayList<>();
-            if (response.getHistory() != null) {
-                for (History history : response.getHistory()) {
-                    if (history.getMessagesAdded() != null) {
-                        for (HistoryMessageAdded messageAdded : history.getMessagesAdded()) {
-                            messages.add(messageAdded.getMessage());
-                        }
-                    }
-                }
-            }
-            if(messages.size() > 0) mHistoryId = response.getHistoryId();
-            return messages;
-        } catch (IOException e) {
-            Log.w(TAG, "listMessages:exception", e);
-        }
-        return null;
-    }
-
-    public void getStartHistoryId() {
-        try {
-            GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
-                    mContext,
-                    Collections.singleton(EMAIL_SCOPE));
-            credential.setSelectedAccount(mAccount);
-
-            Gmail mService = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
-                    .setApplicationName("MySmartUSC")
-                    .build();
-            Profile profile = mService.users().getProfile(credential.getSelectedAccountName()).execute();
-            mHistoryId = profile.getHistoryId();
-        } catch (IOException e) {
-            Log.w(TAG, "listMessages:exception", e);
-        }
     }
 
     public List<Message> listMessages(Long maxResults) {
@@ -306,10 +226,6 @@ public class GmailWrapper {
         }
 
 
-    }
-
-    public BigInteger getmHistoryId() {
-        return mHistoryId;
     }
 
     public boolean getIsUrgentNotification() {
