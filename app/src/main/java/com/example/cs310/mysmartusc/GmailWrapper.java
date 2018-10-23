@@ -282,13 +282,17 @@ public class GmailWrapper {
         {
             for (Message m : messages) {
                 Message fullMessage = getMessage(m.getId());
-                Email email = new Email(
-                        getHeader(fullMessage, "Subject"),
-                        getBody(fullMessage),
-                        getHeader(fullMessage, "From"));
-                Log.w(TAG, email.getSender());
-                Log.w(TAG, email.getBody());
-                sortEmail(email);
+                if(fullMessage != null)
+                {
+                    Email email = new Email(
+                            getHeader(fullMessage, "Subject"),
+                            getBody(fullMessage),
+                            getHeader(fullMessage, "From"));
+                    Log.w(TAG, email.getSender());
+                    Log.w(TAG, email.getBody());
+                    sortEmail(email);
+                }
+
             }
         }
 
