@@ -81,12 +81,6 @@ public class GmailWrapper {
     public void sortEmail(Email email) {
         reloadKeywords();
 
-        if(containsEmail(email)){
-            return;
-        } else {
-            Log.e("GmailWrapper", "Adding Email: " + email.getSubject() + " - From: " + email.getSender());
-            allEmails.add(email);
-        }
 
         boolean urgentResult = mUrgentFilter.sort(email);
         boolean spamResult = mSpamFilter.sort(email);
@@ -207,13 +201,14 @@ public class GmailWrapper {
         else
         {
             for (Message m : messages) {
-                
+                /*
                 // if an Email with that id already exists in the database, do nothing (to avoid duplicates)
                 // if no Email in the database exists with that ID, send it to be sorted
                 boolean idExists = mDatabaseInterface.checkMessageID(m.getId());
                 if (idExists) {
                     continue;
                 }
+                */
                 
                 Message fullMessage = getMessage(m.getId());
                 

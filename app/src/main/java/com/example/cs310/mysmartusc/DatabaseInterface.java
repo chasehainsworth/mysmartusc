@@ -212,6 +212,21 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM " + TABLE_2_NAME, null);
     }
 
+    public boolean emailExists(String subject, String sender_user, String sender_domain){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Log.e("DI", "Checking for d: " + subject + ", " + sender_user + ", " + sender_domain);
+
+        Cursor c = db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE " + COL2_2 + " = '" + subject + "'" +
+                " AND " + COL2_1 + " = '" + sender_user + "'" + " AND " + COL2_6 + " = '" + sender_domain + "'", null);
+
+        if(c.getCount() > 0){
+            return true;
+        }
+
+        return false;
+    }
+
     public Cursor getEmailByType(String email, String type)
     {
         SQLiteDatabase db = this.getWritableDatabase();
