@@ -16,6 +16,7 @@ import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,28 +64,6 @@ public class GmailWrapper {
         mUrgentFilter = new Filter("urgent", mDatabaseInterface);
         mSpamFilter = new Filter("spam", mDatabaseInterface);
         mSavedFilter = new Filter("saved", mDatabaseInterface);
-    }
-
-    // Used when there is no prior HistoryId
-    public void fullSync() {
-        if (mAccount == null) {
-            Log.w(TAG, "fullSync: null account");
-            return;
-        }
-        List<Message> messages = listMessages(Long.valueOf("100000"));
-        for (Message m : messages) {
-            Message fullMessage = getMessage(m.getId());
-
-            Email email = new Email(
-                    getHeader(fullMessage, "Subject"),
-                    getBody(fullMessage),
-                    getHeader(fullMessage, "From"));
-//            sortEmail(email);
-            if (m.getHistoryId() == null || m.getHistoryId().compareTo(mHistoryId) > 0) {
-                mHistoryId = m.getHistoryId();
-                Log.w(TAG, mHistoryId.toString());
-            }
-        }
     }
 
     private boolean containsEmail(Email email){
