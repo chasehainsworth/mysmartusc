@@ -27,11 +27,21 @@ public class UrgentActivity extends Activity {
         refreshView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshView();
+    }
+
     private void refreshView() {
         emails.clear();
         Log.e("UrgentActivity", "Getting " + mUsername + ", type: " + mType);
         Cursor cursor = db.getEmailByType(mUsername, mType);
-
+        if(cursor.getCount() > 0){
+            Log.e("Urgent", "Count: " + cursor.getCount());
+        }else {
+            Log.e("Urgent","Zero results!");
+        }
         if (cursor != null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
                 do {
@@ -83,7 +93,7 @@ public class UrgentActivity extends Activity {
 
     protected void onCreate(Bundle urgentInstanceState) {
         super.onCreate(urgentInstanceState);
-        setContentView(R.layout.save_activity);
+        setContentView(R.layout.urgent_activity);
 
         emails = new ArrayList<>();
         db = DatabaseInterface.getInstance(this);
@@ -91,7 +101,6 @@ public class UrgentActivity extends Activity {
         mUsername = account.name;
         mType = "urgent";
         refreshView();
-
 
     }
 

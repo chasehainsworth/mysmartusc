@@ -231,12 +231,13 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     public Cursor getEmailByType(String email, String type)
     {
         SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = this.getUserID(email);
+        c.moveToFirst();
+        String id = c.getString(0);
 
-        String sender_user = email.split("@")[0];
-        String sender_domain = email.split("@")[1];
 
         return db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE " + COL2_4 + " = '" + type + "'" +
-                " AND " + COL2_1 + " = '" + sender_user + "'" + " AND " + COL2_6 + " = '" + sender_domain + "'", null);
+                " AND " + COL2_5 + " = '" + id + "'", null);
     }
 
     // Probably won't need a function to update email information once an Email is already

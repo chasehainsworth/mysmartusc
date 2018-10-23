@@ -14,7 +14,7 @@ import android.database.Cursor;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-public class SpamActivity extends Activity {
+public class SaveActivity extends Activity {
 
     private ArrayList<Email> emails;
     DatabaseInterface db;
@@ -29,7 +29,7 @@ public class SpamActivity extends Activity {
 
     private void refreshView() {
         emails.clear();
-        Log.e("SpamActivity", "Getting " + mUsername + ", type: " + mType);
+        Log.e("SaveActivity", "Getting " + mUsername + ", type: " + mType);
         Cursor cursor = db.getEmailByType(mUsername, mType);
 
         if (cursor != null && cursor.getCount() > 0) {
@@ -41,7 +41,7 @@ public class SpamActivity extends Activity {
                     String sender_domain = cursor.getString(cursor.getColumnIndex("SENDER_DOMAIN"));
 
 
-                    Log.e("SpamActivity", "Creating email with subject: " + subject);
+                    Log.e("SaveActivity", "Creating email with subject: " + subject);
                     emails.add(new Email(subject, body, sender_user + "@" + sender_domain));
 
 
@@ -49,9 +49,9 @@ public class SpamActivity extends Activity {
             }
         } else {
             if (cursor == null) {
-                Log.e("SpamActivity", "The cursor to get the emails is null!");
+                Log.e("SaveActivity", "The cursor to get the emails is null!");
             } else {
-                Log.e("SpamActivity", "There are no emails here!");
+                Log.e("SaveActivity", "There are no emails here!");
             }
         }
         cursor.close();
@@ -69,7 +69,7 @@ public class SpamActivity extends Activity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent emailIntent = new Intent(SpamActivity.this, EmailViewerActivity.class);
+                Intent emailIntent = new Intent(SaveActivity.this, EmailViewerActivity.class);
 
                 emailIntent.putExtra("subject", emails.get(position).getSubject());
                 emailIntent.putExtra("body", emails.get(position).getBody());
@@ -89,7 +89,7 @@ public class SpamActivity extends Activity {
         db = DatabaseInterface.getInstance(this);
         Account account = (Account) getIntent().getParcelableExtra("account");
         mUsername = account.name;
-        mType = "spam";
+        mType = "saved";
         refreshView();
 
 

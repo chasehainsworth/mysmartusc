@@ -84,7 +84,7 @@ public class SpamActivity extends Activity {
 
     protected void onCreate(Bundle spamInstanceState) {
         super.onCreate(spamInstanceState);
-        setContentView(R.layout.save_activity);
+        setContentView(R.layout.spam_activity);
 
         emails = new ArrayList<>();
         db = DatabaseInterface.getInstance(this);
