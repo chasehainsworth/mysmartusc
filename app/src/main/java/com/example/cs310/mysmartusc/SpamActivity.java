@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.database.Cursor;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -38,6 +39,7 @@ public class SpamActivity extends Activity {
                     String body = cursor.getString(cursor.getColumnIndex("BODY"));
                     String sender_user = cursor.getString(cursor.getColumnIndex("SENDER_USER"));
                     String sender_domain = cursor.getString(cursor.getColumnIndex("SENDER_USER"));
+
                     emails.add(new Email(subject, body, sender_user + "@" + sender_domain));
                 }while (cursor.moveToNext());
             }

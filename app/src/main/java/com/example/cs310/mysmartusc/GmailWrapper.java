@@ -61,6 +61,8 @@ public class GmailWrapper {
     private BigInteger mHistoryId;
     private boolean mIsUrgentNotification;
 
+    private ArrayList<Email> allEmails = new ArrayList<>();
+
     public GmailWrapper(Context context, Account account) {
         mContext = context;
         mAccount = account;
@@ -88,6 +90,7 @@ public class GmailWrapper {
         List<Message> messages = listMessages(Long.valueOf("100000"));
         for (Message m : messages) {
             Message fullMessage = getMessage(m.getId());
+
             Email email = new Email(
                     getHeader(fullMessage, "Subject"),
                     getBody(fullMessage),
@@ -100,16 +103,35 @@ public class GmailWrapper {
         }
     }
 
+    private boolean containsEmail(Email email){
+        for(Email e : allEmails){
+            if(e.getSubject().equals(email.getSubject())){
+                if(e.getSender().equals(email.getSender())){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 
     public void sortEmail(Email email) {
         reloadKeywords();
+
+        if(containsEmail(email)){
+            return;
+        } else {
+            Log.e("GmailWrapper", "Adding Email: " + email.getSubject() + " - From: " + email.getSender());
+            allEmails.add(email);
+        }
+
         boolean urgentResult = mUrgentFilter.sort(email);
         boolean spamResult = mSpamFilter.sort(email);
         boolean savedResult = mSavedFilter.sort(email);
 
         // If no filters are triggered
         if (!urgentResult && !spamResult && !savedResult) {
-            Log.e("No filter","NO FILTER!");
             return;
         }
         // If only one filter is triggered
@@ -293,6 +315,7 @@ public class GmailWrapper {
                 
                 if(fullMessage != null)
                 {
+                    Log.e("GmailWrapper", "HistoryID = " + fullMessage.getHistoryId());
                     Email email = new Email(
                             getHeader(fullMessage, "Subject"),
                             getBody(fullMessage),

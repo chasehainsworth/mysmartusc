@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.database.Cursor;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 public class UrgentActivity extends Activity {
@@ -39,6 +40,7 @@ public class UrgentActivity extends Activity {
                     String sender_user = cursor.getString(cursor.getColumnIndex("SENDER_USER"));
                     String sender_domain = cursor.getString(cursor.getColumnIndex("SENDER_DOMAIN"));
 
+
                     emails.add(new Email(subject, body, sender_user + "@" + sender_domain));
                 }while (cursor.moveToNext());
             }
@@ -54,7 +56,11 @@ public class UrgentActivity extends Activity {
         ArrayList<String> emailHeaders = new ArrayList<>();
 
         for(Email e : emails){
-            emailHeaders.add(e.getSubject());
+            for(String s : emailHeaders){
+                if (!s.equals(e.getSubject())){
+                    emailHeaders.add(e.getSubject());
+                }
+            }
         }
 
         ListView listView = (ListView) findViewById(R.id.listView);
