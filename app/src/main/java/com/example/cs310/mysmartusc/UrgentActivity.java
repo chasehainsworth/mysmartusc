@@ -28,6 +28,7 @@ public class UrgentActivity extends Activity {
     }
 
     private void refreshView() {
+        emails.clear();
         Log.e("UrgentActivity", "Getting " + mUsername + ", type: " + mType);
         Cursor cursor = db.getEmailByType(mUsername, mType);
 
