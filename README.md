@@ -2,8 +2,15 @@
 Team members: Thomas Psyhogeos, Anay Patel, Chase Hainsworth, Brandon Dalton, Alex Young
 
 Instructions for running MySmartUSC application
-  1) Download .zip file into Android Studio and run app with emulator
-  Note: testing was performed with Nexus 5 emulator running Marshmallow OS
+  1) Download .zip file into Android Studio.
+  2) Before running, open Gradle in Android Studio (on the far right sidebar) then navigate to mysmartusc (or whatever you 
+     name the project on your computer) / app / Tasks / android, then click signingReport.
+  3) After running signingReport, find the SHA1 code given in the Run log and copy the code.
+  4) Send the SHA1 code to hainswor@usc.edu. This is the email of one of our members, Chase Hainsworth, who will add you to 
+     the project's Gmail API credentials. Without this, you will not be able to use the app after signing in.
+  5) Chase will send you an email when he has added you. After this, you may run the app in Android Studio.
+  Note: if we were publishing this app on the Google Play store, we could generate a signed APK so all users would not need to send in their own SHA. Since you're building it from scratch, we need to add your debug keystore credentials to our project.
+  Note: testing was performed with Nexus 5 emulator running Marshmallow OS.
 
 Instructions for using application
   1) The first step to using the app is to sign in with your Gmail credentials. This will take you to the homepage.
