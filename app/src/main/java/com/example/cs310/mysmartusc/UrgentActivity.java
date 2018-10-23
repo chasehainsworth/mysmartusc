@@ -29,7 +29,6 @@ public class UrgentActivity extends Activity {
         String type = "urgent";
 
 
-        Log.e("UrgentActivity", "getEmailByType("+user+", " + type);
         Cursor cursor = db.getEmailByType(user, type);
 
         if (cursor != null && cursor.getCount() > 0 ) {
