@@ -24,29 +24,68 @@
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
             android:visibility="visible"
             tools:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/sign_out_and_disconnect"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:visibility="gone"
-            tools:visibility="visible">
+        <Button
+            android:id="@+id/sign_out_button"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_margin="20dp"
+            android:text="@string/sign_out"
+            tools:visibility="gone"
+            />
 
-            <Button
-                android:id="@+id/sign_out_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/sign_out"
-                />
-        </LinearLayout>
+        <Button
+            android:id="@+id/homepage_button"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_margin="20dp"
+            android:text="@string/homepage"
+            tools:visiblity="gone"
+            />
+        <!--<LinearLayout-->
+            <!--android:id="@+id/sign_out_and_disconnect"-->
+            <!--android:layout_width="20dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingLeft="16dp"-->
+            <!--android:paddingRight="16dp"-->
+            <!--android:visibility="gone"-->
+            <!--tools:visibility="visible">-->
+
+            <!--<Button-->
+                <!--android:id="@+id/sign_out_button"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="@string/sign_out"-->
+                <!--/>-->
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/homepage"-->
+            <!--android:layout_width="16dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingLeft="16dp"-->
+            <!--android:paddingRight="16dp"-->
+            <!--android:visibility="gone"-->
+            <!--tools:visibility="visible"-->
+            <!--android:layout_margin="50dp">-->
+
+            <!--<Button-->
+                <!--android:id="@+id/homepage_button"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="@string/homepage"-->
+                <!--/>-->
+        <!--</LinearLayout>-->
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

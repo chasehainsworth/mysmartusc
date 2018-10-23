@@ -19,7 +19,7 @@ import static android.content.ContentValues.TAG;
 public class GmailWrapperService extends IntentService {
 
     static final String ACCOUNT_PARAM = "account";
-    private LocalBinder binder;
+//    private LocalBinder binder;
     private GmailWrapper mWrapper;
 
     public GmailWrapperService() {
@@ -30,7 +30,7 @@ public class GmailWrapperService extends IntentService {
     public void onCreate() {
         Log.w(TAG, "On create!");
         super.onCreate();
-        binder = new LocalBinder();
+//        binder = new LocalBinder();
     }
 
     @Override
@@ -81,23 +81,5 @@ public class GmailWrapperService extends IntentService {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
         notificationManager.notify(new Random().nextInt(), mBuilder.build());
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return binder;
-    }
-
-    public class LocalBinder extends android.os.Binder {
-        public GmailWrapperService getService() {
-            return GmailWrapperService.this;
-        }
-    }
-
-    public void reloadKeywords() {
-        mWrapper.reloadKeywords();
-    }
-    private BigInteger getHistoryId() {
-        return mWrapper.getmHistoryId();
     }
 }

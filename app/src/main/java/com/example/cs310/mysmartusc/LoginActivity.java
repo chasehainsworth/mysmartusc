@@ -124,7 +124,6 @@ public class LoginActivity extends AppCompatActivity implements
         if (GoogleSignIn.hasPermissions(account, new Scope(EMAIL_SCOPE))) {
             mAccount = account.getAccount();
             updateUI(account);
-            continueToHomepage();
             if(!isMyServiceRunning(GmailWrapperService.class)) {
                 Intent intent = new Intent(this, GmailWrapperService.class);
                 stopService(intent);
@@ -206,8 +205,6 @@ public class LoginActivity extends AppCompatActivity implements
             DatabaseInterface db = DatabaseInterface.getInstance(this);
             db.addUser(account.getEmail());
 
-            continueToHomepage();
-
 //            ServiceConnection connection = new ServiceConnection() {
 //                @Override
 //                public void onServiceConnected(ComponentName name, IBinder service) {
@@ -245,6 +242,9 @@ public class LoginActivity extends AppCompatActivity implements
             case R.id.sign_out_button:
                 signOut();
                 break;
+            case R.id.homepage_button:
+                continueToHomepage();
+                break;
         }
     }
 
@@ -267,13 +267,15 @@ public class LoginActivity extends AppCompatActivity implements
     private void updateUI(@Nullable GoogleSignInAccount account) {
         if (account != null) {
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+            findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.homepage_button).setVisibility(View.VISIBLE);
 
 
 
         } else {
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
+            findViewById(R.id.sign_out_button).setVisibility(View.GONE);
+            findViewById(R.id.homepage_button).setVisibility(View.GONE);
         }
     }
 
