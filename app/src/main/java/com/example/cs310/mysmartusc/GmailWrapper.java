@@ -78,7 +78,7 @@ public class GmailWrapper {
         return false;
     }
 
-    public void sortEmail(Email email) {
+    public void sortEmail(Email email, String messageID) {
         reloadKeywords();
 
         if(containsEmail(email)){
@@ -102,15 +102,15 @@ public class GmailWrapper {
             if(urgentResult) {
                 Log.w(TAG, email.getSubject() + " marked as urgent!");
                 mIsUrgentNotification = true;
-                mDatabaseInterface.addEmail(email, mAccount.name, "urgent");
+                mDatabaseInterface.addEmail(email, mAccount.name, "urgent", messageID);
             }
             else if(spamResult) {
                 Log.w(TAG, email.getSubject() + " marked as spam!");
-                mDatabaseInterface.addEmail(email, mAccount.name, "spam");
+                mDatabaseInterface.addEmail(email, mAccount.name, "spam", messageID);
             }
             else {
                 Log.w(TAG, email.getSubject() + " marked as saved!");
-                mDatabaseInterface.addEmail(email, mAccount.name, "saved");
+                mDatabaseInterface.addEmail(email, mAccount.name, "saved", messageID);
             }
         }
 
@@ -226,7 +226,7 @@ public class GmailWrapper {
                             getHeader(fullMessage, "From"));
                     Log.w(TAG, email.getSender());
                     Log.w(TAG, email.getBody());
-                    sortEmail(email);
+                    sortEmail(email, m.getId());
                 }
 
             }
