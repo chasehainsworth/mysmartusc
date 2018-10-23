@@ -11,4 +11,6 @@
     <string name="sign_out">Sign Out</string>
     <string name="channel_name">MySmartUSC</string>
     <string name="channel_description">Urgent updates</string>
+    <string name="homepage">Homepage</string>
+    <string name="account">Account</string>
 </resources>

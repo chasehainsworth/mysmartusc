@@ -21,6 +21,7 @@ public class HomePageActivity extends Activity {
         TextView tv = (TextView) findViewById(R.id.homeLabel);
         Button notifications = (Button) findViewById(R.id.notificationsButton);
         Button settings = (Button) findViewById(R.id.settingsButton);
+        Button account = (Button) findViewById(R.id.homepage_button);
 
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +38,14 @@ public class HomePageActivity extends Activity {
                 Intent settingsIntent = new Intent(HomePageActivity.this, SettingsActivity.class);
                 settingsIntent.putExtra("account", getIntent().getParcelableExtra("account"));
                 startActivity(settingsIntent);
+            }
+        });
+
+        account.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent homepageIntent = new Intent(HomePageActivity.this, LoginActivity.class);
+                startActivity(homepageIntent);
             }
         });
     }
