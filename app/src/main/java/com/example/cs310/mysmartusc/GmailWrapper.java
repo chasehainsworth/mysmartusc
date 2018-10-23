@@ -1,40 +1,25 @@
 package com.example.cs310.mysmartusc;
 
 import android.accounts.Account;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
-//import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
-//import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
 import com.google.api.services.gmail.Gmail;
-import com.google.api.services.gmail.model.History;
-import com.google.api.services.gmail.model.HistoryMessageAdded;
-import com.google.api.services.gmail.model.ListHistoryResponse;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
-import com.google.api.services.gmail.model.Profile;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
-import com.google.api.client.repackaged.org.apache.commons.codec.binary.StringUtils;
 
 import static android.content.ContentValues.TAG;
 
@@ -58,7 +43,6 @@ public class GmailWrapper {
     private Filter mSavedFilter;
 
     private DatabaseInterface mDatabaseInterface;
-    private BigInteger mHistoryId;
     private boolean mIsUrgentNotification;
 
     private ArrayList<Email> allEmails = new ArrayList<>();
