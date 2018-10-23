@@ -18,19 +18,18 @@ public class UrgentActivity extends Activity {
 
     private ArrayList<Email> emails;
     DatabaseInterface db;
+    String mUsername;
+    String mType;
 
-    protected void onCreate(Bundle urgentInstanceState) {
-        super.onCreate(urgentInstanceState);
-        setContentView(R.layout.save_activity);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        refreshView();
+    }
 
-        emails = new ArrayList<>();
-        db = DatabaseInterface.getInstance(this);
-        Account account = (Account) getIntent().getParcelableExtra("account");
-        String user = account.name;
-        String type = "urgent";
-
-        Log.e("UrgentActivity", "Getting " + user + ", type: " + type);
-        Cursor cursor = db.getEmailByType(user, type);
+    private void refreshView() {
+        Log.e("UrgentActivity", "Getting " + mUsername + ", type: " + mType);
+        Cursor cursor = db.getEmailByType(mUsername, mType);
 
         if (cursor != null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
@@ -79,6 +78,19 @@ public class UrgentActivity extends Activity {
             }
 
         });
+    }
+
+    protected void onCreate(Bundle urgentInstanceState) {
+        super.onCreate(urgentInstanceState);
+        setContentView(R.layout.save_activity);
+
+        emails = new ArrayList<>();
+        db = DatabaseInterface.getInstance(this);
+        Account account = (Account) getIntent().getParcelableExtra("account");
+        mUsername = account.name;
+        mType = "urgent";
+        refreshView();
+
 
     }
 
