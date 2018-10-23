@@ -53,12 +53,12 @@ public class Filter {
             }
         }
         for (String subject : subjectKeywords) {
-            if(currentEmailSender.toLowerCase().contains(subject.toLowerCase())) {
+            if(currentEmailSubject.toLowerCase().contains(subject.toLowerCase())) {
                 return true;
             }
         }
         for (String body : bodyKeywords) {
-            if(currentEmailSender.toLowerCase().contains(body.toLowerCase())) {
+            if(currentEmailBody.toLowerCase().contains(body.toLowerCase())) {
                 return true;
             }
         }
