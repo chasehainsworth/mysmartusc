@@ -71,7 +71,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
                 COL2_4 + " TEXT, " +
                 COL2_5 + " INTEGER, " +
                 COL2_6 + " INTEGER, " +
-                COL2_7 + " INTEGER, " +
+                COL2_7 + " TEXT, " +
                 "FOREIGN KEY(" + COL2_5 + ") REFERENCES " + TABLE_1_NAME + "(" + COL1_0 + " ))";
 
         String sql3 = "CREATE TABLE " +
@@ -176,7 +176,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     // addEmail(), getAllEmails(), updateEmail(), getEmailID(), deleteEmail()
     // ---------------------------------------------------------------------------------------------------------
 
-    public boolean addEmail(Email email, String user, String type) {
+    public boolean addEmail(Email email, String user, String type, String messageID) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -196,6 +196,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         cv.put(COL2_4, type);
         cv.put(COL2_5, id);
         cv.put(COL2_6, sender_domain);
+        cv.put(COL2_7, messageID);
 
         long result = db.insert(TABLE_2_NAME, null, cv);
 
