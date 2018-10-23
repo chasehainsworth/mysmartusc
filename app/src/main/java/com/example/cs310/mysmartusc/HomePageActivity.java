@@ -21,7 +21,7 @@ public class HomePageActivity extends Activity {
         TextView tv = (TextView) findViewById(R.id.homeLabel);
         Button notifications = (Button) findViewById(R.id.notificationsButton);
         Button settings = (Button) findViewById(R.id.settingsButton);
-        Button account = (Button) findViewById(R.id.homepage_button);
+        Button account = (Button) findViewById(R.id.account_button);
 
         notifications.setOnClickListener(new View.OnClickListener() {
             @Override

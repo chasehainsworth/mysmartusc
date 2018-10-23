@@ -20,6 +20,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -113,6 +114,19 @@ public class LoginActivity extends AppCompatActivity implements
         // or similar.
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
+
+        Button home = (Button) findViewById(R.id.homepage_button);
+
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Now we will want to go to the main menu
+                Intent homeIntent = new Intent(LoginActivity.this, HomePageActivity.class);
+                homeIntent.putExtra("account", mAccount);
+                startActivity(homeIntent);
+            }
+        });
+
     }
 
     @Override

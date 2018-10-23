@@ -45,7 +45,7 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:layout_margin="20dp"
-            android:text="@string/homepage"
+            android:text="Homepage"
             tools:visiblity="gone"
             />
         <!--<LinearLayout-->
