@@ -244,4 +244,9 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
+    public void sendEmail(String subject, String body) {
+        GmailWrapper wrapper = new GmailWrapper(this, mAccount);
+        wrapper.sendEmail(subject, mAccount.name, body);
+    }
+
 }

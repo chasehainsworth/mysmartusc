@@ -13,10 +13,12 @@ import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
+import com.google.api.services.gmail.model.MessagePartBody;
 import com.google.api.services.gmail.model.MessagePartHeader;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,6 +60,38 @@ public class GmailWrapper {
         mSpamFilter = new Filter("spam", mDatabaseInterface);
         mSavedFilter = new Filter("saved", mDatabaseInterface);
         mIsUrgentNotification = false;
+    }
+
+    public void sendEmail(String subject, String sender, String body) {
+        Message message = new Message();
+        MessagePartHeader from = new MessagePartHeader();
+        MessagePartHeader subjectLine = new MessagePartHeader();
+        from.setName("From");
+        from.setValue(sender);
+        subjectLine.setName("Subject");
+        subjectLine.setValue(subject);
+        MessagePart part = new MessagePart();
+        MessagePartBody partBody = new MessagePartBody();
+        partBody.setData(body);
+        List<MessagePartHeader> headers = Arrays.asList(from, subjectLine);
+        part.setBody(partBody);
+        part.setHeaders(headers);
+        message.setPayload(part);
+
+
+        try {
+            GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
+                    mContext,
+                    Collections.singleton(EMAIL_SCOPE));
+            credential.setSelectedAccount(mAccount);
+
+            Gmail mService = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+                    .setApplicationName("MySmartUSC")
+                    .build();
+            mService.users().messages().send(mAccount.name, message).execute();
+        } catch (IOException e) {
+            Log.w(TAG, "sendMessage:exception", e);
+        }
     }
 
     public void reloadKeywords() {
