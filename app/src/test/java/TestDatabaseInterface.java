@@ -85,7 +85,59 @@ public class TestDatabaseInterface {
     }
 
     @Test
-    public void getEmailsByType() {
+    public void addGetEmail() {
+        Email e01 = new Email("free food",
+                "come for free food on the viterbi e-quad today at 7pm",
+                "csdept@usc.edu");
+        Email e02 = new Email("cd phd opportunities at USC",
+                "we would really appreciate it if you could encourage exceptionally talented CS majors" +
+                        " from your program to apply to our Ph.D. program",
+                "csdept@usc.edu");
+        Email e03 = new Email("black-box testing",
+                "your classmate posted a new question on Piazza",
+                "no-reply@piazza.com");
+        Email e04 = new Email("SMNT happy hour on wednesday, november 7",
+                "Free Event. Cash Bar. Happy Hour Menu till 7:30PM",
+                "info@meetup.com");
+        Email e05 = new Email("layer up with new men's Nike",
+                "new jerseys on sale at the bookstore",
+                "customerservice@uscbookstore.com");
+        Email e06 = new Email("what's new with Alexa?",
+                "I've got some tricks and treats. Just ask",
+                "store_news@amazon.com");
+        Email e07 = new Email("success networking teams fall 2018 are here",
+                "if you signed up for a team, you have been assigned",
+                "no-reply@nsls.com");
+        Email e08 = new Email("discussion section readings and group presentations",
+                "Please go to the Content section on Blackboard for the reading assignment for next" +
+                        " week's discussion sections",
+                "do-not-reply@blackboard.com");
+        Email e09 = new Email("What is the best math trick you have ever learned?",
+                "Instead, I reversed the calculation. Because 8 % of 50 is the same as 50 % of 8. Which " +
+                        "(for most people) is a much more simple calculation to make in your head.",
+                "digest-noreply@quora.com");
+        Email e10 = new Email("USC - class registration confirmation",
+                "Thank you for using the Web Registration system.",
+                "onestop@usc.edu");
+
+        mMockDatabaseInterface.addEmail(e01, "psyhogeo@usc.edu", "urgent", "01");
+        mMockDatabaseInterface.addEmail(e02, "psyhogeo@usc.edu", "saved", "02");
+        mMockDatabaseInterface.addEmail(e03, "psyhogeo@usc.edu", "spam", "03");
+        mMockDatabaseInterface.addEmail(e04, "psyhogeo@usc.edu", "saved", "04");
+        mMockDatabaseInterface.addEmail(e05, "psyhogeo@usc.edu", "spam", "05");
+        mMockDatabaseInterface.addEmail(e06, "psyhogeo@usc.edu", "spam", "06");
+        mMockDatabaseInterface.addEmail(e07, "psyhogeo@usc.edu", "spam", "07");
+        mMockDatabaseInterface.addEmail(e08, "psyhogeo@usc.edu", "urgent", "08");
+        mMockDatabaseInterface.addEmail(e09, "psyhogeo@usc.edu", "saved", "09");
+        mMockDatabaseInterface.addEmail(e10, "psyhogeo@usc.edu", "urgent", "10");
+
+        Cursor cUrg = mMockDatabaseInterface.getEmailByType("psyhogeo@usc.edu", "urgent");
+        Cursor cSpam = mMockDatabaseInterface.getEmailByType("psyhogeo@usc.edu", "spam");
+        Cursor cSav = mMockDatabaseInterface.getEmailByType("psyhogeo@usc.edu", "saved");
+
+        assertEquals(cUrg.getCount(), 3);
+        assertEquals(cUrg.getCount(), 4);
+        assertEquals(cUrg.getCount(), 3);
 
     }
 
