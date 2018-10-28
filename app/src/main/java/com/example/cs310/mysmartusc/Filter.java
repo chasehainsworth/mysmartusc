@@ -16,6 +16,8 @@ public class Filter {
     //What needs to be the match ratio to return true?
     private double keywordMatchFrequency = 0.1;
 
+    public Filter() {}
+
     public Filter(String type, DatabaseInterface databaseInterface) {
         mType = type;
         mDatabaseInterface = databaseInterface;
@@ -24,7 +26,7 @@ public class Filter {
         subjectKeywords = loadKeywords("Subject");
     }
 
-    private List<String> loadKeywords(String category) {
+    public List<String> loadKeywords(String category) {
         List<String> keywords = new ArrayList<>();
         Cursor cursor = mDatabaseInterface.getKeywordsByType(mType, category);
 
