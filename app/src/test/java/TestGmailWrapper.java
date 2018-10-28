@@ -34,12 +34,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.anyByte;
 import static org.mockito.ArgumentMatchers.anyCollection;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyObject;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.spy;
 
 @RunWith(org.mockito.junit.MockitoJUnitRunner.class)
 public class TestGmailWrapper {
@@ -48,6 +51,7 @@ public class TestGmailWrapper {
     private static final String FAKE_BODY = "body_value";
     private static final String FAKE_MESSAGE_ID = "msg_id";
 
+    private GmailWrapper mWrapperSpy;
     private GmailWrapper mWrapper;
 
     @Mock
@@ -70,7 +74,8 @@ public class TestGmailWrapper {
 
     @Before
     public void setup() {
-        mWrapper = new GmailWrapper();
+        mWrapper = Mockito.spy(new GmailWrapper());
+//        mWrapperSpy = spy(mWrapper);
         mWrapper.setmAccount(mMockAccount);
         mWrapper.setmContext(mMockContext);
         mWrapper.setmUrgentFilter(mMockUrgentFilter);
@@ -155,4 +160,26 @@ public class TestGmailWrapper {
         verify(mMockDatabaseInterface, times(3)).addEmail(ArgumentMatchers.any(), ArgumentMatchers.any(), anyString(), ArgumentMatchers.any());
     }
 
+    @Test
+    public void partialSyncDuplicateEmail() {
+        Message message = new Message();
+        message.setId(FAKE_MESSAGE_ID);
+        doReturn(Arrays.asList(message)).when(mWrapper).listMessages(anyLong());
+        when(mMockDatabaseInterface.checkMessageID(FAKE_MESSAGE_ID)).thenReturn(true);
+        mWrapper.partialSync();
+        verify(mWrapper, times(0)).getMessage(FAKE_MESSAGE_ID);
+    }
+
+    @Test
+    public void partialSyncNewEmail() {
+        Message message = new Message();
+        message.setId(FAKE_MESSAGE_ID);
+        doReturn(Arrays.asList(message)).when(mWrapper).listMessages(anyLong());
+        when(mMockDatabaseInterface.checkMessageID(FAKE_MESSAGE_ID)).thenReturn(false);
+        doReturn(message).when(mWrapper).getMessage(FAKE_MESSAGE_ID);
+        doReturn(FAKE_SUBJECT_HEADER).when(mWrapper).getHeader(ArgumentMatchers.any(), ArgumentMatchers.any());
+        doReturn(FAKE_BODY).when(mWrapper).getBody(ArgumentMatchers.any());
+        mWrapper.partialSync();
+        verify(mWrapper, times(1)).sortEmail(ArgumentMatchers.any(Email.class), anyString());
+    }
 }
