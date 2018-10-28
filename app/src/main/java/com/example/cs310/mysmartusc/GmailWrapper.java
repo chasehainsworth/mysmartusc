@@ -182,11 +182,11 @@ public class GmailWrapper {
                 mIsUrgentNotification = true;
                 mDatabaseInterface.addEmail(email, mAccount.name, "urgent", messageID);
             }
-            else if(spamResult) {
+            if(spamResult) {
                 Log.w(TAG, email.getSubject() + " marked as spam!");
                 mDatabaseInterface.addEmail(email, mAccount.name, "spam", messageID);
             }
-            else {
+            if(savedResult){
                 Log.w(TAG, email.getSubject() + " marked as saved!");
                 mDatabaseInterface.addEmail(email, mAccount.name, "saved", messageID);
             }

@@ -3,6 +3,7 @@ package com.example.cs310.mysmartusc;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ public class HomePageActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent notificationsIntent = new Intent(HomePageActivity.this, NotificationActivity.class);
-                notificationsIntent.putExtra("account", getIntent().getParcelableExtra("account"));
+                notificationsIntent.putExtra("account", (Parcelable) getIntent().getParcelableExtra("account"));
                 startActivity(notificationsIntent);
             }
         });
@@ -36,7 +37,7 @@ public class HomePageActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent settingsIntent = new Intent(HomePageActivity.this, SettingsActivity.class);
-                settingsIntent.putExtra("account", getIntent().getParcelableExtra("account"));
+                settingsIntent.putExtra("account", (Parcelable) getIntent().getParcelableExtra("account"));
                 startActivity(settingsIntent);
             }
         });
