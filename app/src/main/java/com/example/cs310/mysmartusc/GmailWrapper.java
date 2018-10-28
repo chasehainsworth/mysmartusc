@@ -50,6 +50,56 @@ public class GmailWrapper {
 
     private ArrayList<Email> allEmails = new ArrayList<>();
 
+    public GmailWrapper() {}
+
+    public Account getmAccount() {
+        return mAccount;
+    }
+
+    public void setmAccount(Account mAccount) {
+        this.mAccount = mAccount;
+    }
+
+    public Context getmContext() {
+        return mContext;
+    }
+
+    public void setmContext(Context mContext) {
+        this.mContext = mContext;
+    }
+
+    public Filter getmUrgentFilter() {
+        return mUrgentFilter;
+    }
+
+    public void setmUrgentFilter(Filter mUrgentFilter) {
+        this.mUrgentFilter = mUrgentFilter;
+    }
+
+    public Filter getmSpamFilter() {
+        return mSpamFilter;
+    }
+
+    public void setmSpamFilter(Filter mSpamFilter) {
+        this.mSpamFilter = mSpamFilter;
+    }
+
+    public Filter getmSavedFilter() {
+        return mSavedFilter;
+    }
+
+    public void setmSavedFilter(Filter mSavedFilter) {
+        this.mSavedFilter = mSavedFilter;
+    }
+
+    public DatabaseInterface getmDatabaseInterface() {
+        return mDatabaseInterface;
+    }
+
+    public void setmDatabaseInterface(DatabaseInterface mDatabaseInterface) {
+        this.mDatabaseInterface = mDatabaseInterface;
+    }
+
     public GmailWrapper(Context context, Account account) {
         mContext = context;
         mAccount = account;
@@ -95,9 +145,9 @@ public class GmailWrapper {
     }
 
     public void reloadKeywords() {
-        mUrgentFilter = new Filter("urgent", mDatabaseInterface);
-        mSpamFilter = new Filter("spam", mDatabaseInterface);
-        mSavedFilter = new Filter("saved", mDatabaseInterface);
+        mUrgentFilter.refreshKeywords();
+        mSpamFilter.refreshKeywords();
+        mSavedFilter.refreshKeywords();
     }
 
     private boolean containsEmail(Email email){

@@ -21,6 +21,9 @@ public class Filter {
     public Filter(String type, DatabaseInterface databaseInterface) {
         mType = type;
         mDatabaseInterface = databaseInterface;
+    }
+
+    public void refreshKeywords() {
         emailAddresses = loadKeywords("Sender");
         bodyKeywords = loadKeywords("Body");
         subjectKeywords = loadKeywords("Subject");
