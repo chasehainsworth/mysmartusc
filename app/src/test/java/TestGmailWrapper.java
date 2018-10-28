@@ -182,4 +182,5 @@ public class TestGmailWrapper {
         mWrapper.partialSync();
         verify(mWrapper, times(1)).sortEmail(ArgumentMatchers.any(Email.class), anyString());
     }
+
 }
