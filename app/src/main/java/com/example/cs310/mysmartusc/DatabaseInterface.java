@@ -209,7 +209,13 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         String id = c.getString(0);
 
         String sender = email.getSender();
-        String emailSender = sender.substring(sender.indexOf("<")+1,sender.indexOf(">"));
+        String emailSender = "";
+
+        if(sender.indexOf("<") == -1 || sender.indexOf(">") == -1) {
+            emailSender = sender.substring(sender.indexOf("<") + 1, sender.indexOf(">"));
+        }else{
+            emailSender = sender;
+        }
 
         String sender_user = emailSender.split("@")[0];
         String sender_domain = emailSender.split("@")[1];
