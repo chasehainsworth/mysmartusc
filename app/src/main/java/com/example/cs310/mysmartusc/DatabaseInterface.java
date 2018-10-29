@@ -42,7 +42,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     public static final String COL3_3 = "USERID";
     public static final String COL3_4 = "CATEGORY";
 
-    static DatabaseInterface getInstance(Context context) {
+    public static DatabaseInterface getInstance(Context context) {
         if(ourInstance == null) {
             ourInstance = new DatabaseInterface(context);
         }
@@ -96,6 +96,11 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public void close(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.close();
+    }
+
     // User table functions:
     // addUser(), getAllUsers(), updateUser(), getUserID(), deleteUser()
     // ---------------------------------------------------------------------------------------------------------
@@ -125,7 +130,26 @@ public class DatabaseInterface extends SQLiteOpenHelper {
             }
         }
 
-        return true;
+        return false;
+    }
+
+    public boolean tableExists(String tableName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + tableName, null);
+        if (c != null && c.getCount() >= 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public boolean userExists(String username, String domain){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM USERS WHERE EMAIL_USER = '" + username + "' AND EMAIL_DOMAIN = '" + domain + "'", null);
+        if (c != null && c.getCount() >= 0){
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
