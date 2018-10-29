@@ -211,7 +211,8 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         String sender = email.getSender();
         String emailSender = "";
 
-        if(sender.indexOf("<") == -1 || sender.indexOf(">") == -1) {
+        if(sender.indexOf("<") != -1 || sender.indexOf(">") != -1) {
+            System.out.println(sender);
             emailSender = sender.substring(sender.indexOf("<") + 1, sender.indexOf(">"));
         }else{
             emailSender = sender;

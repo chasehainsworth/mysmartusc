@@ -48,12 +48,12 @@ public class DatabaseWhiteBoxTest {
     @Test
     public void addEmailTest() {
         DatabaseInterface db = DatabaseInterface.getInstance(RuntimeEnvironment.application);
-        db.addUser("<brandon@govy.edu>");
+        db.addUser("brandon@govy.edu");
 
         Email e01 = new Email("free food",
                 "come for free food on the viterbi e-quad today at 7pm",
                 "csdept@usc.edu");
-        assertTrue(db.addEmail(e01, "<brandon@govy.edu>", "urgent", "01"));
+        assertTrue(db.addEmail(e01, "brandon@govy.edu", "urgent", "01"));
         db.close();
     }
 
