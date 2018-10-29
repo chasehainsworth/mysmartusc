@@ -16,13 +16,20 @@ import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartBody;
 import com.google.api.services.gmail.model.MessagePartHeader;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
+
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import static android.content.ContentValues.TAG;
 
@@ -112,24 +119,39 @@ public class GmailWrapper {
         mIsUrgentNotification = false;
     }
 
-    public void sendEmail(String subject, String sender, String body) {
+    public static Message createMessageWithEmail(MimeMessage emailContent)
+            throws MessagingException, IOException {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        emailContent.writeTo(buffer);
+        byte[] bytes = buffer.toByteArray();
+        String encodedEmail = Base64.encodeBase64URLSafeString(bytes);
         Message message = new Message();
-        MessagePartHeader from = new MessagePartHeader();
-        MessagePartHeader subjectLine = new MessagePartHeader();
-        from.setName("From");
-        from.setValue(sender);
-        subjectLine.setName("Subject");
-        subjectLine.setValue(subject);
-        MessagePart part = new MessagePart();
-        MessagePartBody partBody = new MessagePartBody();
-        partBody.setData(body);
-        List<MessagePartHeader> headers = Arrays.asList(from, subjectLine);
-        part.setBody(partBody);
-        part.setHeaders(headers);
-        message.setPayload(part);
+        message.setRaw(encodedEmail);
+        return message;
+    }
 
+    public static MimeMessage createEmail(String to,
+                                          String from,
+                                          String subject,
+                                          String bodyText)
+            throws MessagingException {
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props, null);
 
+        MimeMessage email = new MimeMessage(session);
+
+        email.setFrom(new InternetAddress(from));
+        email.addRecipient(javax.mail.Message.RecipientType.TO,
+                new InternetAddress(to));
+        email.setSubject(subject);
+        email.setText(bodyText);
+        return email;
+    }
+
+    public void sendEmail(String subject, String to, String from, String body) {
         try {
+            MimeMessage mimeMessage = createEmail(to, from, subject, body);
+            Message message = createMessageWithEmail(mimeMessage);
             GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
                     mContext,
                     Collections.singleton(EMAIL_SCOPE));
@@ -141,6 +163,8 @@ public class GmailWrapper {
             mService.users().messages().send(mAccount.name, message).execute();
         } catch (IOException e) {
             Log.w(TAG, "sendMessage:exception", e);
+        } catch (MessagingException e) {
+            Log.w(TAG, "sendMessage:MessagingException", e);
         }
     }
 
