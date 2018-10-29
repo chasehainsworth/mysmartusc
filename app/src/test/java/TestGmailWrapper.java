@@ -7,8 +7,6 @@ import com.example.cs310.mysmartusc.DatabaseInterface;
 import com.example.cs310.mysmartusc.Email;
 import com.example.cs310.mysmartusc.Filter;
 import com.example.cs310.mysmartusc.GmailWrapper;
-import com.example.cs310.mysmartusc.R;
-import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartBody;
@@ -17,22 +15,16 @@ import com.google.api.services.gmail.model.MessagePartHeader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static android.util.Base64.encode;
 import static junit.framework.Assert.assertEquals;
-import static org.hamcrest.CoreMatchers.any;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.ArgumentMatchers.anyByte;
-import static org.mockito.ArgumentMatchers.anyCollection;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyObject;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -40,7 +32,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(org.mockito.junit.MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class TestGmailWrapper {
     private static final String FAKE_FROM_HEADER = "from_value";
     private static final String FAKE_SUBJECT_HEADER = "subject_value";
@@ -123,7 +115,12 @@ public class TestGmailWrapper {
         when(mMockSavedFilter.sort(mockEmail)).thenReturn(false);
         when(mMockSpamFilter.sort(mockEmail)).thenReturn(false);
         mWrapper.sortEmail(mockEmail, FAKE_MESSAGE_ID);
+
         //verify(mMockDatabaseInterface, times(0)).addEmail(ArgumentMatchers.any(), ArgumentMatchers.any(), anyString(), ArgumentMatchers.any());
+
+        verify(mMockDatabaseInterface, times(0)).addEmail(any(Email.class), anyString(), anyString(), anyString());
+//        verify(mMockDatabaseInterface, times(0)).addEmail(any(), any(), anyString(), any());
+
     }
 
     @Test
@@ -133,7 +130,9 @@ public class TestGmailWrapper {
         when(mMockSavedFilter.sort(mockEmail)).thenReturn(false);
         when(mMockSpamFilter.sort(mockEmail)).thenReturn(false);
         mWrapper.sortEmail(mockEmail, FAKE_MESSAGE_ID);
-        //verify(mMockDatabaseInterface, times(1)).addEmail(ArgumentMatchers.any(), ArgumentMatchers.any(), anyString(), ArgumentMatchers.any());
+
+        verify(mMockDatabaseInterface, times(1)).addEmail(any(Email.class), anyString(), anyString(), anyString());
+
     }
 
     @Test
@@ -143,7 +142,9 @@ public class TestGmailWrapper {
         when(mMockSavedFilter.sort(mockEmail)).thenReturn(true);
         when(mMockSpamFilter.sort(mockEmail)).thenReturn(false);
         mWrapper.sortEmail(mockEmail, FAKE_MESSAGE_ID);
-        //verify(mMockDatabaseInterface, times(2)).addEmail(ArgumentMatchers.any(), ArgumentMatchers.any(), anyString(), ArgumentMatchers.any());
+
+        verify(mMockDatabaseInterface, times(2)).addEmail(any(Email.class), anyString(), anyString(), anyString());
+
     }
 
     @Test
@@ -153,7 +154,9 @@ public class TestGmailWrapper {
         when(mMockSavedFilter.sort(mockEmail)).thenReturn(true);
         when(mMockSpamFilter.sort(mockEmail)).thenReturn(true);
         mWrapper.sortEmail(mockEmail, FAKE_MESSAGE_ID);
-        //verify(mMockDatabaseInterface, times(3)).addEmail(ArgumentMatchers.any(), ArgumentMatchers.any(), anyString(), ArgumentMatchers.any());
+
+        verify(mMockDatabaseInterface, times(3)).addEmail(any(Email.class), anyString(), anyString(), anyString());
+
     }
 
     @Test
@@ -173,9 +176,11 @@ public class TestGmailWrapper {
         doReturn(Arrays.asList(message)).when(mWrapper).listMessages(anyLong());
         when(mMockDatabaseInterface.checkMessageID(FAKE_MESSAGE_ID)).thenReturn(false);
         doReturn(message).when(mWrapper).getMessage(FAKE_MESSAGE_ID);
-        //doReturn(FAKE_SUBJECT_HEADER).when(mWrapper).getHeader(ArgumentMatchers.any(), ArgumentMatchers.any());
-        //doReturn(FAKE_BODY).when(mWrapper).getBody(ArgumentMatchers.any());
+
+        doReturn(FAKE_SUBJECT_HEADER).when(mWrapper).getHeader(any(Message.class), anyString());
+        doReturn(FAKE_BODY).when(mWrapper).getBody(any(Message.class));
         mWrapper.partialSync();
-        verify(mWrapper, times(1)).sortEmail(ArgumentMatchers.any(Email.class), anyString());
+        verify(mWrapper, times(1)).sortEmail(any(Email.class), anyString());
     }
+
 }
