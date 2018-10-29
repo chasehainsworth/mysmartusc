@@ -1,46 +1,169 @@
 package com.example.cs310.mysmartusc;
 
-import org.junit.Before;
+
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
-
 import androidx.test.runner.AndroidJUnit4;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
 
+@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class TestLoginActivity {
-    private String mStringToBetyped;
 
     @Rule
-    public ActivityTestRule<LoginActivity> mActivityRule
-            = new ActivityTestRule<>(LoginActivity.class);
+    public ActivityTestRule<LoginActivity> mActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
 
-    @Before
-    public void initValidString() {
-        // Specify a valid string.
-        mStringToBetyped = "Espresso";
+    // Adds the keyword "keyword" to Urgent subject. Sends an email containing "keyword" in subject line.
+    // NOTE:
+    // 1. When you close the keyboard after inputting a keyword, Espresso will save that as a pressBack(). You
+    // must delete that.
+    // 2. You need to add sleep sections so that the user has time to login and the service has time to retrieve
+    // the newly sent email
+    // 3. When you add an assertion that the notification arrived, just check if the correct text is there
+    // at the top. This ensures that the test will pass regardless of what else is in the inbox.
+    // 4. Must log out at the end of each test! This will avoid the test breaking if you run it again.
+    @Test
+    public void loginTest() {
+        ViewInteraction ix = onView(
+                allOf(withText("Sign in"),
+                        childAtPosition(
+                                allOf(withId(R.id.sign_in_button),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                1)),
+                                0),
+                        isDisplayed()));
+        ix.perform(click());
+
+        try {
+            Thread.sleep(40000);
+        } catch (InterruptedException e) {
+
+        }
+
+        mActivityTestRule.getActivity().sendEmail("keyword", "");
+
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(R.id.homepage_button), withText("Homepage"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.constraint.ConstraintLayout")),
+                                        0),
+                                3),
+                        isDisplayed()));
+        appCompatButton.perform(click());
+
+        ViewInteraction button = onView(
+                allOf(withId(R.id.settingsButton), withText("Settings"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.constraint.ConstraintLayout")),
+                                        0),
+                                2),
+                        isDisplayed()));
+        button.perform(click());
+
+        ViewInteraction editText = onView(
+                allOf(withId(R.id.urgentKeywords),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.constraint.ConstraintLayout")),
+                                        0),
+                                2),
+                        isDisplayed()));
+        editText.perform(replaceText("keyword"), closeSoftKeyboard());
+
+        ViewInteraction button2 = onView(
+                allOf(withId(R.id.saveSubject), withText("Save Subject"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        7),
+                                0),
+                        isDisplayed()));
+        button2.perform(click());
+
+        pressBack();
+
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+
+        }
+
+        ViewInteraction button3 = onView(
+                allOf(withId(R.id.notificationsButton), withText("Notifications"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.constraint.ConstraintLayout")),
+                                        0),
+                                1),
+                        isDisplayed()));
+        button3.perform(click());
+
+        ViewInteraction button4 = onView(
+                allOf(withId(R.id.urgentButton), withText("Urgent"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.constraint.ConstraintLayout")),
+                                        0),
+                                2),
+                        isDisplayed()));
+        button4.perform(click());
+
+        ViewInteraction textView = onView(
+                allOf(withId(android.R.id.text1), withText("keyword"),
+                        childAtPosition(
+                                allOf(withId(R.id.listView),
+                                        childAtPosition(
+                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                                0)),
+                                0),
+                        isDisplayed()));
+        textView.check(matches(withText("keyword")));
     }
 
-    @Test
-    public void changeText_sameActivity() {
+    private static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
 
-        // Type text and then press the button.
-//        onView(withId(R.id.editTextUserInput))
-//                .perform(typeText(mStringToBetyped), closeSoftKeyboard());
-//        onView(withId(R.id.changeTextBt)).perform(click());
-//
-//        // Check that the text was changed.
-//        onView(withId(R.id.textToBeChanged))
-//                .check(matches(withText(mStringToBetyped)));
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + position + " in parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
     }
 }

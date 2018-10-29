@@ -32,7 +32,8 @@ public class LoginActivity extends AppCompatActivity implements
     private static final String TAG = "MySmartUSC";
 
     // Scope for reading user's contacts
-    private static final String EMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
+//    private static final String EMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
+    private static final String EMAIL_SCOPE = "https://mail.google.com/";
 
     // Bundle key for account object
     private static final String KEY_ACCOUNT = "key_account";

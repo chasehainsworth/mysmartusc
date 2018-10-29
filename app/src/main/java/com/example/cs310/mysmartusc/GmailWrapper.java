@@ -37,7 +37,8 @@ import static android.content.ContentValues.TAG;
 public class GmailWrapper {
 
     // Scope for reading user's contacts
-    private static final String EMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
+//    private static final String EMAIL_SCOPE = "https://www.googleapis.com/auth/gmail.readonly";
+    private static final String EMAIL_SCOPE = "https://mail.google.com/";
 
     // Global instance of the HTTP transport
     private static final HttpTransport HTTP_TRANSPORT = AndroidHttp.newCompatibleTransport();
@@ -149,6 +150,7 @@ public class GmailWrapper {
     }
 
     public void sendEmail(String subject, String to, String from, String body) {
+        Log.w(TAG, "Sending message with subject: " + subject + " To: " + to);
         try {
             MimeMessage mimeMessage = createEmail(to, from, subject, body);
             Message message = createMessageWithEmail(mimeMessage);
