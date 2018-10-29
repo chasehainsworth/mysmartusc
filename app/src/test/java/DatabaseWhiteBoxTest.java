@@ -42,4 +42,5 @@ public class DatabaseWhiteBoxTest {
         assertTrue(db.addUser("brandon@govy.com"));
         db.close();
     }
+
 }
