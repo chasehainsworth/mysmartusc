@@ -42,7 +42,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     public static final String COL3_3 = "USERID";
     public static final String COL3_4 = "CATEGORY";
 
-    static DatabaseInterface getInstance(Context context) {
+    public static DatabaseInterface getInstance(Context context) {
         if(ourInstance == null) {
             ourInstance = new DatabaseInterface(context);
         }
@@ -88,6 +88,11 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         db.execSQL(sql3);
     }
 
+    public void close(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.close();
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_1_NAME);
@@ -100,12 +105,36 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     // addUser(), getAllUsers(), updateUser(), getUserID(), deleteUser()
     // ---------------------------------------------------------------------------------------------------------
 
+    public boolean tableExists(String tableName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + tableName, null);
+
+        if (c != null && c.getCount() >= 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean userExists(String username, String domain){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM USERS WHERE EMAIL_USER = '" + username + "' AND EMAIL_DOMAIN = '" + domain + "'", null);
+
+        if (c != null && c.getCount() >= 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean addUser(String email) {
         SQLiteDatabase db = this.getWritableDatabase();
+
         ContentValues cv = new ContentValues();
 
         String user = email.split("@")[0];
         String domain = email.split("@")[1];
+        System.out.println("Adding in " + user + "" + domain);
 
         Cursor getUser = db.rawQuery("SELECT * FROM " + TABLE_1_NAME +
                 " WHERE " + COL1_1 + " = '" + user + "'" +
@@ -125,7 +154,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
             }
         }
 
-        return true;
+        return false;
     }
 
 
@@ -373,8 +402,4 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_3_NAME, "ID = ?", new String[]{String.valueOf(id)});
     }
-
-    
-
 }
-
