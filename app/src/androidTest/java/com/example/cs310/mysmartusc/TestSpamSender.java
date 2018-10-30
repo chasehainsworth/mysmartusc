@@ -32,6 +32,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
@@ -161,8 +162,8 @@ public class TestSpamSender {
                 .atPosition(0);
         textView.perform(click());
 
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.emailFromLabel), /*withText("anay.m.patel@gmail.com"),*/
+         ViewInteraction textView2 = onView(
+                allOf(withId(R.id.emailFromLabel), withText(containsString("@")),
                         childAtPosition(
                                 childAtPosition(
                                         IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class),
