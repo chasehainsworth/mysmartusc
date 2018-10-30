@@ -38,15 +38,6 @@ public class TestLoginActivity {
     @Rule
     public ActivityTestRule<LoginActivity> mActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
 
-    // Adds the keyword "keyword" to Urgent subject. Sends an email containing "keyword" in subject line.
-    // NOTE:
-    // 1. When you close the keyboard after inputting a keyword, Espresso will save that as a pressBack(). You
-    // must delete that.
-    // 2. You need to add sleep sections so that the user has time to login and the service has time to retrieve
-    // the newly sent email
-    // 3. When you add an assertion that the notification arrived, just check if the correct text is there
-    // at the top. This ensures that the test will pass regardless of what else is in the inbox.
-    // 4. Must log out at the end of each test! This will avoid the test breaking if you run it again.
     @Test
     public void loginTest() {
         ViewInteraction ix = onView(
@@ -126,7 +117,7 @@ public class TestLoginActivity {
                         isDisplayed()));
         button3.perform(click());
 
-        ViewInteraction button4 = onView(
+        ViewInteraction button5 = onView(
                 allOf(withId(R.id.urgentButton), withText("Urgent"),
                         childAtPosition(
                                 childAtPosition(
@@ -134,7 +125,7 @@ public class TestLoginActivity {
                                         0),
                                 2),
                         isDisplayed()));
-        button4.perform(click());
+        button5.perform(click());
 
         ViewInteraction textView = onView(
                 allOf(withId(android.R.id.text1), withText("keyword"),
@@ -146,6 +137,22 @@ public class TestLoginActivity {
                                 0),
                         isDisplayed()));
         textView.check(matches(withText("keyword")));
+
+        pressBack();
+
+        pressBack();
+
+        pressBack();
+
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.sign_out_button), withText("Sign Out"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.constraint.ConstraintLayout")),
+                                        0),
+                                2),
+                        isDisplayed()));
+        appCompatButton2.perform(click());
     }
 
     private static Matcher<View> childAtPosition(
