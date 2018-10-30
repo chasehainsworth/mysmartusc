@@ -13,13 +13,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
-import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -31,19 +29,17 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class TestSavedAndUrgentSubject {
+public class TestSavedAndUrgentInSender {
 
-    
     @Rule
     public ActivityTestRule<LoginActivity> mActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
 
     @Test
-    public void testSavedAndUrgentSubject() {
+    public void testSavedAndUrgentInSender() {
         mActivityTestRule.getActivity().deleteDatabase("MySmartUSC");
         ViewInteraction ip = onView(
                 allOf(withText("Sign in"),
@@ -62,7 +58,7 @@ public class TestSavedAndUrgentSubject {
 
         }
 
-        mActivityTestRule.getActivity().sendEmail("empty", "urgentSub savedSub");
+        mActivityTestRule.getActivity().sendEmail("Urgent and saved", "");
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.homepage_button), withText("Homepage"),
@@ -92,7 +88,7 @@ public class TestSavedAndUrgentSubject {
                                         0),
                                 2),
                         isDisplayed()));
-        editText.perform(replaceText("urgentSub"), closeSoftKeyboard());
+        editText.perform(replaceText("brandon7cc@gmail.com"), closeSoftKeyboard());
 
         ViewInteraction editText2 = onView(
                 allOf(withId(R.id.savedKeywords),
@@ -102,27 +98,28 @@ public class TestSavedAndUrgentSubject {
                                         0),
                                 4),
                         isDisplayed()));
-        editText2.perform(replaceText("savedSub"), closeSoftKeyboard());
+        editText2.perform(replaceText("brandon7cc@gmail.com"), closeSoftKeyboard());
 
         ViewInteraction button2 = onView(
-                allOf(withId(R.id.saveSubject), withText("Save Subject"),
+                allOf(withId(R.id.saveSender), withText("Save Sender"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
                                         7),
-                                0),
+                                1),
                         isDisplayed()));
         button2.perform(click());
 
         pressBack();
 
         try {
-            Thread.sleep(40000);
+            Thread.sleep(30000);
         } catch (InterruptedException e) {
 
         }
 
-        ViewInteraction button3 = onView(
+
+        ViewInteraction button4 = onView(
                 allOf(withId(R.id.notificationsButton), withText("Notifications"),
                         childAtPosition(
                                 childAtPosition(
@@ -130,39 +127,7 @@ public class TestSavedAndUrgentSubject {
                                         0),
                                 1),
                         isDisplayed()));
-        button3.perform(click());
-
-        ViewInteraction button4 = onView(
-                allOf(withId(R.id.urgentButton), withText("Urgent"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.support.constraint.ConstraintLayout")),
-                                        0),
-                                2),
-                        isDisplayed()));
         button4.perform(click());
-
-        DataInteraction textView = onData(anything())
-                .inAdapterView(allOf(withId(R.id.listView),
-                        childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                0)))
-                .atPosition(0);
-        textView.perform(click());
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.emailSubjectLabel), withText("urgentSub savedSub"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class),
-                                        0),
-                                0),
-                        isDisplayed()));
-        textView2.check(matches(withText("urgentSub savedSub")));
-
-        pressBack();
-
-        pressBack();
 
         ViewInteraction button5 = onView(
                 allOf(withId(R.id.savedButton), withText("Saved"),
@@ -174,49 +139,39 @@ public class TestSavedAndUrgentSubject {
                         isDisplayed()));
         button5.perform(click());
 
-        DataInteraction textView3 = onData(anything())
-                .inAdapterView(allOf(withId(R.id.listView),
+        ViewInteraction textView = onView(
+                allOf(withId(android.R.id.text1), withText("Urgent and saved"),
                         childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                0)))
-                .atPosition(0);
-        textView3.perform(click());
-
-        ViewInteraction textView4 = onView(
-                allOf(withId(R.id.emailSubjectLabel), withText("urgentSub savedSub"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.view.ViewGroup.class),
-                                        0),
+                                allOf(withId(R.id.listView),
+                                        childAtPosition(
+                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                                0)),
                                 0),
                         isDisplayed()));
-        textView4.check(matches(withText("urgentSub savedSub")));
-
-        pressBack();
-
-        pressBack();
+        textView.check(matches(withText("Urgent and saved")));
 
         pressBack();
 
         ViewInteraction button6 = onView(
-                allOf(withId(R.id.account_button), withText("Account"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.support.constraint.ConstraintLayout")),
-                                        0),
-                                3),
-                        isDisplayed()));
-        button6.perform(click());
-
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.sign_out_button), withText("Sign Out"),
+                allOf(withId(R.id.urgentButton), withText("Urgent"),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.support.constraint.ConstraintLayout")),
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatButton2.perform(click());
+        button6.perform(click());
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(android.R.id.text1), withText("Urgent and saved"),
+                        childAtPosition(
+                                allOf(withId(R.id.listView),
+                                        childAtPosition(
+                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                                0)),
+                                0),
+                        isDisplayed()));
+        textView2.check(matches(withText("Urgent and saved")));
     }
 
     private static Matcher<View> childAtPosition(
