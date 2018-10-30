@@ -12,6 +12,7 @@ import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartBody;
 import com.google.api.services.gmail.model.MessagePartHeader;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +22,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.List;
+
+import javax.mail.internet.MimeMessage;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -173,9 +176,14 @@ public class TestGmailWrapper {
     }
 
     @Test
-    public void getBodyTest(){
+    public void getBodyTest() {
         String body = "message body";
-
+        GmailWrapper gw = new GmailWrapper();
+        try{
+            MimeMessage mime = GmailWrapper.createEmail("to@usc.edu", "from@usc.edu", "subject", body);
+            Message message = GmailWrapper.createMessageWithEmail(mime);
+            Assert.assertTrue(body.equals(gw.getBody(message)));
+        } catch (Exception e){}
     }
 
 }
