@@ -172,4 +172,10 @@ public class TestGmailWrapper {
         verify(mWrapper, times(1)).sortEmail(any(Email.class), anyString());
     }
 
+    @Test
+    public void getBodyTest(){
+        String body = "message body";
+
+    }
+
 }
