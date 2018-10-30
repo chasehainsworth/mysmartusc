@@ -33,7 +33,7 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class TestLoginActivity {
+public class TestUrgentSubject {
 
     @Rule
     public ActivityTestRule<LoginActivity> mActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
