@@ -40,6 +40,7 @@ public class TestUrgentSubject {
 
     @Test
     public void loginTest() {
+        mActivityTestRule.getActivity().deleteDatabase("MySmartUSC");
         ViewInteraction ix = onView(
                 allOf(withText("Sign in"),
                         childAtPosition(
