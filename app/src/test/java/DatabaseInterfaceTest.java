@@ -12,7 +12,7 @@ import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 
 @RunWith(RobolectricTestRunner.class)
-public class DatabaseWhiteBoxTest {
+public class DatabaseInterfaceTest {
     @Test
     public void testDatabaseInit(){
         DatabaseInterface db = DatabaseInterface.getInstance(RuntimeEnvironment.application);
