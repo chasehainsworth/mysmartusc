@@ -38,12 +38,13 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 public class TestSavedAndUrgentSubject {
 
-    
+
     @Rule
     public ActivityTestRule<LoginActivity> mActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
 
     @Test
     public void testSavedAndUrgentSubject() {
+        mActivityTestRule.getActivity().deleteDatabase("MySmartUSC");
         ViewInteraction ip = onView(
                 allOf(withText("Sign in"),
                         childAtPosition(
@@ -54,6 +55,14 @@ public class TestSavedAndUrgentSubject {
                                 0),
                         isDisplayed()));
         ip.perform(click());
+
+        try {
+            Thread.sleep(60000);
+        } catch (InterruptedException e) {
+
+        }
+
+        mActivityTestRule.getActivity().sendEmail("urgentSub savedSub", "empty");
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.homepage_button), withText("Homepage"),
@@ -95,7 +104,7 @@ public class TestSavedAndUrgentSubject {
                         isDisplayed()));
         editText2.perform(replaceText("savedSub"), closeSoftKeyboard());
 
-        pressBack();
+//        pressBack();
 
         ViewInteraction button2 = onView(
                 allOf(withId(R.id.saveSubject), withText("Save Subject"),
@@ -108,6 +117,12 @@ public class TestSavedAndUrgentSubject {
         button2.perform(click());
 
         pressBack();
+
+        try {
+            Thread.sleep(40000);
+        } catch (InterruptedException e) {
+
+        }
 
         ViewInteraction button3 = onView(
                 allOf(withId(R.id.notificationsButton), withText("Notifications"),
