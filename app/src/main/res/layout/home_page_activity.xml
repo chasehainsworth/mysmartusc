@@ -38,6 +38,13 @@
             android:layout_margin="20dp"/>
 
         <Button
+            android:id="@+id/viewKeywordsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View/Add Keywords"
+            android:layout_margin="20dp"/>
+
+        <Button
             android:id="@+id/account_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
