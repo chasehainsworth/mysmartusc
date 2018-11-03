@@ -16,6 +16,7 @@ public class GmailWrapperService extends IntentService {
 
     static final String ACCOUNT_PARAM = "account";
     private GmailWrapper mWrapper;
+    private Account mAccount;
 
     public GmailWrapperService() {
         super("Started");
@@ -35,9 +36,10 @@ public class GmailWrapperService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        mAccount = (Account)intent.getParcelableExtra(ACCOUNT_PARAM);
         mWrapper = new GmailWrapper(
                 getApplicationContext(),
-                (Account)intent.getParcelableExtra(ACCOUNT_PARAM));
+                mAccount);
         try {
             while(true) {
                 mWrapper.partialSync();
@@ -54,6 +56,7 @@ public class GmailWrapperService extends IntentService {
     }
     private void launchNotification() {
         Intent intent = new Intent(this, UrgentActivity.class);
+        intent.putExtra(ACCOUNT_PARAM, mAccount);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
 

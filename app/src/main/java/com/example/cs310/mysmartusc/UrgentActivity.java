@@ -20,6 +20,7 @@ public class UrgentActivity extends Activity {
     DatabaseInterface db;
     String mUsername;
     String mType;
+    Account mAccount = null;
 
     @Override
     protected void onStart() {
@@ -97,8 +98,8 @@ public class UrgentActivity extends Activity {
 
         emails = new ArrayList<>();
         db = DatabaseInterface.getInstance(this);
-        Account account = (Account) getIntent().getParcelableExtra("account");
-        mUsername = account.name;
+        mAccount = (Account) getIntent().getParcelableExtra("account");
+        mUsername = mAccount.name;
         mType = "urgent";
         refreshView();
 
