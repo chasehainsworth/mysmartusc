@@ -405,7 +405,10 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         return db.delete(TABLE_3_NAME, "ID = ?", new String[]{String.valueOf(id)});
     }
 
-    
+    public void removeKeyword(String user, String keyword){
+        int id = getKeywordID(user, keyword);
+        deleteKeyword(id);
+    }
 
 }
 
