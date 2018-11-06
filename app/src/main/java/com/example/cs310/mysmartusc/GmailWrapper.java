@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.google.api.client.repackaged.org.apache.commons.codec.binary.Base64;
+import com.google.api.services.gmail.model.ModifyMessageRequest;
 
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -170,6 +171,23 @@ public class GmailWrapper {
         }
     }
 
+    public void markEmailAsRead(String messageID) {
+        try {
+            ModifyMessageRequest mods = new ModifyMessageRequest().setRemoveLabelIds(Arrays.asList("UNREAD"));
+            GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
+                    mContext,
+                    Collections.singleton(EMAIL_SCOPE));
+            credential.setSelectedAccount(mAccount);
+
+            Gmail mService = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+                    .setApplicationName("MySmartUSC")
+                    .build();
+            mService.users().messages().modify(mAccount.name, messageID, mods).execute();
+        } catch (IOException e) {
+            Log.w(TAG, "markEmailAsRead:exception", e);
+        }
+    }
+
     public void reloadKeywords() {
         mUrgentFilter.refreshKeywords();
         mSpamFilter.refreshKeywords();
@@ -198,7 +216,7 @@ public class GmailWrapper {
 
         // If no filters are triggered
         if (!urgentResult && !spamResult && !savedResult) {
-            return;
+            markEmailAsRead(messageID);
         }
         // If only one filter is triggered
         //else if ( (urgentResult^spamResult^savedResult) && !(urgentResult&&spamResult&&savedResult) ) {
