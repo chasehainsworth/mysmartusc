@@ -406,7 +406,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     }
 
     public void removeKeyword(String user, String keyword){
-        int id = getKeywordID(user, keyword);
+        int id = getKeywordID(user, keyword).getColumnIndex("ID");
         deleteKeyword(id);
     }
 
