@@ -40,6 +40,12 @@
             android:paddingBottom="10dp"
             android:text="Saved Keywords"/>
 
+        <ListView
+            android:id="@+id/savedView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ListView>
+
         <View
             android:id="@+id/divider2"
             android:layout_width="match_parent"
@@ -55,6 +61,12 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="Spam Keywords"/>
+
+        <ListView
+            android:id="@+id/spamView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ListView>
 
         <View
             android:id="@+id/divider3"
