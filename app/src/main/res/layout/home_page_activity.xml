@@ -25,31 +25,31 @@
 
         <Button
             android:id="@+id/notificationsButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Notifications"
-            android:layout_margin="20dp"/>
+            android:layout_margin="20dp"
+            android:text="Notifications" />
 
         <Button
             android:id="@+id/settingsButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Settings"
-            android:layout_margin="20dp"/>
+            android:layout_margin="20dp"
+            android:text="Settings" />
 
         <Button
             android:id="@+id/viewKeywordsButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="View/Add Keywords"
-            android:layout_margin="20dp"/>
+            android:layout_margin="20dp"
+            android:text="View/Add Keywords" />
 
         <Button
             android:id="@+id/account_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Account"
-            android:layout_margin="20dp"/>
+            android:layout_margin="20dp"
+            android:text="Account" />
 
     </LinearLayout>
 

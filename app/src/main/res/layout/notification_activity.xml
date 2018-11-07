@@ -21,24 +21,26 @@
             android:textSize="26sp"
             android:textStyle="bold"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Saved"
-                android:id="@+id/savedButton"
-                android:layout_margin="20dp"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Urgent"
-                android:id="@+id/urgentButton"
-                android:layout_margin="20dp"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Spam"
-                android:id="@+id/spamButton"
-                android:layout_margin="20dp"/>
+        <Button
+            android:id="@+id/savedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Saved" />
+
+        <Button
+            android:id="@+id/urgentButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Urgent" />
+
+        <Button
+            android:id="@+id/spamButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Spam" />
 
     </LinearLayout>
 
