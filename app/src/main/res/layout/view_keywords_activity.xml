@@ -18,6 +18,12 @@
             android:paddingBottom="10dp"
             android:text="Urgent Keywords"/>
 
+        <ListView
+            android:id="@+id/urgentView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ListView>
+
         <View
             android:id="@+id/divider1"
             android:layout_width="match_parent"
@@ -49,6 +55,19 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="Spam Keywords"/>
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/colorPrimaryDark" />
+
+        <Button
+            android:id="@+id/addKeywords"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="Add Keywords" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
