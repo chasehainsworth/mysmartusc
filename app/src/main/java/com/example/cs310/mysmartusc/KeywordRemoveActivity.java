@@ -4,17 +4,20 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Button;
 
 public class KeywordRemoveActivity extends Activity {
     private TextView keywordLabel, typeLabel;
-    private DatabaseInterface mDatabaseInterface;
+    private DatabaseInterface db;
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.remove_keyword_activity);
+
+        db = DatabaseInterface.getInstance(this);
 
         this.keywordLabel = (TextView) findViewById(R.id.removeKeywordLabel);
         this.typeLabel = (TextView) findViewById(R.id.removeTypeLabel);
@@ -33,6 +36,7 @@ public class KeywordRemoveActivity extends Activity {
             public void onClick(View v) {
                 // Add remove method from database interface
                 Intent keywordListIntent = new Intent(KeywordRemoveActivity.this, ViewKeywordsActivity.class);
+                keywordListIntent.putExtra("account", (Parcelable) getIntent().getParcelableExtra("account"));
                 startActivity(keywordListIntent);
             }
         });
@@ -41,6 +45,7 @@ public class KeywordRemoveActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent keywordListIntent = new Intent(KeywordRemoveActivity.this, ViewKeywordsActivity.class);
+                keywordListIntent.putExtra("account", (Parcelable) getIntent().getParcelableExtra("account"));
                 startActivity(keywordListIntent);
             }
         });
