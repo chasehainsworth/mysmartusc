@@ -13,6 +13,16 @@
     android:orientation="vertical"
     android:gravity="center">
 
+    <TextView
+        android:id="@+id/saveLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="15sp"
+        android:text="Saved"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"

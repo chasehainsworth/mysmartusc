@@ -12,6 +12,15 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center">
+    <TextView
+        android:id="@+id/spamLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="15sp"
+        android:text="Spam"
+        android:textSize="26sp"
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/listView"
