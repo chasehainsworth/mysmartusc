@@ -75,7 +75,7 @@ public class ViewKeywordsActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent keywordIntent = new Intent(ViewKeywordsActivity.this, KeywordRemoveActivity.class);
-
+                keywordIntent.putExtra("account", (Parcelable) getIntent().getParcelableExtra("account"));
                 keywordIntent.putExtra("keyword", keywords.get(position));
                 keywordIntent.putExtra("type", types.get(position));
                 startActivity(keywordIntent);
