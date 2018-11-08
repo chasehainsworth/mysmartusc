@@ -36,14 +36,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="Settings" />
+            android:text="Add Keyword" />
 
         <Button
             android:id="@+id/viewKeywordsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="View/Add Keywords" />
+            android:text="View/Remove Keywords" />
 
         <Button
             android:id="@+id/account_button"
