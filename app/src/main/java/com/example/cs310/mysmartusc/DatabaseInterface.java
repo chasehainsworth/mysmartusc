@@ -400,14 +400,16 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         return db.rawQuery(sql, null);
     }
 
-    public Integer deleteKeyword(int id) {
+    public Integer deleteKeyword(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_3_NAME, "ID = ?", new String[]{String.valueOf(id)});
     }
 
     public void removeKeyword(String user, String keyword){
-        int id = getKeywordID(user, keyword).getColumnIndex("ID");
-        deleteKeyword(id);
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TABLE_3_NAME, "TEXT = ?", new String[]{keyword});
+
     }
 
 }
