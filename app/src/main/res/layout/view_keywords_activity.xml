@@ -8,19 +8,25 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/urgentKeywords"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="Urgent Keywords"
-            android:textColor="@color/colorPrimary"/>
+        <!--<TextView-->
+            <!--android:id="@+id/urgentKeywords"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="left"-->
+            <!--android:paddingLeft="20dp"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:text="Urgent Keywords"-->
+            <!--android:textColor="@color/colorPrimary"/>-->
+
+        <!--<ListView-->
+            <!--android:id="@+id/urgentView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+        <!--</ListView>-->
 
         <ListView
-            android:id="@+id/urgentView"
+            android:id="@+id/keywordView"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </ListView>
@@ -31,49 +37,49 @@
             android:layout_height="10dp"
             android:background="@color/colorPrimaryDark" />
 
-        <TextView
-            android:id="@+id/savedKeywords"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="Saved Keywords"/>
+        <!--<TextView-->
+            <!--android:id="@+id/savedKeywords"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="left"-->
+            <!--android:paddingLeft="20dp"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:text="Saved Keywords"/>-->
 
-        <ListView
-            android:id="@+id/savedView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ListView>
+        <!--<ListView-->
+            <!--android:id="@+id/savedView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+        <!--</ListView>-->
 
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/colorPrimaryDark" />
+        <!--<View-->
+            <!--android:id="@+id/divider2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="10dp"-->
+            <!--android:background="@color/colorPrimaryDark" />-->
 
-        <TextView
-            android:id="@+id/spamKeywords"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="Spam Keywords"/>
+        <!--<TextView-->
+            <!--android:id="@+id/spamKeywords"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="left"-->
+            <!--android:paddingLeft="20dp"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:paddingBottom="10dp"-->
+            <!--android:text="Spam Keywords"/>-->
 
-        <ListView
-            android:id="@+id/spamView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ListView>
+        <!--<ListView-->
+            <!--android:id="@+id/spamView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
+        <!--</ListView>-->
 
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/colorPrimaryDark" />
+        <!--<View-->
+            <!--android:id="@+id/divider3"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="10dp"-->
+            <!--android:background="@color/colorPrimaryDark" />-->
 
         <Button
             android:id="@+id/addKeywords"
