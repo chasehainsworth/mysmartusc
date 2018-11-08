@@ -19,7 +19,8 @@
             android:layout_height="wrap_content"
             android:text="Notifications"
             android:textSize="26sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"/>
 
         <Button
             android:id="@+id/savedButton"

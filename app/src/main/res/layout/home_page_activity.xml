@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:text="Home Page"
             android:textStyle="bold"
-            android:textSize="26sp"/>
+            android:textSize="26sp"
+            android:textColor="@color/colorPrimary"/>
 
         <Button
             android:id="@+id/notificationsButton"

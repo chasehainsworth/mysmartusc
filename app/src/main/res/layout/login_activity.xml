@@ -19,7 +19,8 @@
         android:gravity="center"
         android:text="Login"
         android:textSize="26sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary""/>
 
 
         <com.google.android.gms.common.SignInButton

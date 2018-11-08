@@ -16,7 +16,8 @@
             android:paddingLeft="20dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="Urgent Keywords"/>
+            android:text="Urgent Keywords"
+            android:textColor="@color/colorPrimary"/>
 
         <ListView
             android:id="@+id/urgentView"
