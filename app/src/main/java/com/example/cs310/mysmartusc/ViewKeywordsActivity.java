@@ -53,19 +53,21 @@ public class ViewKeywordsActivity extends Activity {
         }
 
 
-        listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.keywordView);
         List<Map<String, String>> listMap = new ArrayList<Map<String, String>>();
+
         for (int i= 0; i < keywords.size(); i++) {
             Map<String, String> map = new HashMap<String, String>(2);
             map.put("keyword", keywords.get(i));
             map.put("type", types.get(i));
             listMap.add(map);
         }
+
         SimpleAdapter adapter = new SimpleAdapter(this, listMap, android.R.layout.simple_list_item_2,
                 new String[] {"keyword", "type"},
                 new int[] {android.R.id.text1,
-                        android.R.id.text2}); {
-        }
+                        android.R.id.text2});
+
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
