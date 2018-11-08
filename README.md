@@ -23,3 +23,13 @@ Instructions for using application
      the bottom. Then, you can enter your professor's email address in the same text field and press the "Save Sender" button.
   5) On the account page (which also shows up when you log into the app), you can either sign out of the app or go to the 
      homepage.
+     
+ Sprint #1 New Features:
+  1) We fixed the bug that sometimes caused the application to crash after tapping on the urgent push notification. We also 
+     added the core feature of marking emails as read if they do not contain any keywords. We have added a page that displays      current keywords and added the ability to move them.
+  2) We updated the user interface design to match the material design standards (most activities have been updated).  
+     Activities created in this current sprint have not been updated yet.
+  3) We also discussed how we could possibly improve our workflow for the next sprint. Including what tasks people enjoy and  
+     what new areas people think that they could assist in.
+  4) We added a remove keyword functionality via the KeywordRemoveActivity and the ViewKeywordActivity where users can view 
+     and remove any given keyword that they previously entered.
