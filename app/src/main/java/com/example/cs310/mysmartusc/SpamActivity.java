@@ -75,6 +75,7 @@ public class SpamActivity extends Activity {
                 emailIntent.putExtra("subject", emails.get(position).getSubject());
                 emailIntent.putExtra("body", emails.get(position).getBody());
                 emailIntent.putExtra("sender", emails.get(position).getSender());
+                emailIntent.putExtra("type", mType);
 
                 startActivity(emailIntent);
             }
