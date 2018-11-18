@@ -14,13 +14,13 @@
 
         <TextView
             android:id="@+id/title"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Notifications"
+            android:textColor="@color/colorPrimary"
             android:textSize="26sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/savedButton"
@@ -42,6 +42,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:text="Spam" />
+
+        <Spinner
+            android:id="@+id/numberEmails"
+            android:layout_width="268dp"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="387dp" />
 
     </LinearLayout>
 

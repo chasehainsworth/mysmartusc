@@ -32,8 +32,8 @@ public class KeywordRemoveActivity extends Activity {
         keyword = getIntent().getStringExtra("keyword");
         type = getIntent().getStringExtra("type");
 
-        this.keywordLabel.setText(keyword);
-        this.typeLabel.setText(type);
+        this.keywordLabel.setText("Keyword: \n\n" + keyword);
+        this.typeLabel.setText("Type: \n\n" + type);
 
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
