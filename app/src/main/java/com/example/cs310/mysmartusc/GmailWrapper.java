@@ -188,6 +188,23 @@ public class GmailWrapper {
         }
     }
 
+    public void markEmailAsSpam(String messageID) {
+        try {
+            ModifyMessageRequest mods = new ModifyMessageRequest().setAddLabelIds(Arrays.asList("SPAM"));
+            GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
+                    mContext,
+                    Collections.singleton(EMAIL_SCOPE));
+            credential.setSelectedAccount(mAccount);
+
+            Gmail mService = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+                    .setApplicationName("MySmartUSC")
+                    .build();
+            mService.users().messages().modify(mAccount.name, messageID, mods).execute();
+        } catch (IOException e) {
+            Log.w(TAG, "markEmailAsSpam:exception", e);
+        }
+    }
+
     public void reloadKeywords() {
         mUrgentFilter.refreshKeywords();
         mSpamFilter.refreshKeywords();
@@ -229,6 +246,7 @@ public class GmailWrapper {
             if(spamResult) {
                 Log.w(TAG, email.getSubject() + " marked as spam!");
                 mDatabaseInterface.addEmail(email, mAccount.name, "spam", messageID);
+                markEmailAsSpam(messageID);
             }
             if(savedResult){
                 Log.w(TAG, email.getSubject() + " marked as saved!");
