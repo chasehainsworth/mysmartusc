@@ -346,7 +346,8 @@ public class GmailWrapper {
                     Email email = new Email(
                             getHeader(fullMessage, "Subject"),
                             getBody(fullMessage),
-                            getHeader(fullMessage, "From"));
+                            getHeader(fullMessage, "From"),
+                            fullMessage.getInternalDate());
                     Log.w(TAG, email.getSender());
                     Log.w(TAG, email.getBody());
                     sortEmail(email, m.getId());

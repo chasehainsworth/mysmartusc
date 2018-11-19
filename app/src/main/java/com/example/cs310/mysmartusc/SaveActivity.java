@@ -13,6 +13,7 @@ import android.database.Cursor;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SaveActivity extends Activity {
 
@@ -46,10 +47,11 @@ public class SaveActivity extends Activity {
                     String body = cursor.getString(cursor.getColumnIndex("BODY"));
                     String sender_user = cursor.getString(cursor.getColumnIndex("SENDER_USER"));
                     String sender_domain = cursor.getString(cursor.getColumnIndex("SENDER_DOMAIN"));
+                    Long date = cursor.getLong(cursor.getColumnIndex("INTERNAL_DATE"));
 
 
                     Log.e("SaveActivity", "Creating email with subject: " + subject);
-                    emails.add(new Email(subject, body, sender_user + "@" + sender_domain));
+                    emails.add(new Email(subject, body, sender_user + "@" + sender_domain, date));
 
 
                 } while (cursor.moveToNext());
@@ -63,11 +65,20 @@ public class SaveActivity extends Activity {
         }
         cursor.close();
 
+
         ArrayList<String> emailHeaders = new ArrayList<>();
+        ArrayList<Email> sortedEmail = new ArrayList<>();
 
         for (Email e : emails) {
+            sortedEmail.add(e);
+        }
+
+        Collections.sort(sortedEmail);
+
+        for (Email e : sortedEmail) {
             emailHeaders.add(e.getSubject());
         }
+
 
         ListView listView = (ListView) findViewById(R.id.listView);
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, emailHeaders);

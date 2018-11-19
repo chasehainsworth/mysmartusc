@@ -34,6 +34,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     public static final String COL2_5 = "USERID";
     public static final String COL2_6 = "SENDER_DOMAIN";
     public static final String COL2_7 = "MESSAGEID";
+    public static final String COL2_8 = "INTERNAL_DATE";
 
     private static final String TABLE_3_NAME = "Keywords";
     public static final String COL3_0 = "ID";
@@ -72,6 +73,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
                 COL2_5 + " INTEGER, " +
                 COL2_6 + " INTEGER, " +
                 COL2_7 + " TEXT, " +
+                COL2_8 + " DECIMAL, " +
                 "FOREIGN KEY(" + COL2_5 + ") REFERENCES " + TABLE_1_NAME + "(" + COL1_0 + " ))";
 
         String sql3 = "CREATE TABLE " +
@@ -228,6 +230,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         cv.put(COL2_5, id);
         cv.put(COL2_6, sender_domain);
         cv.put(COL2_7, messageID);
+        cv.put(COL2_8, email.getDate());
 
         long result = db.insert(TABLE_2_NAME, null, cv);
 
@@ -280,7 +283,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 
 
         return db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE " + COL2_4 + " = '" + type + "'" +
-                " AND " + COL2_5 + " = '" + id + "'" + " LIMIT " + numEmails, null);
+                " AND " + COL2_5 + " = '" + id + "'" + " ORDER BY " + COL2_8 + " DESC " + " LIMIT " + numEmails, null);
     }
 
     // Probably won't need a function to update email information once an Email is already
