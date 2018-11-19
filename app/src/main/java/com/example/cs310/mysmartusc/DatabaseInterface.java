@@ -271,6 +271,18 @@ public class DatabaseInterface extends SQLiteOpenHelper {
                 " AND " + COL2_5 + " = '" + id + "'", null);
     }
 
+    public Cursor getEmailByType(String email, String type, String numEmails)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = this.getUserID(email);
+        c.moveToFirst();
+        String id = c.getString(0);
+
+
+        return db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE " + COL2_4 + " = '" + type + "'" +
+                " AND " + COL2_5 + " = '" + id + "'" + " LIMIT " + numEmails, null);
+    }
+
     // Probably won't need a function to update email information once an Email is already
     // in the table.
 //    public boolean updateEmail(User user, int id){

@@ -37,7 +37,14 @@ public class UrgentActivity extends Activity {
     private void refreshView() {
         emails.clear();
         Log.e("UrgentActivity", "Getting " + mUsername + ", type: " + mType);
-        Cursor cursor = db.getEmailByType(mUsername, mType);
+        Cursor cursor;
+        String numEmails = getIntent().getStringExtra("numEmails");
+
+        if(numEmails.equals("All") || numEmails.equals("Number of Emails to View")){
+            cursor = db.getEmailByType(mUsername, mType);
+        }else{
+            cursor = db.getEmailByType(mUsername, mType, numEmails);
+        }
         if(cursor.getCount() > 0){
             Log.e("Urgent", "Count: " + cursor.getCount());
         }else {

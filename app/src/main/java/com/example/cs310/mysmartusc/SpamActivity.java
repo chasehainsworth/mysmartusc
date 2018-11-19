@@ -31,7 +31,14 @@ public class SpamActivity extends Activity {
     private void refreshView() {
         emails.clear();
         Log.e("SpamActivity", "Getting " + mUsername + ", type: " + mType);
-        Cursor cursor = db.getEmailByType(mUsername, mType);
+        Cursor cursor;
+        String numEmails = getIntent().getStringExtra("numEmails");
+
+        if(numEmails.equals("All") || numEmails.equals("Number of Emails to View")){
+            cursor = db.getEmailByType(mUsername, mType);
+        }else{
+            cursor = db.getEmailByType(mUsername, mType, numEmails);
+        }
 
         if (cursor != null && cursor.getCount() > 0) {
             if (cursor.moveToFirst()) {
