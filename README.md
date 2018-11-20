@@ -29,3 +29,11 @@ Instructions for using application
   2) We updated the user interface design to match the material design standards (most activities have been updated). Activities created in this current sprint have not been updated yet.
   3) We also discussed how we could possibly improve our workflow for the next sprint. Including what tasks people enjoy and what new areas people think that they could assist in.
   4) We added a remove keyword functionality via the KeywordRemoveActivity and the ViewKeywordActivity where users can view and remove any given keyword that they previously entered.
+  
+   Sprint #2 New Features:
+
+  1)Right now, notifications will build up indefinitely. Allow the user to choose to display all, or only a certain number of the most recent.
+  2)When displaying the email, highlight the keywords throughout.
+  3)Mark emails containing a Spam keyword with the Spam label in Gmail.
+  4)List email notifications in chronological order.
+  5)Created application icon.
