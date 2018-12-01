@@ -48,10 +48,10 @@ public class SaveActivity extends Activity {
                     String sender_user = cursor.getString(cursor.getColumnIndex("SENDER_USER"));
                     String sender_domain = cursor.getString(cursor.getColumnIndex("SENDER_DOMAIN"));
                     Long date = cursor.getLong(cursor.getColumnIndex("INTERNAL_DATE"));
-
+                    Boolean read = cursor.getInt(cursor.getColumnIndex("READ")) == 1;
 
                     Log.e("SaveActivity", "Creating email with subject: " + subject);
-                    emails.add(new Email(subject, body, sender_user + "@" + sender_domain, date));
+                    emails.add(new Email(subject, body, sender_user + "@" + sender_domain, date, read));
 
 
                 } while (cursor.moveToNext());
@@ -87,6 +87,7 @@ public class SaveActivity extends Activity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                db.markEmailAsRead(emails.get(position), mUsername, mType);
                 Intent emailIntent = new Intent(SaveActivity.this, EmailViewerActivity.class);
 
                 emailIntent.putExtra("subject", emails.get(position).getSubject());

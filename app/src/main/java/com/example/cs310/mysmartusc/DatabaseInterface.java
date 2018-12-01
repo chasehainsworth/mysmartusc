@@ -35,6 +35,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     public static final String COL2_6 = "SENDER_DOMAIN";
     public static final String COL2_7 = "MESSAGEID";
     public static final String COL2_8 = "INTERNAL_DATE";
+    public static final String COL2_9 = "READ";
 
     private static final String TABLE_3_NAME = "Keywords";
     public static final String COL3_0 = "ID";
@@ -74,6 +75,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
                 COL2_6 + " INTEGER, " +
                 COL2_7 + " TEXT, " +
                 COL2_8 + " DECIMAL, " +
+                COL2_9 + " INTEGER, " +
                 "FOREIGN KEY(" + COL2_5 + ") REFERENCES " + TABLE_1_NAME + "(" + COL1_0 + " ))";
 
         String sql3 = "CREATE TABLE " +
@@ -231,6 +233,7 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         cv.put(COL2_6, sender_domain);
         cv.put(COL2_7, messageID);
         cv.put(COL2_8, email.getDate());
+        cv.put(COL2_9, 0);
 
         long result = db.insert(TABLE_2_NAME, null, cv);
 
@@ -241,6 +244,32 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         }
     }
 
+    public void markEmailAsRead(Email email, String user, String type) {
+        Cursor c = this.getUserID(user);
+        c.moveToFirst();
+        String id = c.getString(0);
+
+        String sender = email.getSender();
+        String emailSender = "";
+
+        if(sender.indexOf("<") != -1 || sender.indexOf(">") != -1) {
+            System.out.println(sender);
+            emailSender = sender.substring(sender.indexOf("<") + 1, sender.indexOf(">"));
+        }else{
+            emailSender = sender;
+        }
+
+        String sender_user = emailSender.split("@")[0];
+        String sender_domain = emailSender.split("@")[1];
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COL2_9, 1);
+        db.update(TABLE_2_NAME, cv, COL2_0 + " = " + id + " AND " + COL2_1 + " = '" + sender_user
+                + "' AND " + COL2_2 + " = '" + email.getSubject() + "' AND " + COL2_3 + " = '" + email.getBody()
+                + "' AND " + COL2_4 + " = '" + type + "' AND " + COL2_5 + " = '" + id + "' AND " + COL2_6
+                + " = '" + sender_domain + "'", null);
+    }
 
     public Cursor getAllEmails() {
         SQLiteDatabase db = this.getWritableDatabase();

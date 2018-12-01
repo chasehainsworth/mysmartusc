@@ -365,7 +365,8 @@ public class GmailWrapper {
                             getHeader(fullMessage, "Subject"),
                             getBody(fullMessage),
                             getHeader(fullMessage, "From"),
-                            fullMessage.getInternalDate());
+                            fullMessage.getInternalDate(),
+                            false);
                     Log.w(TAG, email.getSender());
                     Log.w(TAG, email.getBody());
                     sortEmail(email, m.getId());
