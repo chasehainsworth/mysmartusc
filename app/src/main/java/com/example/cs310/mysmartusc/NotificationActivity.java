@@ -7,12 +7,14 @@ import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
 
 public class NotificationActivity extends Activity {
 
     Spinner dropdown;
+    private EditText searchNotifications;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +24,11 @@ public class NotificationActivity extends Activity {
         Button urgent = (Button) findViewById(R.id.urgentButton);
         Button spam = (Button) findViewById(R.id.spamButton);
         Button news = (Button) findViewById(R.id.newsButton);
+
+
+        //initialize the EditText field to search for email notifications
+        searchNotifications = (EditText) findViewById(R.id.searchNotifications);
+
 
         dropdown = findViewById(R.id.numberEmails);
         String[] items = new String[]{"Number of Emails to View", "5", "10", "15", "All"};
@@ -73,5 +80,5 @@ public class NotificationActivity extends Activity {
         });
 
     }
-}
-
+    
+ }
