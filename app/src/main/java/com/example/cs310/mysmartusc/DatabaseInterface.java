@@ -57,6 +57,8 @@ public class DatabaseInterface extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        //addKeyword("unsubscribe", "news", "ALL", "Body");
+        String news = "INSERT INTO Keywords (TEXT, TYPE, USERID, CATEGORY) VALUES ('unsubscribe', 'news', 'ALL', 'Body')";
 
         String sql1 = "CREATE TABLE " +
                 TABLE_1_NAME + " ( " +
@@ -87,12 +89,10 @@ public class DatabaseInterface extends SQLiteOpenHelper {
                 COL3_4 + " TEXT, " +
                 "FOREIGN KEY(" + COL3_3 + ") REFERENCES " + TABLE_1_NAME + "(" + COL1_0 + " ))";
 
-
-        addKeyword("unsubscribe", "news", "ALL", "Body");
-
         db.execSQL(sql1);
         db.execSQL(sql2);
         db.execSQL(sql3);
+        db.execSQL(news);
 
 
     }
