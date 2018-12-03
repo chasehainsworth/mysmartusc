@@ -92,7 +92,7 @@ public class UrgentActivity extends Activity {
         cursor.close();
 
         ArrayList<String> emailHeaders = new ArrayList<>();
-        ArrayList<Email> sortedEmail = new ArrayList<>();
+        final ArrayList<Email> sortedEmail = new ArrayList<>();
 
         for (Email e : emails) {
             sortedEmail.add(e);
@@ -112,12 +112,12 @@ public class UrgentActivity extends Activity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                db.markEmailAsRead(emails.get(position), mUsername, mType);
+                db.markEmailAsRead(sortedEmail.get(position), mUsername, mType);
                 Intent emailIntent = new Intent(UrgentActivity.this, EmailViewerActivity.class);
 
-                emailIntent.putExtra("subject", emails.get(position).getSubject());
-                emailIntent.putExtra("body", emails.get(position).getBody());
-                emailIntent.putExtra("sender", emails.get(position).getSender());
+                emailIntent.putExtra("subject", sortedEmail.get(position).getSubject());
+                emailIntent.putExtra("body", sortedEmail.get(position).getBody());
+                emailIntent.putExtra("sender", sortedEmail.get(position).getSender());
                 emailIntent.putExtra("type", mType);
 
                 startActivity(emailIntent);
