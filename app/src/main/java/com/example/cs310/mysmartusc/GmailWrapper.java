@@ -54,6 +54,9 @@ public class GmailWrapper {
     private Filter mSpamFilter;
     private Filter mSavedFilter;
 
+    //For newsletters. Users cannot specify.
+    private Filter mNewsFilter;
+
     private DatabaseInterface mDatabaseInterface;
     private boolean mIsUrgentNotification;
 
@@ -118,6 +121,9 @@ public class GmailWrapper {
         mUrgentFilter = new Filter("urgent", mDatabaseInterface);
         mSpamFilter = new Filter("spam", mDatabaseInterface);
         mSavedFilter = new Filter("saved", mDatabaseInterface);
+
+        //For newsletters
+        mNewsFilter = new Filter("news", mDatabaseInterface);
         mIsUrgentNotification = false;
     }
 
@@ -209,6 +215,7 @@ public class GmailWrapper {
         mUrgentFilter.refreshKeywords();
         mSpamFilter.refreshKeywords();
         mSavedFilter.refreshKeywords();
+        mNewsFilter.refreshKeywords();
     }
 
     private boolean containsEmail(Email email){
@@ -230,9 +237,11 @@ public class GmailWrapper {
         boolean urgentResult = mUrgentFilter.sort(email);
         boolean spamResult = mSpamFilter.sort(email);
         boolean savedResult = mSavedFilter.sort(email);
+        boolean newsResult = mNewsFilter.sort(email);
 
         // If no filters are triggered
-        if (!urgentResult && !spamResult && !savedResult) {
+        if (!urgentResult && !spamResult && !savedResult && !newsResult) {
+            Log.e("GMAILWRAPPER", "EMAIL NOT SORTED");
             markEmailAsRead(messageID);
         }
         // If only one filter is triggered
@@ -251,6 +260,10 @@ public class GmailWrapper {
             if(savedResult){
                 Log.w(TAG, email.getSubject() + " marked as saved!");
                 mDatabaseInterface.addEmail(email, mAccount.name, "saved", messageID);
+            }
+            if(newsResult){
+                Log.w(TAG, email.getSubject() + " marked as a newsletter!");
+                mDatabaseInterface.addEmail(email, mAccount.name, "news", messageID);
             }
         }
 

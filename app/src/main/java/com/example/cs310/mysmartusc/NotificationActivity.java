@@ -21,6 +21,7 @@ public class NotificationActivity extends Activity {
         Button saved = (Button) findViewById(R.id.savedButton);
         Button urgent = (Button) findViewById(R.id.urgentButton);
         Button spam = (Button) findViewById(R.id.spamButton);
+        Button news = (Button) findViewById(R.id.newsButton);
 
         dropdown = findViewById(R.id.numberEmails);
         String[] items = new String[]{"Number of Emails to View", "5", "10", "15", "All"};
@@ -57,6 +58,17 @@ public class NotificationActivity extends Activity {
                 spamIntent.putExtra("account", (Parcelable) getIntent().getParcelableExtra("account"));
                 spamIntent.putExtra("numEmails", numEmails);
                 startActivity(spamIntent);
+            }
+        });
+
+        news.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                String numEmails = dropdown.getSelectedItem().toString();
+                Intent newsIntent = new Intent(NotificationActivity.this, NewsletterActivity.class);
+                newsIntent.putExtra("account", (Parcelable) getIntent().getParcelableExtra("account"));
+                newsIntent.putExtra("numEmails", numEmails);
+                startActivity(newsIntent);
             }
         });
 

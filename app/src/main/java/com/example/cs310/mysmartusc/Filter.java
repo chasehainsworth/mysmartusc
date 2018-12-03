@@ -49,6 +49,7 @@ public class Filter {
     }
 
     public boolean sort(Email email) {
+        Log.e("SORT", "Checking email: " + mType);
         //Determine what category the email belongs to.
 
         String currentEmailSubject = email.getSubject();
