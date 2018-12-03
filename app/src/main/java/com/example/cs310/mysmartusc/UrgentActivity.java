@@ -63,7 +63,6 @@ public class UrgentActivity extends Activity {
                     String sender_domain = cursor.getString(cursor.getColumnIndex("SENDER_DOMAIN"));
                     Long date = cursor.getLong(cursor.getColumnIndex("INTERNAL_DATE"));
                     Boolean read = cursor.getInt(cursor.getColumnIndex("READ")) == 1;
-
                     Log.e("UrgentActivity", "Creating email with subject: " + subject);
                     Log.e("UrgentActSearch", "Printing search string: " + search);
                     if(search == null)

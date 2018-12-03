@@ -250,30 +250,15 @@ public class DatabaseInterface extends SQLiteOpenHelper {
     }
 
     public void markEmailAsRead(Email email, String user, String type) {
-        Cursor c = this.getUserID(user);
+        Log.e("DatabaseInterface", "Marking email: " + email.getSubject() + " as read!");
+        Cursor c = this.getEmailID(email);
         c.moveToFirst();
         String id = c.getString(0);
-
-        String sender = email.getSender();
-        String emailSender = "";
-
-        if(sender.indexOf("<") != -1 || sender.indexOf(">") != -1) {
-            System.out.println(sender);
-            emailSender = sender.substring(sender.indexOf("<") + 1, sender.indexOf(">"));
-        }else{
-            emailSender = sender;
-        }
-
-        String sender_user = emailSender.split("@")[0];
-        String sender_domain = emailSender.split("@")[1];
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COL2_9, 1);
-        db.update(TABLE_2_NAME, cv, COL2_0 + " = " + id + " AND " + COL2_1 + " = '" + sender_user
-                + "' AND " + COL2_2 + " = '" + email.getSubject() + "' AND " + COL2_3 + " = '" + email.getBody()
-                + "' AND " + COL2_4 + " = '" + type + "' AND " + COL2_5 + " = '" + id + "' AND " + COL2_6
-                + " = '" + sender_domain + "'", null);
+        db.update(TABLE_2_NAME, cv, COL2_0 + " = " + id,  null);
     }
 
     public Cursor getAllEmails() {
