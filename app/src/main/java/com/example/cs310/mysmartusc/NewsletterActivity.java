@@ -4,9 +4,11 @@ import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -89,7 +91,7 @@ public class NewsletterActivity extends Activity {
         cursor.close();
 
         ArrayList<String> emailHeaders = new ArrayList<>();
-        ArrayList<Email> sortedEmail = new ArrayList<>();
+        final ArrayList<Email> sortedEmail = new ArrayList<>();
 
         for (Email e : emails) {
             sortedEmail.add(e);
@@ -103,18 +105,33 @@ public class NewsletterActivity extends Activity {
         }
 
         ListView listView = (ListView) findViewById(R.id.listView);
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, emailHeaders);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, emailHeaders){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent){
+
+                View view = super.getView(position,convertView,parent);
+
+                if(sortedEmail.get(position).getRead() == false)
+                {
+                    view.setBackgroundColor(Color.parseColor("#FFFFCC"));
+                }else if(sortedEmail.get(position).getRead() == true){
+                    view.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                }
+
+                return view;
+            }
+        };
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                db.markEmailAsRead(emails.get(position), mUsername, mType);
+                db.markEmailAsRead(sortedEmail.get(position), mUsername, mType);
                 Intent emailIntent = new Intent(NewsletterActivity.this, EmailViewerActivity.class);
 
-                emailIntent.putExtra("subject", emails.get(position).getSubject());
-                emailIntent.putExtra("body", emails.get(position).getBody());
-                emailIntent.putExtra("sender", emails.get(position).getSender());
+                emailIntent.putExtra("subject", sortedEmail.get(position).getSubject());
+                emailIntent.putExtra("body", sortedEmail.get(position).getBody());
+                emailIntent.putExtra("sender", sortedEmail.get(position).getSender());
                 emailIntent.putExtra("type", mType);
 
                 startActivity(emailIntent);
