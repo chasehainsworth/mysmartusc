@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ public class NotificationActivity extends Activity {
                 Intent saveIntent = new Intent(NotificationActivity.this, SaveActivity.class);
                 saveIntent.putExtra("account", (Parcelable) getIntent().getParcelableExtra("account"));
                 saveIntent.putExtra("numEmails", numEmails);
+                saveIntent.putExtra("search", searchNotifications.getText().toString());
                 startActivity(saveIntent);
             }
         });
@@ -53,6 +55,8 @@ public class NotificationActivity extends Activity {
                 Intent urgentIntent = new Intent(NotificationActivity.this, UrgentActivity.class);
                 urgentIntent.putExtra("account", (Parcelable) getIntent().getParcelableExtra("account"));
                 urgentIntent.putExtra("numEmails", numEmails);
+                Log.e("NotifActSearch", "Sending search String " + searchNotifications.getText().toString());
+                urgentIntent.putExtra("search", searchNotifications.getText().toString());
                 startActivity(urgentIntent);
             }
         });
@@ -64,6 +68,7 @@ public class NotificationActivity extends Activity {
                 Intent spamIntent = new Intent(NotificationActivity.this, SpamActivity.class);
                 spamIntent.putExtra("account", (Parcelable) getIntent().getParcelableExtra("account"));
                 spamIntent.putExtra("numEmails", numEmails);
+                spamIntent.putExtra("search", searchNotifications.getText().toString());
                 startActivity(spamIntent);
             }
         });
@@ -75,6 +80,7 @@ public class NotificationActivity extends Activity {
                 Intent newsIntent = new Intent(NotificationActivity.this, NewsletterActivity.class);
                 newsIntent.putExtra("account", (Parcelable) getIntent().getParcelableExtra("account"));
                 newsIntent.putExtra("numEmails", numEmails);
+                newsIntent.putExtra("search", searchNotifications.getText().toString());
                 startActivity(newsIntent);
             }
         });

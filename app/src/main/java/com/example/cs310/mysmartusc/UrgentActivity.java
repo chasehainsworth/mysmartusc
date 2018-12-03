@@ -41,6 +41,9 @@ public class UrgentActivity extends Activity {
         Cursor cursor;
         String numEmails = getIntent().getStringExtra("numEmails");
 
+        String search = getIntent().getStringExtra("search");
+        Log.e("NotifActSearchAfter", "Sent search String " + search);
+
         if(numEmails.equals("All") || numEmails.equals("Number of Emails to View")){
             cursor = db.getEmailByType(mUsername, mType);
         }else{
@@ -62,8 +65,20 @@ public class UrgentActivity extends Activity {
                     Boolean read = cursor.getInt(cursor.getColumnIndex("READ")) == 1;
 
                     Log.e("UrgentActivity", "Creating email with subject: " + subject);
-                    emails.add(new Email(subject, body, sender_user + "@" + sender_domain, date, read));
-                    Log.e("UrgentActivity", "Email with subject: " + subject + " is " + cursor.getInt(cursor.getColumnIndex("READ")));
+                    Log.e("UrgentActSearch", "Printing search string: " + search);
+                    if(search == null)
+                    {
+                        emails.add(new Email(subject, body, sender_user + "@" + sender_domain, date, read));
+                    }
+                    else
+                    {
+                        String checker = subject + " " + body + " " + sender_user + "@" + sender_domain;
+                        if(checker.contains(search))
+                        {
+                            emails.add(new Email(subject, body, sender_user + "@" + sender_domain, date, read));
+                        }
+                    }
+
 
                 } while (cursor.moveToNext());
             }

@@ -34,6 +34,8 @@ public class SaveActivity extends Activity {
         Cursor cursor;
         String numEmails = getIntent().getStringExtra("numEmails");
 
+        String search = getIntent().getStringExtra("search");
+
         if(numEmails.equals("All") || numEmails.equals("Number of Emails to View")){
             cursor = db.getEmailByType(mUsername, mType);
         }else{
@@ -51,8 +53,20 @@ public class SaveActivity extends Activity {
                     Boolean read = cursor.getInt(cursor.getColumnIndex("READ")) == 1;
 
                     Log.e("SaveActivity", "Creating email with subject: " + subject);
-                    emails.add(new Email(subject, body, sender_user + "@" + sender_domain, date, read));
+//                    emails.add(new Email(subject, body, sender_user + "@" + sender_domain, date, read));
 
+                    if(search == null)
+                    {
+                        emails.add(new Email(subject, body, sender_user + "@" + sender_domain, date, read));
+                    }
+                    else
+                    {
+                        String checker = subject + " " + body + " " + sender_user + "@" + sender_domain;
+                        if(checker.contains(search))
+                        {
+                            emails.add(new Email(subject, body, sender_user + "@" + sender_domain, date, read));
+                        }
+                    }
 
                 } while (cursor.moveToNext());
             }
