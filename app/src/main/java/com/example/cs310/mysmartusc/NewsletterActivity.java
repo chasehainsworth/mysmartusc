@@ -24,7 +24,7 @@ public class NewsletterActivity extends Activity {
     String mType;
     Account mAccount = null;
 
-    String search = getIntent().getStringExtra("search");
+    String search;
 
     @Override
     protected void onStart() {
@@ -149,6 +149,7 @@ public class NewsletterActivity extends Activity {
         mAccount = (Account) getIntent().getParcelableExtra("account");
         mUsername = mAccount.name;
         mType = "news";
+        search = getIntent().getStringExtra("search");
         refreshView();
 
     }
