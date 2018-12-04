@@ -281,6 +281,14 @@ public class DatabaseInterface extends SQLiteOpenHelper {
         return false;
     }
 
+    public Cursor getUnreadEmailsByType(String email, String type) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor c = this.getUserID(email);
+        c.moveToFirst();
+        String id = c.getString(0);
+        return db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE " + COL2_4 + " = '" + type + "'" +
+                " AND " + COL2_5 + " = '" + id + "'" + " AND " + COL2_9 + " = 0 ", null);
+    }
     public Cursor getEmailByType(String email, String type)
     {
         SQLiteDatabase db = this.getWritableDatabase();

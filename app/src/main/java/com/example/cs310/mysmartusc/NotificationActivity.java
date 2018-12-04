@@ -1,5 +1,6 @@
 package com.example.cs310.mysmartusc;
 
+import android.accounts.Account;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,16 +17,26 @@ public class NotificationActivity extends Activity {
 
     Spinner dropdown;
     private EditText searchNotifications;
+    Button saved;
+    Button urgent;
+    Button spam;
+    Button news;
+    DatabaseInterface mDatabaseInterface;
+    String mUsername;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.notification_activity);
 
-        Button saved = (Button) findViewById(R.id.savedButton);
-        Button urgent = (Button) findViewById(R.id.urgentButton);
-        Button spam = (Button) findViewById(R.id.spamButton);
-        Button news = (Button) findViewById(R.id.newsButton);
+        saved = (Button) findViewById(R.id.savedButton);
+        urgent = (Button) findViewById(R.id.urgentButton);
+        spam = (Button) findViewById(R.id.spamButton);
+        news = (Button) findViewById(R.id.newsButton);
+        mDatabaseInterface = DatabaseInterface.getInstance(this);
+        Account account = (Account)getIntent().getParcelableExtra("account");
+        mUsername = account.name;
 
+        updateButtons();
 
         //initialize the EditText field to search for email notifications
         searchNotifications = (EditText) findViewById(R.id.searchNotifications);
@@ -85,6 +96,19 @@ public class NotificationActivity extends Activity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateButtons();
+    }
+
+    public void updateButtons() {
+        urgent.setText("URGENT (" + mDatabaseInterface.getUnreadEmailsByType(mUsername, "urgent").getCount() + ")");
+        spam.setText("SPAM (" + mDatabaseInterface.getUnreadEmailsByType(mUsername, "spam").getCount() + ")");
+        saved.setText("SAVED (" + mDatabaseInterface.getUnreadEmailsByType(mUsername, "saved").getCount() + ")");
+        news.setText("NEWSLETTERS (" + mDatabaseInterface.getUnreadEmailsByType(mUsername, "news").getCount() + ")");
     }
     
  }
